@@ -1,7 +1,7 @@
-import catchAsync from "../../utils/catchAsync.js";
+// import catchAsync from "../../utils/catchAsync.js";
 
-const createUser = catchAsync(async (req, res) => {});
+// const createUser = catchAsync(async (req, res) => {});
 
-export const userController = {
-  createUser,
-};
+// export const userController = {
+//   createUser,
+// };
