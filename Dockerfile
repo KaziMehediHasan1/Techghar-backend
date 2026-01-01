@@ -13,8 +13,10 @@ RUN npm install
 # 5. Copy Source Code
 COPY . .
 
-# volume localhost er sathe sync korar jonno
-VOLUME [ "/app/logs" ]
+# volume localhost er sathe sync korar jonno - annonimous volume
+# VOLUME [ "/app/logs" ]
+
+
 
 # 6. TypeScript ke Build kora (dist folder toiri hobe)
 RUN npm run build
