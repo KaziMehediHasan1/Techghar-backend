@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import type { IUserSchema } from "./review.interface.js";
+import type { IUserSchema } from "./brand.interface.js";
 
 const userSchema = new mongoose.Schema<IUserSchema>({
   name: { type: String, required: true },
