@@ -9,7 +9,7 @@ const reviewSchema = new mongoose.Schema<IReview>({
     unique: true,
     default: () => "UID-" + uuidv4(),
   },
-  reviewer: { Type: String, required: true },
+  reviewer: { Type: String},
   description: { Type: String, required: true },
   createdAt: { type: Date, default: Date.now },
 });

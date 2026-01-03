@@ -2,6 +2,7 @@ import catchAsync from "../../utils/catchAsync.js";
 import sendResponse from "../../utils/sendResponse.js";
 import { userService } from "./user.service.js";
 
+// CREATE NEW USER -
 const createUsers = catchAsync(async (req, res) => {
   const payload = req.body;
   const result = await userService.createUser(payload);
@@ -15,6 +16,7 @@ const createUsers = catchAsync(async (req, res) => {
   });
 });
 
+// GET ALL USERS - ADMIN
 const getUsers = catchAsync(async (req, res) => {
   const result = await userService.getUsers();
   sendResponse(res, {
