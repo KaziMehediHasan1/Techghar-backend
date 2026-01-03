@@ -15,6 +15,12 @@ const createUser = async (payload: any) => {
   return result;
 };
 
+const getUsers = async ()=>{
+  const result = await userModel.find()
+  return result
+}
+
 export const userService = {
   createUser,
+  getUsers,
 };
