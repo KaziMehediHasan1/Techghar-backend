@@ -1,9 +1,8 @@
-import type { Request, Response, NextFunction } from "express";
-import type { IRouterHandler } from "../../types/routerhandler.type.js";
+import type { Request, Response, NextFunction, RequestHandler } from "express";
 
-const catchAsync = (func: IRouterHandler<IRouterHandler>) => {
+const catchAsync = (fn: (req: Request, res: Response, next: NextFunction) => Promise<any>): RequestHandler => {
   return (req: Request, res: Response, next: NextFunction) => {
-    Promise.resolve(func(req, res, next)).catch((err) => next(err));
+    fn(req, res, next).catch(next);
   };
 };
 
