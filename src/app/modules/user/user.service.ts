@@ -8,7 +8,7 @@ const createUser = async (payload: any) => {
   payload.uid = uid;
   const salt = Number(config.bcrypt_salt_rounds);
   // Hash password
-  const hashedPass = await bcrypt.hash(payload.password, salt);
+  const hashedPass = await bcrypt.hash(payload.password, salt) || 12;
   payload.password = hashedPass;
 
   const result = await userModel.create(payload);
