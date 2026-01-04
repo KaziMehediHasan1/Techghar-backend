@@ -6,8 +6,6 @@ import { userService } from "./user.service.js";
 const createUsers = catchAsync(async (req, res) => {
   const payload = req.body;
   const result = await userService.createUser(payload);
-    // const {name, password, email, role, uid} = result
-  console.log(result,"data dekhi")
   sendResponse(res, {
     statusCode: 200,
     success: true,
