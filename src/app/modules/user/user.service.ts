@@ -9,14 +9,18 @@ const createUser = async (payload: any) => {
   payload.uid = uid;
   const salt = Number(config.bcrypt_salt_rounds);
   // Hash password
-  const hashedPass = (await bcrypt.hash(payload.password, salt)) || 12;
+  const hashedPass = await bcrypt.hash(payload.password, salt || 12);
   payload.password = hashedPass;
+  const user = new userModel(payload);
+  const result = await user.save();
+  if (!result) {
+    throw new Error("User creation failed");
+  }
 
-  const result = await userModel.create(payload);
   return result;
 };
 
-// GET ALL USERS
+// GET ALL USERS FOR ADMIN
 const getUsers = async () => {
   const result = await userModel.find();
   return result;
@@ -26,7 +30,7 @@ const getUsers = async () => {
 const getUser = async (id: string) => {
   const query = id.startsWith("UID-") ? { uid: id } : { _id: id };
   const result = await userModel.findById(query);
-  return result
+  return result;
 };
 
 export const userService = {
