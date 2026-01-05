@@ -16,7 +16,6 @@ const createUser = async (payload: any) => {
   if (!result) {
     throw new Error("User creation failed");
   }
-
   return result;
 };
 

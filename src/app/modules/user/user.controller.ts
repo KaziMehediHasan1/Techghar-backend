@@ -1,7 +1,5 @@
-import config from "@/src/config/index.js";
 import {
   generateAccessToken,
-  generateRefreshToken,
 } from "../../middlewares/auth.js";
 import catchAsync from "../../utils/catchAsync.js";
 import sendResponse from "../../utils/sendResponse.js";
@@ -18,13 +16,6 @@ const createUsers = catchAsync(async (req, res) => {
     role: result.role,
   };
   const accessToken = generateAccessToken(jwtPayload);
-  const refreshToken = generateRefreshToken(jwtPayload);
-  res.cookie("refreshToken", refreshToken, {
-    secure: config.env === "development",
-    httpOnly: false, // false just development er jonno. "pore thik korbo"
-    sameSite: "none",
-    maxAge: 30 * 24 * 60 * 60 * 1000,
-  });
   const output = { result, accessToken };
   sendResponse(res, {
     statusCode: 200,
