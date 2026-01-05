@@ -9,19 +9,19 @@ import { userService } from "./user.service.js";
 const createUsers = catchAsync(async (req, res) => {
   const payload = req.body;
   const result = await userService.createUser(payload);
-  const jwtPayload = {
-    _id: result._id,
-    uid: result.uid,
-    email: result.email,
-    role: result.role,
-  };
-  const accessToken = generateAccessToken(jwtPayload);
-  const output = { result, accessToken };
+  // const jwtPayload = {
+  //   _id: result._id,
+  //   uid: result.uid,
+  //   email: result.email,
+  //   role: result.role,
+  // };
+  // const accessToken = generateAccessToken(jwtPayload);
+  // const output = { result, accessToken };
   sendResponse(res, {
     statusCode: 200,
     success: true,
     message: "User created successfully",
-    data: output,
+    data: result,
   });
 });
 
@@ -31,7 +31,7 @@ const getUsers = catchAsync(async (req, res) => {
   sendResponse(res, {
     statusCode: 200,
     success: true,
-    message: "User get successfully",
+    message: "Users get successfully",
     data: result,
   });
 });

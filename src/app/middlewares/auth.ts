@@ -13,7 +13,7 @@ export const generateAccessToken = (payload: TAuth) => {
   });
 };
 
-// GENERATE REFRESS TOKEN FOR 30DAYS
+// GENERATE REFRESS TOKEN FOR 30-DAYS
 export const generateRefreshToken = (payload: TAuth) => {
   const option: SignOptions = {
     expiresIn: config.jwt.refresh_expires_in as any,
@@ -62,3 +62,4 @@ export const validateAccessToken = (...requiredRoles: TRole[]) => {
     }
   });
 };
+

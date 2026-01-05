@@ -1,32 +1,48 @@
 import config from "@/src/config/index.js";
-import { generateRefreshToken } from "../../middlewares/auth.js";
+import { generateAccessToken, generateRefreshToken } from "../../middlewares/auth.js";
 import catchAsync from "../../utils/catchAsync.js";
 import sendResponse from "../../utils/sendResponse.js";
+import { authService } from "./auth.service.js";
+import { SUCCESS_MESSAGES } from "@/src/constants/successMessages.js";
 import { ERROR_MESSAGES } from "@/src/constants/errorMessages.js";
 
-const loginUser = catchAsync(async (req, res) => {
-  const { email, password, _id, uid, role } = req.body;
-  const jwtPayload = {
-    _id,
-    uid,
-    email,
-    role,
-  };
-  const refreshToken = generateRefreshToken(jwtPayload);
-  res.cookie("refreshToken", refreshToken, {
-    secure: config.env === "development",
-    httpOnly: false, // false just development er jonno. "pore thik korbo"
-    sameSite: "none",
-    maxAge: 30 * 24 * 60 * 60 * 1000,
-  });
-  if (!email && !password) {
-    throw new Error("Email and Password are wrong!");
+const loginUserController = catchAsync(async (req, res) => {
+  const { email, password } = req.body;
+  const result = await authService.loginService({ email, password });
+
+  // const jwtPayload = {
+  //   _id: result?._id,
+  //   uid: result?.uid,
+  //   email: result?.email,
+  //   role: result?.role,
+  // };
+
+  // // CREAE TOKEN
+  // const accessToken = generateAccessToken(!!jwtPayload);
+  // const refreshToken = generateRefreshToken(jwtPayload);
+
+  // res.cookie("refreshToken", refreshToken, {
+  //   secure: config.env === "production",
+  //   httpOnly: true,
+  //   sameSite: "none",
+  //   maxAge: 30 * 24 * 60 * 60 * 1000, 
+  // });
+
+  const userData = result?.toObject() as any;
+  delete userData.password;
+
+  if (!result?.email && !result?.password) {
+    throw new Error(ERROR_MESSAGES.auth.notFound.message);
   }
-  const result = { data: { email, password }, refreshToken };
+
   sendResponse(res, {
-    statusCode: ERROR_MESSAGES.auth.invalid.statusCode,
+    statusCode: SUCCESS_MESSAGES.auth.loggedIn.statusCode,
     success: true,
-    message: ERROR_MESSAGES.auth.invalid.message,
+    message: SUCCESS_MESSAGES.auth.loggedIn.message,
     data: result,
   });
 });
+
+export const authController = {
+  loginUserController,
+};
