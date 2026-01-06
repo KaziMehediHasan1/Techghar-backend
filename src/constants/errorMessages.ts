@@ -2,6 +2,7 @@ export const ERROR_MESSAGES = {
   // 1. Authentication & Authorization
   auth: {
     notFound: { statusCode: 404, message: "User account not found!" },
+    registrationFailed: { statusCode: 400, message: "User registration failed! Please try again." },
     invalid: { statusCode: 401, message: "Invalid email or password!" },
     exists: { statusCode: 409, message: "Email already registered!" },
     unauthorized: { statusCode: 401, message: "Please login to continue!" },
