@@ -5,9 +5,11 @@ import sendResponse from "../../utils/sendResponse.js";
 import { authService } from "./auth.service.js";
 import { SUCCESS_MESSAGES } from "@/src/constants/successMessages.js";
 import { ERROR_MESSAGES } from "@/src/constants/errorMessages.js";
+import bcrypt from "bcrypt"
 
 const loginUserController = catchAsync(async (req, res) => {
   const { email, password } = req.body;
+  // console.log(req.body,"bodyyy")
   const result = await authService.loginService({ email, password });
 
   // const jwtPayload = {
@@ -28,12 +30,12 @@ const loginUserController = catchAsync(async (req, res) => {
   //   maxAge: 30 * 24 * 60 * 60 * 1000, 
   // });
 
-  const userData = result?.toObject() as any;
-  delete userData.password;
+  // const userData = result?.toObject() as any;
+  // delete userData.password;
 
-  if (!result?.email && !result?.password) {
-    throw new Error(ERROR_MESSAGES.auth.notFound.message);
-  }
+  // if (!result?.email && !result?.password) {
+  //   throw new Error(ERROR_MESSAGES.auth.notFound.message);
+  // }
 
   sendResponse(res, {
     statusCode: SUCCESS_MESSAGES.auth.loggedIn.statusCode,

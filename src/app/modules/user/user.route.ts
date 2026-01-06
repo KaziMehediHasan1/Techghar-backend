@@ -12,6 +12,6 @@ route.post(
   userController.createUsers
 );
 route.get("/users", validateAccessToken("admin"), userController.getUsers);
-route.get("/auth/login",authController.loginUserController)
+route.post("/auth/login",authController.loginUserController)
 const userRoute = route;
 export default userRoute;

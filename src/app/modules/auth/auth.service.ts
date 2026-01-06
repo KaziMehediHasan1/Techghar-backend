@@ -1,3 +1,4 @@
+import { ERROR_MESSAGES } from "@/src/constants/errorMessages.js";
 import userModel from "../user/user.model.js";
 // import { createToken, verifyToken } from "../../utils/authUtils.js";
 // import config from "../../config/index.js";
@@ -6,16 +7,22 @@ import userModel from "../user/user.model.js";
 import bcrypt from "bcrypt";
 
 const loginService = async (payload: any) => {
+  console.log(payload,"auth service")
   const user = await userModel
-    .findOne({ email: payload.email })
+    .findOne({ email: payload?.email })
     .select("+password");
 
-  if (!user) return null;
+  if (!user) {
+    throw new Error(ERROR_MESSAGES.auth.notFound.message);
+  }
 
-  // PASS CHECK - 
-  const isPasswordMatch = await bcrypt.compare(payload.password, user.password);
+  // PASS CHECK -
+  const isPasswordMatch = await bcrypt.compare(
+    payload?.password,
+    user.password
+  );
 
-  if (!isPasswordMatch) return null;
+  if (!isPasswordMatch) throw new Error(ERROR_MESSAGES.auth.invalid.message);
 
   return user;
 };

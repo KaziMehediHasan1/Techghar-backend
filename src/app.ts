@@ -4,6 +4,7 @@ import cors from "cors";
 import helmet from "helmet";
 import router from "./app/routes/routes.main.js";
 import cookieParser from "cookie-parser";
+import config from "./config/index.js";
 
 const app: Application = express();
 
@@ -26,8 +27,17 @@ app.get("/", (req, res) => {
 });
 app.use("/api/v1", router);
 
-
 // Global Error Handler
-// app.use(globalErrorHandler);
+app.use((err: any, req: any, res: any, next: any) => {
+  const statusCode = err.statusCode || 500;
+  const message = err.message || "Something went wrong!";
+  
+  res.status(statusCode).json({
+    success: false,
+    statusCode,
+    message,
+    stack: config.env === "development" ? err.stack : null,
+  });
+});
 
 export default app;
