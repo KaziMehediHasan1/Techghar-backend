@@ -25,7 +25,9 @@ export const generateRefreshToken = (payload: TAuth) => {
 // ROLE BASED VALIDATE USER AND GIVE ACTUAL DATA WHAT THEY CAN TRY TO GOT
 export const validateAccessToken = (...requiredRoles: TRole[]) => {
   return catchAsync(async (req: Request, res: Response, next: NextFunction) => {
-    const token = req.headers.authorization;
+    const authHeader = req.headers.authorization;
+    const token = authHeader?.split(" ")[1]
+    console.log(token,"tokekkk")
 
     if (!token) {
       return sendResponse(res, {
@@ -40,8 +42,10 @@ export const validateAccessToken = (...requiredRoles: TRole[]) => {
         token,
         config.jwt.secret as string
       ) as JwtPayload;
+      // console.log(decoded,"check decoded data")
 
       const role = decoded.role as TRole;
+      // console.log(role,"checke role, if is actually added in decoded obj")
 
       if (requiredRoles.length > 0 && !requiredRoles.includes(role)) {
         return sendResponse(res, {

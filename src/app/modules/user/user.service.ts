@@ -9,7 +9,7 @@ import { ERROR_MESSAGES } from "@/src/constants/errorMessages.js";
 const createUser = async (payload: any) => {
   // CHECK USER IS ALREADY REGISTERD -
   if (payload.email && payload.password) {
-    console.log(payload.email && payload.password, "check user ace kina");
+    // console.log(payload.email && payload.password, "check user ace kina");
     const user = await userModel.findOne({
       email: payload.email,
       password: payload.password,
@@ -42,6 +42,7 @@ const createUser = async (payload: any) => {
 
 // GET ALL USERS FOR ADMIN
 const getUsers = async () => {
+  
   const result = await userModel.find();
   return result;
 };
