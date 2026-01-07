@@ -15,7 +15,7 @@ const createUsers = catchAsync(async (req, res) => {
   };
   const accessToken = generateAccessToken(jwtPayload);
   const output = { result, accessToken };
-  
+
   sendResponse(res, {
     statusCode: 200,
     success: true,
@@ -35,10 +35,21 @@ const getUsers = catchAsync(async (req, res) => {
   });
 });
 
-
+// GET USER PROFILE FOR ADMIN AND USER BOTH ONE -
+const profile = catchAsync(async (req, res) => {
+  // console.log(req.params.id,"controller id")
+  const result = await userService.profile((req.params.id) as string);
+  sendResponse(res, {
+    statusCode: 200,
+    success: true,
+    message: "User profile retrieved successfully",
+    data: result,
+  });
+});
 
 export const userController = {
   // Controller methods will be defined here
   createUsers,
   getUsers,
+  profile,
 };

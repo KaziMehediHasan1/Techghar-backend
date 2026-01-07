@@ -46,15 +46,15 @@ const getUsers = async () => {
   return result;
 };
 
-// GET SINGLE USER FOR USING ID || UUID
-const getUser = async (id: string) => {
-  const query = id.startsWith("UID-") ? { uid: id } : { _id: id };
-  const result = await userModel.findById(query);
+
+// GET SINGLE USER FOR USING ID || UUID - GET ADMIN AND USER BOTH
+const profile = async (id: string) => {
+  const result = await userModel.findById({_id: id}).select("-password");
   return result;
 };
 
 export const userService = {
   createUser,
   getUsers,
-  getUser,
+  profile,
 };

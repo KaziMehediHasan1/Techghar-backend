@@ -27,7 +27,7 @@ export const validateAccessToken = (...requiredRoles: TRole[]) => {
   return catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     const authHeader = req.headers.authorization;
     const token = authHeader?.split(" ")[1]
-    console.log(token,"tokekkk")
+    // console.log(token,"token")
 
     if (!token) {
       return sendResponse(res, {

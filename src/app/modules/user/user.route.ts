@@ -11,6 +11,7 @@ route.post(
   validateRequest(createUserZodSchema),
   userController.createUsers
 );
+route.get("/profile/:id",validateAccessToken("user","admin"), userController.profile)
 route.get("/users", validateAccessToken("user"), userController.getUsers);
 route.post("/auth/login",authController.loginUserController)
 const userRoute = route;
