@@ -1,9 +1,5 @@
 import { ERROR_MESSAGES } from "@/src/constants/errorMessages.js";
 import userModel from "../user/user.model.js";
-// import { createToken, verifyToken } from "../../utils/authUtils.js";
-// import config from "../../config/index.js";
-// import AppError from "../../utils/AppError.js";
-// import { ERROR_MESSAGES } from "../../constants/errorMessages.js";
 import bcrypt from "bcrypt";
 import AppError from "../../utils/appError.js";
 
@@ -27,6 +23,7 @@ const loginService = async (payload: any) => {
     user.password
   );
 
+  // PASS IS NOT MATCH, THEN..
   if (!isPasswordMatch)
     throw new AppError(
       ERROR_MESSAGES.auth.invalid.statusCode,

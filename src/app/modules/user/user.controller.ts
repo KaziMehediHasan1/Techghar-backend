@@ -35,6 +35,8 @@ const getUsers = catchAsync(async (req, res) => {
   });
 });
 
+
+
 export const userController = {
   // Controller methods will be defined here
   createUsers,

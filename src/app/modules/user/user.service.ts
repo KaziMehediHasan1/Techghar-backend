@@ -25,7 +25,7 @@ const createUser = async (payload: any) => {
   payload.uid = uid;
   const salt = Number(config.bcrypt_salt_rounds);
 
-  // Hash password
+  // HASH PASSWORD -
   const hashedPass = await bcrypt.hash(payload.password, salt || 12);
   payload.password = hashedPass;
 
@@ -42,7 +42,6 @@ const createUser = async (payload: any) => {
 
 // GET ALL USERS FOR ADMIN
 const getUsers = async () => {
-  
   const result = await userModel.find();
   return result;
 };
