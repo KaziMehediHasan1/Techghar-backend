@@ -36,54 +36,6 @@ const loginService = async (payload: any) => {
   return user;
 };
 
-// const refreshToken = catchAsync(async (req: Request, res: Response) => {
-//   const { refreshToken } = req.cookies;
-
-//   // ১. চেক করা টোকেন আছে কি না
-//   if (!refreshToken) {
-//     throw new AppError(
-//       ERROR_MESSAGES.auth.unauthorized.statusCode,
-//       ERROR_MESSAGES.auth.unauthorized.message
-//     );
-//   }
-
-//   // ২. রিফ্রেশ টোকেন ভেরিফাই করা
-//   let decoded;
-//   try {
-//     decoded = verifyToken(refreshToken, config.jwt_refresh_secret as string);
-//   } catch (err) {
-//     throw new AppError(
-//       401,
-//       "Invalid or Expired Refresh Token! Please login again."
-//     );
-//   }
-
-//   // ৩. নতুন Access Token তৈরি (Refresh Token এর ডাটা দিয়ে)
-//   const jwtPayload = {
-//     _id: decoded._id,
-//     uid: decoded.uid,
-//     email: decoded.email,
-//     role: decoded.role,
-//   };
-
-//   const accessToken = createToken(
-//     jwtPayload,
-//     config.jwt_access_secret as string,
-//     config.jwt_access_expires_in as string
-//   );
-
-//   sendResponse(res, {
-//     statusCode: 200,
-//     success: true,
-//     message: "Access token refreshed successfully!",
-//     data: {
-//       accessToken,
-//     },
-//   });
-// });
-// export const authService = {
-//   loginService,
-// };
 
 export const authService = {
   loginService,
