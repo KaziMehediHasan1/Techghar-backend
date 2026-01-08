@@ -8,7 +8,9 @@ import sendResponse from "../../utils/sendResponse.js";
 import { authService } from "./auth.service.js";
 import { SUCCESS_MESSAGES } from "@/src/constants/successMessages.js";
 import { ERROR_MESSAGES } from "@/src/constants/errorMessages.js";
+import { setRefreshTokenCookie } from "@/src/helper/setRefreshTokenCookie.js";
 
+// LOGIN USER -
 const loginUserController = catchAsync(async (req, res) => {
   const { email, password } = req.body;
   // console.log(req.body,"bodyyy")
@@ -25,6 +27,7 @@ const loginUserController = catchAsync(async (req, res) => {
   const accessToken = generateAccessToken(jwtPayload);
   const refreshToken = generateRefreshToken(jwtPayload);
 
+  // SET REFRESH-TOKEN IN COOKIES
   res.cookie("refreshToken", refreshToken, {
     secure: config.env === "production",
     httpOnly: true,
@@ -47,6 +50,10 @@ const loginUserController = catchAsync(async (req, res) => {
   });
 });
 
+// REFRESH-TOKEN GENERATOR -
+const refreshToken = catchAsync(async(req,res)=>{
+  const result = setRefreshTokenCookie()
+})
 export const authController = {
   loginUserController,
 };
