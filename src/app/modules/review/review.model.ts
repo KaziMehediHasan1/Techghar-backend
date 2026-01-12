@@ -4,13 +4,13 @@ import type { IReview } from "./review.interface.js";
 
 const reviewSchema = new mongoose.Schema<IReview>({
   uid: {
-    Type: String,
+    type: String,
     required: true,
     unique: true,
     default: () => "UID-" + uuidv4(),
   },
-  reviewer: { Type: String},
-  description: { Type: String, required: true },
+  reviewer: { type: String},
+  description: { type: String, required: true },
   createdAt: { type: Date, default: Date.now },
 });
 
