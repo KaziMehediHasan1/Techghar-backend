@@ -3,7 +3,7 @@ import catchAsync from "../../utils/catchAsync.js";
 import sendResponse from "../../utils/sendResponse.js";
 import { reviewService } from "./review.service.js";
 
-const createReviewController = catchAsync(async (req, res) => {
+const createReview = catchAsync(async (req, res) => {
   const result = await reviewService.createReviewIntoDB(req.body);
   // console.log(result, "check data is come?");
   sendResponse(res, {
@@ -14,7 +14,7 @@ const createReviewController = catchAsync(async (req, res) => {
   });
 });
 
-const getAllReviewsController = catchAsync(async (_, res) => {
+const getAllReviews = catchAsync(async (_, res) => {
   const result = await reviewService.getAllReviewsFromDB();
   sendResponse(res, {
     statusCode: SUCCESS_MESSAGES.review.fetched.statusCode,
@@ -24,7 +24,7 @@ const getAllReviewsController = catchAsync(async (_, res) => {
   });
 });
 
-const getSingleReviewController = catchAsync(async (req, res) => {
+const getSingleReview = catchAsync(async (req, res) => {
   const id = req.params.id;
   const result = await reviewService.getSingleReviewFromDB(id);
   sendResponse(res, {
@@ -35,7 +35,7 @@ const getSingleReviewController = catchAsync(async (req, res) => {
   });
 });
 
-const updateReviewController = catchAsync(async (req, res) => {
+const updateReview = catchAsync(async (req, res) => {
   const { description } = req.body;
   const id = req.params.id;
 
@@ -49,7 +49,7 @@ const updateReviewController = catchAsync(async (req, res) => {
   });
 });
 
-const deleteReviewController = catchAsync(async (req, res) => {
+const deleteReview = catchAsync(async (req, res) => {
   const id = req.params.id;
   const result = await reviewService.deleteReviewFromDB(id);
   sendResponse(res, {
@@ -61,9 +61,9 @@ const deleteReviewController = catchAsync(async (req, res) => {
 });
 
 export const reviewController = {
-  createReviewController,
-  getAllReviewsController,
-  getSingleReviewController,
-  updateReviewController,
-  deleteReviewController,
+  createReview,
+  getAllReviews,
+  getSingleReview,
+  updateReview,
+  deleteReview,
 };

@@ -5,12 +5,13 @@ import { reviewZodSchema } from "./review.validation.js";
 import { validateAccessToken } from "../../middlewares/auth.js";
 
 const route = express.Router();
-route.post("/create-review",validateRequest(reviewZodSchema),reviewController.createReviewController);
-// validateAccessToken
-route.get("/get-all-review", reviewController.getAllReviewsController);
-route.get("/get-single-review/:id", reviewController.getSingleReviewController);
-route.patch("/update-review/:id", reviewController.updateReviewController);
-route.delete("/delete-review/:id", reviewController.deleteReviewController);
+// --- Both Can Access
+route.post("/",validateRequest(reviewZodSchema), validateAccessToken("user","admin"), reviewController.createReview);
+route.get("/:id",validateAccessToken("user","admin"), reviewController.getSingleReview);
+route.patch("/:id",validateAccessToken("user","admin"), reviewController.updateReview);
+route.delete("/:id",validateAccessToken("user","admin"), reviewController.deleteReview);
 
+// --- Admin Access ---
+route.get("/", validateAccessToken("admin"), reviewController.getAllReviews);
 const reviewRoute = route;
 export default reviewRoute;

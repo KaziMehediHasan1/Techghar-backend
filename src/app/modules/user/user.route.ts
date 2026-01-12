@@ -18,7 +18,7 @@ route.delete("/admin/user/:id", validateAccessToken("admin"), userController.del
 // --- Both Access ---
 route.get("/profile/:id", validateAccessToken("user", "admin"), userController.getMyProfile);
 route.delete("/me/:id", validateAccessToken("user","admin"), userController.deleteMyAccount);
-route.patch("/update/profile/:id",userController.upadetProfile)
+route.patch("/update/profile/:id", validateAccessToken("user","admin"), userController.upadetProfile)
 
 
 const userRoute = route;
