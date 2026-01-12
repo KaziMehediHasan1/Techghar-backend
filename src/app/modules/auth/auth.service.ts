@@ -3,9 +3,7 @@ import userModel from "../user/user.model.js";
 import bcrypt from "bcrypt";
 import AppError from "../../utils/appError.js";
 
-// LOGING USER -
 const loginService = async (payload: any) => {
-  console.log(payload, "auth service");
   const user = await userModel
     .findOne({ email: payload?.email })
     .select("+password");
