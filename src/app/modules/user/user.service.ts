@@ -1,19 +1,20 @@
 import config from "@/src/config/index.js";
 import bcrypt from "bcrypt";
-import { v4 as uuidv4 } from "uuid";
 import userModel from "./user.model.js";
 import AppError from "../../utils/appError.js";
 import { ERROR_MESSAGES } from "@/src/constants/errorMessages.js";
+import { uidGenerator } from "@/src/helper/uidGenerator.js";
 
 // CREATE A NEW USER
 const createUser = async (payload: any) => {
+  
   // CHECK USER IS ALREADY REGISTERD -
   if (payload.email && payload.password) {
-    // console.log(payload.email && payload.password, "check user ace kina");
     const user = await userModel.findOne({
       email: payload.email,
       password: payload.password,
     });
+
     if (user)
       throw new AppError(
         ERROR_MESSAGES.auth.exists.statusCode,
@@ -21,7 +22,8 @@ const createUser = async (payload: any) => {
       );
   }
 
-  const uid = "UID-" + uuidv4();
+  // GENERATE UID - 
+  const uid = uidGenerator()
   payload.uid = uid;
   const salt = Number(config.bcrypt_salt_rounds);
 
@@ -29,14 +31,17 @@ const createUser = async (payload: any) => {
   const hashedPass = await bcrypt.hash(payload.password, salt || 12);
   payload.password = hashedPass;
 
+  // SAVE USER IN DB -
   const user = new userModel(payload);
   const result = await user.save();
+
   if (!result) {
     throw new AppError(
       ERROR_MESSAGES.auth.registrationFailed.statusCode,
       ERROR_MESSAGES.auth.registrationFailed.message
     );
   }
+
   return result;
 };
 
