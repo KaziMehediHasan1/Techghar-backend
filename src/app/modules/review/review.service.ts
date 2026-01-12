@@ -1,7 +1,7 @@
 import { ERROR_MESSAGES } from "@/src/constants/errorMessages.js";
 import AppError from "../../utils/appError.js";
 import reviewModel from "./review.model.js";
-import { uidGenerator } from "@/src/constants/uidGenerator.js";
+import { uidGenerator } from "@/src/helper/uidGenerator.js";
 
 const reviewPostService = async (payload: any) => {
   // CHECK ALL REVIEWS DATA IS VALID OR NOT.
