@@ -1,12 +1,12 @@
+import { SUCCESS_MESSAGES } from "@/src/constants/successMessages.js";
 import { generateAccessToken } from "../../middlewares/auth.js";
 import catchAsync from "../../utils/catchAsync.js";
 import sendResponse from "../../utils/sendResponse.js";
 import { userService } from "./user.service.js";
 
-// CREATE NEW USER -
-const createUsers = catchAsync(async (req, res) => {
+const registerUser = catchAsync(async (req, res) => {
   const payload = req.body;
-  const result = await userService.createUser(payload);
+  const result = await userService.createUserIntoDB(payload);
   const jwtPayload = {
     _id: result._id,
     uid: result.uid,
@@ -24,9 +24,8 @@ const createUsers = catchAsync(async (req, res) => {
   });
 });
 
-// GET ALL USERS - ADMIN
-const getUsers = catchAsync(async (req, res) => {
-  const result = await userService.getUsers();
+const getAllUsers = catchAsync(async (req, res) => {
+  const result = await userService.getAllUsersFromDB();
   sendResponse(res, {
     statusCode: 200,
     success: true,
@@ -35,21 +34,57 @@ const getUsers = catchAsync(async (req, res) => {
   });
 });
 
-// GET USER PROFILE FOR ADMIN AND USER BOTH ONE -
-const profile = catchAsync(async (req, res) => {
-  // console.log(req.params.id,"controller id")
-  const result = await userService.profile((req.params.id) as string);
+const getMyProfile = catchAsync(async (req, res) => {
+  const result = await userService.getUserProfileFromDB(
+    req.params.id as string
+  );
   sendResponse(res, {
-    statusCode: 200,
+    statusCode: SUCCESS_MESSAGES.user.profileFetched.statusCode,
     success: true,
-    message: "User profile retrieved successfully",
+    message: SUCCESS_MESSAGES.user.profileFetched.message,
+    data: result,
+  });
+});
+
+const deleteMyAccount = catchAsync(async (req, res) => {
+  const id = req.params.id;
+  const result = await userService.deleteUserFromDB(id as string);
+  sendResponse(res, {
+    statusCode: SUCCESS_MESSAGES.user.profileDeleted.statusCode,
+    success: true,
+    message: SUCCESS_MESSAGES.user.profileDeleted.message,
+    data: result,
+  });
+});
+
+const deleteUserByAdmin = catchAsync(async (req, res) => {
+  const id = req.params.id;
+  const result = await userService.deleteUserByAdminFromDB(id as string);
+  sendResponse(res, {
+    statusCode: SUCCESS_MESSAGES.user.adminDeletedUser.statusCode,
+    success: true,
+    message: SUCCESS_MESSAGES.user.adminDeletedUser.message,
+    data: result,
+  });
+});
+
+const upadetProfile = catchAsync(async (req, res) => {
+  const id = req.params.id as string;
+  const data = req.body;
+  const result = await userService.updateProfileFromDB({id, data});
+  sendResponse(res, {
+    statusCode: SUCCESS_MESSAGES.user.profileUpdated.statusCode,
+    success: true,
+    message: SUCCESS_MESSAGES.user.profileUpdated.message,
     data: result,
   });
 });
 
 export const userController = {
-  // Controller methods will be defined here
-  createUsers,
-  getUsers,
-  profile,
+  registerUser,
+  getAllUsers,
+  getMyProfile,
+  deleteMyAccount,
+  deleteUserByAdmin,
+  upadetProfile,
 };

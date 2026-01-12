@@ -50,9 +50,21 @@ export const SUCCESS_MESSAGES = {
 
   // 5. User Profile & Reviews
   user: {
+    profileFetched: {
+      statusCode: 200,
+      message: "Profile information retrieved successfully!",
+    },
     profileUpdated: {
       statusCode: 200,
       message: "Profile information updated!",
+    },
+    adminDeletedUser: {
+      statusCode: 200,
+      message: "User account has been successfully removed by administrator.",
+    },
+    profileDeleted: {
+      statusCode: 200,
+      message: "Your profile and account have been permanently deleted.",
     },
     passwordChanged: {
       statusCode: 200,

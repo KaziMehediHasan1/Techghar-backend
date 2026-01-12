@@ -5,9 +5,7 @@ import AppError from "../../utils/appError.js";
 import { ERROR_MESSAGES } from "@/src/constants/errorMessages.js";
 import { uidGenerator } from "@/src/helper/uidGenerator.js";
 
-// CREATE A NEW USER
-const createUser = async (payload: any) => {
-  
+const createUserIntoDB = async (payload: any) => {
   // CHECK USER IS ALREADY REGISTERD -
   if (payload.email && payload.password) {
     const user = await userModel.findOne({
@@ -22,8 +20,8 @@ const createUser = async (payload: any) => {
       );
   }
 
-  // GENERATE UID - 
-  const uid = uidGenerator()
+  // GENERATE UID -
+  const uid = uidGenerator();
   payload.uid = uid;
   const salt = Number(config.bcrypt_salt_rounds);
 
@@ -45,21 +43,68 @@ const createUser = async (payload: any) => {
   return result;
 };
 
-// GET ALL USERS FOR ADMIN
-const getUsers = async () => {
+const getAllUsersFromDB = async () => {
   const result = await userModel.find();
   return result;
 };
 
+const getUserProfileFromDB = async (payload: string) => {
+  const result = await userModel.findById({ _id: payload }).select("-password");
+  if (!result) {
+    throw new AppError(
+      ERROR_MESSAGES.auth.notFound.statusCode,
+      ERROR_MESSAGES.auth.notFound.message
+    );
+  }
+  return result;
+};
 
-// GET SINGLE USER FOR USING ID || UUID - GET ADMIN AND USER BOTH
-const profile = async (id: string) => {
-  const result = await userModel.findById({_id: id}).select("-password");
+const deleteUserFromDB = async (payload: string) => {
+  const result = await userModel.findByIdAndDelete({ _id: payload });
+  if (!result) {
+    throw new AppError(
+      ERROR_MESSAGES.auth.deleteNotFound.statusCode,
+      ERROR_MESSAGES.auth.deleteNotFound.message
+    );
+  }
+  return result;
+};
+
+const deleteUserByAdminFromDB = async (payload: string) => {
+  const result = await userModel.findOneAndDelete({ _id: payload });
+  if (!result) {
+    throw new AppError(
+      ERROR_MESSAGES.user.adminDeleteFailed.statusCode,
+      ERROR_MESSAGES.user.adminDeleteFailed.message
+    );
+  }
+  return result;
+};
+
+const updateProfileFromDB = async (payload: any) => {
+  const { id, data } = payload;
+  const result = await userModel.findByIdAndUpdate(
+    { _id: id },
+    { $set: data },
+    {
+      new: true,
+      runValidators: true,
+    }
+  );
+  if (!result) {
+    throw new AppError(
+      ERROR_MESSAGES.user.updateFailed.statusCode,
+      ERROR_MESSAGES.user.updateFailed.message
+    );
+  }
   return result;
 };
 
 export const userService = {
-  createUser,
-  getUsers,
-  profile,
+  createUserIntoDB,
+  getAllUsersFromDB,
+  getUserProfileFromDB,
+  deleteUserFromDB,
+  deleteUserByAdminFromDB,
+  updateProfileFromDB,
 };

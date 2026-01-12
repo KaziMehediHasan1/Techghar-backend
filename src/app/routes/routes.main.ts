@@ -6,7 +6,7 @@ const router = expresss.Router();
 
 const moduleRouter = [
   {
-    path: "/users",
+    path: "/user",
     route: userRoute,
   },
   {

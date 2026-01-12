@@ -6,7 +6,9 @@ export const ERROR_MESSAGES = {
     invalid: { statusCode: 401, message: "Invalid email or password!" },
     exists: { statusCode: 409, message: "Email already registered!" },
     unauthorized: { statusCode: 401, message: "Please login to continue!" },
-    forbidden: { statusCode: 403, message: "Access denied! Permissions required." }
+    forbidden: { statusCode: 403, message: "Access denied! Permissions required." },
+    deleteNotFound: {statusCode: 404,message: "Delete failed! User account not found."},
+    deleteForbidden: {statusCode: 403,message: "Access denied! You do not have permission to delete this account."}
   },
 
   // 2. Products, Categories & Brands
@@ -42,7 +44,19 @@ export const ERROR_MESSAGES = {
     noPermission: { statusCode: 403, message: "You cannot edit this profile!" },
     reviewExists: { statusCode: 400, message: "You already reviewed this product!" },
     badRating: { statusCode: 400, message: "Please provide a valid rating!" },
-    notPurchased: { statusCode: 403, message: "Purchase product to leave a review!" }
+    notPurchased: { statusCode: 403, message: "Purchase product to leave a review!" },
+    adminDeleteNotFound: {
+      statusCode: 404,
+      message: "User not found! The account you are trying to delete does not exist.",
+    },
+    adminDeleteForbidden: {
+      statusCode: 403,
+      message: "Access denied! You do not have the required administrative permissions.",
+    },
+    adminDeleteFailed: {
+      statusCode: 400,
+      message: "Failed to delete user account due to a system error.",
+    },
   },
 
   // 6. Blogs, Promotions & Contact

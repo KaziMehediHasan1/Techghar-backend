@@ -11,7 +11,7 @@ import { ERROR_MESSAGES } from "@/src/constants/errorMessages.js";
 import { setRefreshTokenCookie } from "@/src/helper/setRefreshTokenCookie.js";
 
 // LOGIN USER -
-const loginUserController = catchAsync(async (req, res) => {
+const loginUser = catchAsync(async (req, res) => {
   const { email, password } = req.body;
   // console.log(req.body,"bodyyy")
   const result = await authService.loginService({ email, password });
@@ -55,5 +55,5 @@ const refreshToken = catchAsync(async(req,res)=>{
   const result = setRefreshTokenCookie()
 })
 export const authController = {
-  loginUserController,
+  loginUser,
 };
