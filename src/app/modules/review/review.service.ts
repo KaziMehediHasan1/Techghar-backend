@@ -58,8 +58,45 @@ const getSingleReviewFromDB = async (payload: any) => {
   return result;
 };
 
+const updateReviewInDB = async (payload: any) => {
+  if (!payload) {
+    throw new AppError(
+      ERROR_MESSAGES.review.notFound.statusCode,
+      ERROR_MESSAGES.review.notFound.message
+    );
+  }
+
+  const result = await reviewModel.findByIdAndUpdate(
+    { _id: payload.id },
+    { description: payload.description },
+    { new: true }
+  );
+
+  if (!result) {
+    throw new AppError(
+      ERROR_MESSAGES.review.updateFailed.statusCode,
+      ERROR_MESSAGES.review.updateFailed.message
+    );
+  }
+
+  return result;
+};
+
+const deleteReviewFromDB = async (payload: any) => {
+  const result = await reviewModel.findByIdAndDelete({ _id: payload });
+  if (!result) {
+    throw new AppError(
+      ERROR_MESSAGES.review.deleteNotFound.statusCode,
+      ERROR_MESSAGES.review.deleteNotFound.message
+    );
+  }
+  return result;
+};
+
 export const reviewService = {
   createReviewIntoDB,
   getAllReviewsFromDB,
   getSingleReviewFromDB,
+  updateReviewInDB,
+  deleteReviewFromDB,
 };

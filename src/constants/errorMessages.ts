@@ -58,6 +58,9 @@ export const ERROR_MESSAGES = {
     creationFailed: { statusCode: 400, message: "Failed to post review! Please try again." },
     updateFailed: { statusCode: 400, message: "Failed to update review!" },
     duplicate: { statusCode: 409, message: "You have already reviewed this item!" },
+    deleteNotFound: { statusCode: 404,message: "Delete failed! This review no longer exists."},
+    // If a user tries to delete a review that isn't theirs
+    deleteForbidden: { statusCode: 403, message: "Access denied! You can only delete reviews you have created."},
     unauthorized: { statusCode: 401, message: "Please login to manage reviews!" },
     forbidden: { statusCode: 403, message: "Access denied! You can only edit your own reviews." },
     invalidData: { statusCode: 422, message: "Invalid review data! Please check your rating and comments." }
