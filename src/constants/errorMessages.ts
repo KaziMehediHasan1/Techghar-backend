@@ -52,8 +52,18 @@ export const ERROR_MESSAGES = {
     msgFailed: { statusCode: 400, message: "Message could not be sent!" },
     invalidSearch: { statusCode: 400, message: "No results found for your query!" }
   },
+// 7. System/Global
+  review: {
+    notFound: { statusCode: 404, message: "Review not found!" },
+    creationFailed: { statusCode: 400, message: "Failed to post review! Please try again." },
+    updateFailed: { statusCode: 400, message: "Failed to update review!" },
+    duplicate: { statusCode: 409, message: "You have already reviewed this item!" },
+    unauthorized: { statusCode: 401, message: "Please login to manage reviews!" },
+    forbidden: { statusCode: 403, message: "Access denied! You can only edit your own reviews." },
+    invalidData: { statusCode: 422, message: "Invalid review data! Please check your rating and comments." }
+},
 
-  // 7. System/Global
+  // 8. System/Global
   global: {
     serverError: { statusCode: 500, message: "Something went wrong! Try later." },
     notFound: { statusCode: 404, message: "Requested resource not found!" },
