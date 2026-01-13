@@ -1,6 +1,6 @@
 import * as zod from "zod";
 
-const promotionValidation = zod.object({
+export const promotionValidation = zod.object({
   body: zod.object({
     image: zod.string(),
     alt: zod.string().optional(),

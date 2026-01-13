@@ -18,6 +18,32 @@ export const SUCCESS_MESSAGES = {
       message: "Session extended successfully!",
     },
   },
+  promotion: {
+    created: {
+      statusCode: 201,
+      message: "New promotion campaign created successfully!",
+    },
+    fetchedAll: {
+      statusCode: 200,
+      message: "Promotions retrieved successfully!",
+    },
+    fetchedSingle: {
+      statusCode: 200,
+      message: "Promotion details loaded.",
+    },
+    updated: {
+      statusCode: 200,
+      message: "Promotion details updated successfully!",
+    },
+    deleted: {
+      statusCode: 200,
+      message: "Promotion has been removed.",
+    },
+    statusChanged: {
+      statusCode: 200,
+      message: "Promotion visibility/status toggled successfully!",
+    },
+  },
 
   // 2. Products, Categories & Brands
   product: {
