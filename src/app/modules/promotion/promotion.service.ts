@@ -39,7 +39,22 @@ const deletePromotionIntoDB = async (payload: string) => {
 };
 
 const updatePromotionIntoDB = async (payload: any) => {
-  
+  console.log(payload, "promo update");
+  if (
+    !payload?.data ||
+    payload?.data === undefined ||
+    (Object.keys(payload?.data).length === 0 && !payload?.id)
+  )
+    throw new AppError(
+      ERROR_MESSAGES.promotion.updateFailed.statusCode,
+      ERROR_MESSAGES.promotion.updateFailed.message
+    );
+
+  const result = await promotionModel.findByIdAndUpdate(
+    { _id: payload?.id },
+    { $set: payload?.data }
+  );
+  return result;
 };
 
 export const promoService = {
