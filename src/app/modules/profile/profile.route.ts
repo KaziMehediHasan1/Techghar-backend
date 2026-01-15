@@ -7,11 +7,11 @@ import express from "express";
 
 const router = express.Router();
 
-router.post("/", validateRequest(zodProfileValidation),profileController.createProfile);
-router.get("/", validateAccessToken("admin"), profileController.getAllProfile);
-router.delete("/:id", profileController.deleteProfile);
-router.patch("/:id", profileController.updateProfile);
-router.get("/:id", profileController.getProfile);
+router.post("/", validateRequest(zodProfileValidation),profileController.createProfileAddress);
+router.get("/", validateAccessToken("admin"), profileController.getAllProfileAddress);
+router.delete("/:id", profileController.deleteProfileAddress);
+router.patch("/:id", profileController.updateProfileAddress);
+router.get("/:id", profileController.getProfileAddress);
 
 const profileRouter = router;
 export default profileRouter;

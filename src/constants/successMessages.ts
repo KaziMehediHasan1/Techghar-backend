@@ -44,7 +44,40 @@ export const SUCCESS_MESSAGES = {
       message: "Promotion visibility/status toggled successfully!",
     },
   },
-
+  profile: {
+    created: {
+      statusCode: 201,
+      message: "Profile setup completed successfully!",
+    },
+    fetched: {
+      statusCode: 200,
+      message: "Profile information retrieved successfully.",
+    },
+    updated: {
+      statusCode: 200,
+      message: "Profile details updated successfully!",
+    },
+    deleted: {
+      statusCode: 200,
+      message: "Profile deleted successfully.",
+    },
+    addressUpdated: {
+      statusCode: 200,
+      message: "Address book updated successfully!",
+    },
+    newsletterSubscribed: {
+      statusCode: 200,
+      message: "Newsletter subscription updated!",
+    },
+    notFound: {
+      statusCode: 404,
+      message: "Profile not found!",
+    },
+    noData: {
+      statusCode: 400,
+      message: "No changes were provided to update.",
+    },
+  },
   // 2. Products, Categories & Brands
   product: {
     created: { statusCode: 201, message: "Product added successfully!" },

@@ -23,6 +23,41 @@ export const ERROR_MESSAGES = {
         "Access denied! You do not have permission to delete this account.",
     },
   },
+  profile: {
+    notFound: {
+      statusCode: 404,
+      message: "User profile not found!",
+    },
+    createFailed: {
+      statusCode: 400,
+      message:
+        "Failed to create profile. Please check your data and try again.",
+    },
+    emptyUpdate: {
+      statusCode: 400,
+      message: "Update failed: No data provided to update.",
+    },
+    invalidAddress: {
+      statusCode: 400,
+      message: "Invalid address format. Please provide all required fields.",
+    },
+    duplicateProfile: {
+      statusCode: 409,
+      message: "A profile already exists for this user.",
+    },
+    fetchFailed: {
+      statusCode: 500,
+      message: "Something went wrong while fetching the profile.",
+    },
+    deleteFailed: {
+      statusCode: 400,
+      message: "Could not delete the profile. It might not exist.",
+    },
+    unauthorized: {
+      statusCode: 401,
+      message: "You are not authorized to perform this action.",
+    },
+  },
 
   // 2. Products, Categories & Brands
   product: {
@@ -100,9 +135,10 @@ export const ERROR_MESSAGES = {
       statusCode: 400,
       message: "This promotion campaign has already ended.",
     },
-    deleteFailed: { 
-      statusCode: 500, 
-      message: "A server error occurred while attempting to delete the promotion." 
+    deleteFailed: {
+      statusCode: 500,
+      message:
+        "A server error occurred while attempting to delete the promotion.",
     },
     notStarted: {
       statusCode: 400,
@@ -116,10 +152,10 @@ export const ERROR_MESSAGES = {
       statusCode: 400,
       message: "Failed to update promotion. Please check your data.",
     },
-    
-    creationFailed: { 
-      statusCode: 400, 
-      message: "Failed to create promotion. Please check input data." 
+
+    creationFailed: {
+      statusCode: 400,
+      message: "Failed to create promotion. Please check input data.",
     },
   },
 

@@ -12,7 +12,7 @@ const addressSchema = new mongoose.Schema({
   isDefaultShipping: { type: Boolean, default: false },
 });
 
-const profileSchema = new mongoose.Schema<IProfile>(
+const profileAddressSchema = new mongoose.Schema<IProfile>(
   {
     userID: { type: String, required: true },
     addresss: [addressSchema],
@@ -23,4 +23,4 @@ const profileSchema = new mongoose.Schema<IProfile>(
   { timestamps: true }
 );
 
-export default mongoose.model<IProfile>("profile", profileSchema);
+export default mongoose.model<IProfile>("profile", profileAddressSchema);
