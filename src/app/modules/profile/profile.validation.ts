@@ -15,5 +15,8 @@ export const zodProfileValidation = zod.object({
   body: zod.object({
     userID: zod.string({ error: "user id is required" }),
     addresss: zod.array(addressValidationSchema),
+    orders: zod.array(zod.string()).default([]),
+    wishlist: zod.array(zod.string()).default([]),
+    reviews: zod.array(zod.string()).default([]),
   }),
 });
