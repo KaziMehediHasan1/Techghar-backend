@@ -1,6 +1,8 @@
-import catchAsync from "../../utils/catchAsync.js";
+import catchAsync from "@/app/utils/catchAsync.js";
 
-const createProfile = catchAsync(async (req, res) => {});
+const createProfile = catchAsync(async (req, res) => {
+    
+});
 
 const getProfile = catchAsync(async (req, res) => {});
 

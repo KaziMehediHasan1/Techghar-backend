@@ -1,8 +1,9 @@
+import profileRouter from "@/app/modules/profile/profile.route.js";
+import promotionRoute from "@/app/modules/promotion/promotion.route.js";
+import reviewRoute from "@/app/modules/review/review.route.js";
+import userRoute from "@/app/modules/user/user.route.js";
 import expresss from "express";
-import userRoute from "../modules/user/user.route.js";
-import reviewRoute from "../modules/review/review.route.js";
-import promotionRoute from "../modules/promotion/promotion.route.js";
-import profileRouter from "../modules/profile/profile.route.js";
+
 
 const router = expresss.Router();
 

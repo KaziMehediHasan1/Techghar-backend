@@ -1,5 +1,5 @@
+import type { IProfile } from "@/app/modules/profile/profile.interface.js";
 import mongoose from "mongoose";
-import type { IProfile } from "./profile.interface.js";
 
 const addressSchema = new mongoose.Schema({
   fullName: { type: String, required: true },

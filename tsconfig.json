@@ -6,13 +6,14 @@
     "outDir": "./dist",
     "baseUrl": ".",
     "paths": {
-      "@/*": ["*"]
+      "@/*": ["./src/*"]
     },
 
     // Environment Settings
     // See also https://aka.ms/tsconfig/module
     "module": "nodenext",
     "target": "esnext",
+    "typeRoots": ["./node_modules/@types", "./src/types"],
     "types": [],
     // For nodejs:
     // "lib": ["esnext"],
@@ -45,5 +46,6 @@
     "moduleDetection": "force",
     "skipLibCheck": true
   },
-  "include": ["src/**/*"]
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist"]
 }

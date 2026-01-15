@@ -1,8 +1,9 @@
+import { validateAccessToken } from "@/app/middlewares/auth.js";
+import { validateRequest } from "@/app/middlewares/validateRequest.js";
+import { promoController } from "@/app/modules/promotion/promotion.controller.js";
+import { promotionValidation } from "@/app/modules/promotion/promotion.validation.js";
 import express from "express";
-import { validateAccessToken } from "../../middlewares/auth.js";
-import { promoController } from "./promotion.controller.js";
-import { validateRequest } from "../../middlewares/validateRequest.js";
-import { promotionValidation } from "./promotion.validation.js";
+
 
 const route = express.Router();
 

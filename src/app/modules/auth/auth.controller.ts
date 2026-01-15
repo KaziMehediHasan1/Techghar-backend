@@ -1,14 +1,14 @@
-import config from "@/src/config/index.js";
+import catchAsync from "@/app/utils/catchAsync.js";
 import {
   generateAccessToken,
   generateRefreshToken,
-} from "../../middlewares/auth.js";
-import catchAsync from "../../utils/catchAsync.js";
-import sendResponse from "../../utils/sendResponse.js";
-import { authService } from "./auth.service.js";
-import { SUCCESS_MESSAGES } from "@/src/constants/successMessages.js";
-import { ERROR_MESSAGES } from "@/src/constants/errorMessages.js";
-import { setRefreshTokenCookie } from "@/src/helper/setRefreshTokenCookie.js";
+} from "@/app/middlewares/auth.js";
+import config from "@/config/index.js";
+import { ERROR_MESSAGES } from "@/constants/errorMessages.js";
+import sendResponse from "@/app/utils/sendResponse.js";
+import { SUCCESS_MESSAGES } from "@/constants/successMessages.js";
+import { setRefreshTokenCookie } from "@/helper/setRefreshTokenCookie.js";
+import { authService } from "@/app/modules/auth/auth.service.js";
 
 // LOGIN USER -
 const loginUser = catchAsync(async (req, res) => {
@@ -51,9 +51,9 @@ const loginUser = catchAsync(async (req, res) => {
 });
 
 // REFRESH-TOKEN GENERATOR -
-const refreshToken = catchAsync(async(req,res)=>{
-  const result = setRefreshTokenCookie()
-})
+// const refreshToken = catchAsync(async(req,res)=>{
+//   const result = setRefreshTokenCookie()
+// })
 export const authController = {
   loginUser,
 };

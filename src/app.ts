@@ -2,9 +2,10 @@ import express from "express";
 import type { Application } from "express";
 import cors from "cors";
 import helmet from "helmet";
-import router from "./app/routes/routes.main.js";
+
 import cookieParser from "cookie-parser";
-import config from "./config/index.js";
+import router from "@/app/routes/routes.main.js";
+import config from "@/config/index.js";
 
 const app: Application = express();
 
@@ -18,7 +19,7 @@ app.use(
   })
 );
 app.use(express.json());
-app.use(cookieParser())
+app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
 
 // Application routes
@@ -31,7 +32,7 @@ app.use("/api/v1", router);
 app.use((err: any, req: any, res: any, next: any) => {
   const statusCode = err.statusCode || 500;
   const message = err.message || "Something went wrong!";
-  
+
   res.status(statusCode).json({
     success: false,
     statusCode,

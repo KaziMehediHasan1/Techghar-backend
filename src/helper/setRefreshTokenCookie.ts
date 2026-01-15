@@ -1,5 +1,5 @@
+import config from "@/config/index.js";
 import { type Response } from "express";
-import config from "../config/index.js";
 export const setRefreshTokenCookie = (res: Response, token: string) => {
   res.cookie("refreshToken", token, {
     httpOnly: true,

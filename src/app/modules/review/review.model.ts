@@ -1,6 +1,7 @@
+import type { IReview } from "@/app/modules/review/review.interface.js";
 import mongoose from "mongoose";
 import { v4 as uuidv4 } from "uuid";
-import type { IReview } from "./review.interface.js";
+
 
 const reviewSchema = new mongoose.Schema<IReview>({
   uid: {

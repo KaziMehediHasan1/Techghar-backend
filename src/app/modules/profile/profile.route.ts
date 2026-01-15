@@ -1,8 +1,9 @@
+import { validateAccessToken } from "@/app/middlewares/auth.js";
+import { validateRequest } from "@/app/middlewares/validateRequest.js";
+import { profileController } from "@/app/modules/profile/profile.controller.js";
+import { zodProfileValidation } from "@/app/modules/profile/profile.validation.js";
 import express from "express";
-import { profileController } from "./profile.controller.js";
-import { validateAccessToken } from "../../middlewares/auth.js";
-import { validateRequest } from "../../middlewares/validateRequest.js";
-import { zodProfileValidation } from "./profile.validation.js";
+
 
 const router = express.Router();
 

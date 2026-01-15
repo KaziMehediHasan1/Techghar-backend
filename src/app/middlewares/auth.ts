@@ -1,9 +1,9 @@
-import config from "@/src/config/index.js";
-import type { TAuth, TRole } from "@/src/types/auth.type.js";
 import jwt, { type SignOptions, type JwtPayload } from "jsonwebtoken";
-import catchAsync from "../utils/catchAsync.js";
 import type { NextFunction, Request, Response } from "express";
-import sendResponse from "../utils/sendResponse.js";
+import type { TAuth, TRole } from "@/types/auth.type.js";
+import config from "@/config/index.js";
+import catchAsync from "@/app/utils/catchAsync.js";
+import sendResponse from "@/app/utils/sendResponse.js";
 
 // GENERATE ACCESS TOKEN FOR 15MINS ONLY
 export const generateAccessToken = (payload: TAuth) => {
@@ -26,8 +26,7 @@ export const generateRefreshToken = (payload: TAuth) => {
 export const validateAccessToken = (...requiredRoles: TRole[]) => {
   return catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     const authHeader = req.headers.authorization;
-    const token = authHeader?.split(" ")[1]
-    // console.log(token,"token")
+    const token = authHeader?.split(" ")[1];
 
     if (!token) {
       return sendResponse(res, {
@@ -66,4 +65,3 @@ export const validateAccessToken = (...requiredRoles: TRole[]) => {
     }
   });
 };
-

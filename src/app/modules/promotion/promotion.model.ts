@@ -1,5 +1,6 @@
+import type { IPromotion } from "@/app/modules/promotion/promotion.interface.js";
 import mongoose from "mongoose";
-import type { IPromotion } from "./promotion.interface.js";
+
 
 const promotionSchema = new mongoose.Schema<IPromotion>({
   image: { type: String, required: true },

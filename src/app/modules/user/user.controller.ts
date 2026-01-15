@@ -1,8 +1,8 @@
-import { SUCCESS_MESSAGES } from "@/src/constants/successMessages.js";
-import { generateAccessToken } from "../../middlewares/auth.js";
-import catchAsync from "../../utils/catchAsync.js";
-import sendResponse from "../../utils/sendResponse.js";
+import { generateAccessToken } from "@/app/middlewares/auth.js";
 import { userService } from "./user.service.js";
+import sendResponse from "@/app/utils/sendResponse.js";
+import catchAsync from "@/app/utils/catchAsync.js";
+import { SUCCESS_MESSAGES } from "@/constants/successMessages.js";
 
 const registerUser = catchAsync(async (req, res) => {
   const payload = req.body;
@@ -71,7 +71,7 @@ const deleteUserByAdmin = catchAsync(async (req, res) => {
 const upadetProfile = catchAsync(async (req, res) => {
   const id = req.params.id as string;
   const data = req.body;
-  const result = await userService.updateProfileFromDB({id, data});
+  const result = await userService.updateProfileFromDB({ id, data });
   sendResponse(res, {
     statusCode: SUCCESS_MESSAGES.user.profileUpdated.statusCode,
     success: true,

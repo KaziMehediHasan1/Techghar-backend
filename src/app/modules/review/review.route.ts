@@ -1,8 +1,9 @@
+import { validateAccessToken } from "@/app/middlewares/auth.js";
+import { validateRequest } from "@/app/middlewares/validateRequest.js";
+import { reviewController } from "@/app/modules/review/review.controller.js";
+import { reviewZodSchema } from "@/app/modules/review/review.validation.js";
 import express from "express";
-import { reviewController } from "./review.controller.js";
-import { validateRequest } from "../../middlewares/validateRequest.js";
-import { reviewZodSchema } from "./review.validation.js";
-import { validateAccessToken } from "../../middlewares/auth.js";
+
 
 const route = express.Router();
 // --- Both Can Access

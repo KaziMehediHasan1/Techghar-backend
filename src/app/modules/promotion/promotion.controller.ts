@@ -1,7 +1,8 @@
-import { SUCCESS_MESSAGES } from "@/src/constants/successMessages.js";
-import catchAsync from "../../utils/catchAsync.js";
-import sendResponse from "../../utils/sendResponse.js";
-import { promoService } from "./promotion.service.js";
+import { promoService } from "@/app/modules/promotion/promotion.service.js";
+import catchAsync from "@/app/utils/catchAsync.js";
+import sendResponse from "@/app/utils/sendResponse.js";
+import { SUCCESS_MESSAGES } from "@/constants/successMessages.js";
+
 
 const createPromotion = catchAsync(async (req, res) => {
   const result = await promoService.createPromotionIntoDB(req.body);

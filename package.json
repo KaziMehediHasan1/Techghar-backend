@@ -6,8 +6,8 @@
   "author": "kazi mehedi hasan",
   "type": "module",
   "scripts": {
-    "dev": "cross-env CHOKIDAR_USEPOLLING=true tsx watch src/server.ts",
-    "build": "tsc",
+    "dev": "cross-env CHOKIDAR_USEPOLLING=true tsx watch -r tsconfig-paths/register src/server.ts",
+    "build": "tsc && tsc-alias",
     "start": "node dist/server.js"
   },
   "_moduleAliases": {
@@ -27,6 +27,7 @@
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^5.5.4",
     "prettier": "^3.7.4",
+    "tsc-alias": "^1.8.16",
     "tsx": "^4.21.0",
     "typescript": "^5.9.3"
   },

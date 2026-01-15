@@ -1,9 +1,9 @@
-import config from "@/src/config/index.js";
+import userModel from "@/app/modules/user/user.model.js";
+import AppError from "@/app/utils/appError.js";
+import config from "@/config/index.js";
+import { ERROR_MESSAGES } from "@/constants/errorMessages.js";
+import { uidGenerator } from "@/helper/uidGenerator.js";
 import bcrypt from "bcrypt";
-import userModel from "./user.model.js";
-import AppError from "../../utils/appError.js";
-import { ERROR_MESSAGES } from "@/src/constants/errorMessages.js";
-import { uidGenerator } from "@/src/helper/uidGenerator.js";
 
 const createUserIntoDB = async (payload: any) => {
   // CHECK USER IS ALREADY REGISTERD -

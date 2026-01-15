@@ -1,7 +1,7 @@
-import { ERROR_MESSAGES } from "@/src/constants/errorMessages.js";
-import userModel from "../user/user.model.js";
+import userModel from "@/app/modules/user/user.model.js";
+import AppError from "@/app/utils/appError.js";
+import { ERROR_MESSAGES } from "@/constants/errorMessages.js";
 import bcrypt from "bcrypt";
-import AppError from "../../utils/appError.js";
 
 const loginService = async (payload: any) => {
   const user = await userModel

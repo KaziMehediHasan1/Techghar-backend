@@ -1,6 +1,7 @@
 import { ZodObject } from "zod";
 import type { NextFunction, Request, Response } from "express";
-import sendResponse from "../utils/sendResponse.js";
+import sendResponse from "@/app/utils/sendResponse.js";
+
 
 export const validateRequest = (schema:ZodObject) => {
   return (req: Request, res: Response, next: NextFunction) => {

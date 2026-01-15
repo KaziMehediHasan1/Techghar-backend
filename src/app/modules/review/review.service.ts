@@ -1,7 +1,8 @@
-import { ERROR_MESSAGES } from "@/src/constants/errorMessages.js";
-import AppError from "../../utils/appError.js";
-import reviewModel from "./review.model.js";
-import { uidGenerator } from "@/src/helper/uidGenerator.js";
+import reviewModel from "@/app/modules/review/review.model.js";
+import AppError from "@/app/utils/appError.js";
+import { ERROR_MESSAGES } from "@/constants/errorMessages.js";
+import { uidGenerator } from "@/helper/uidGenerator.js";
+
 
 const createReviewIntoDB = async (payload: any) => {
   // CHECK ALL REVIEWS DATA IS VALID OR NOT.
