@@ -59,7 +59,20 @@ const deleteProfileAddressIntoDB = async (payload: any) => {
 };
 
 const updateProfileAddressIntoDB = async (payload: any) => {
-  
+  const { data, id } = payload;
+  console.log(data, id, "peyechi");
+  const result = await profileModel.findByIdAndUpdate(
+    { _id: id },
+    { $set: data },
+    { new: true }
+  );
+  if (!result) {
+    throw new AppError(
+      ERROR_MESSAGES.profile.updateFailed.statusCode,
+      ERROR_MESSAGES.profile.updateFailed.message
+    );
+  }
+  return result;
 };
 
 export const profileService = {

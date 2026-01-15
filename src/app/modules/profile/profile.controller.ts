@@ -1,10 +1,10 @@
 import { profileService } from "@/app/modules/profile/profile.service.js";
 import catchAsync from "@/app/utils/catchAsync.js";
 import sendResponse from "@/app/utils/sendResponse.js";
+import { ERROR_MESSAGES } from "@/constants/errorMessages.js";
 import { SUCCESS_MESSAGES } from "@/constants/successMessages.js";
 
 const createProfileAddress = catchAsync(async (req, res) => {
-  console.log(req.body, "boday dataatata");
   const result = await profileService.createProfileAddressIntoDB(req.body);
   sendResponse(res, {
     statusCode: SUCCESS_MESSAGES.profile.created.statusCode,
@@ -51,7 +51,17 @@ const deleteProfileAddress = catchAsync(async (req, res) => {
   });
 });
 
-const updateProfileAddress = catchAsync(async (req, res) => {});
+const updateProfileAddress = catchAsync(async (req, res) => {
+  const data = await req.body;
+  const id = req.params.id;
+  const result = await profileService.updateProfileAddressIntoDB({ data, id });
+  sendResponse(res, {
+    statusCode: SUCCESS_MESSAGES.profile.updated.statusCode,
+    message: SUCCESS_MESSAGES.profile.updated.message,
+    success: true,
+    data: result,
+  });
+});
 
 export const profileController = {
   createProfileAddress,

@@ -24,6 +24,11 @@ export const ERROR_MESSAGES = {
     },
   },
   profile: {
+    updateFailed: {
+      statusCode: 400,
+      message:
+        "Failed to update profile. Please ensure the data is correct and try again.",
+    },
     notFound: {
       statusCode: 404,
       message: "User profile not found!",
