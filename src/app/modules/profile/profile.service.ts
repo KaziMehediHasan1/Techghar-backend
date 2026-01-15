@@ -4,8 +4,8 @@ import AppError from "@/app/utils/appError.js";
 import { ERROR_MESSAGES } from "@/constants/errorMessages.js";
 
 const createProfileAddressIntoDB = async (payload: any) => {
-  const { id } = payload;
-  const checkUserIsAvilable = await userModel.findById({ _id: id });
+  const { userID } = payload;
+  const checkUserIsAvilable = await userModel.findById({ _id: userID });
   if (!checkUserIsAvilable) {
     throw new AppError(
       ERROR_MESSAGES.profile.notFound.statusCode,
@@ -22,9 +22,27 @@ const createProfileAddressIntoDB = async (payload: any) => {
   return result;
 };
 
-const getProfileAddressIntoDB = async (payload: string) => {};
+const getProfileAddressIntoDB = async (payload: string) => {
+  const result = await profileModel.findById({ _id: payload });
+  if (!result) {
+    throw new AppError(
+      ERROR_MESSAGES.profile.fetchFailed.statusCode,
+      ERROR_MESSAGES.profile.fetchFailed.message
+    );
+  }
+  return result;
+};
 
-const getAllProfileAddressIntoDB = async (payload: any) => {};
+const getAllProfileAddressIntoDB = async () => {
+  const result = await profileModel.find();
+  if (!result) {
+    throw new AppError(
+      ERROR_MESSAGES.profile.fetchFailed.statusCode,
+      ERROR_MESSAGES.profile.fetchFailed.message
+    );
+  }
+  return result;
+};
 
 const deleteProfileAddressIntoDB = async (payload: string) => {};
 

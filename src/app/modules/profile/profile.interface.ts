@@ -1,3 +1,5 @@
+import type mongoose from "mongoose";
+
 type IAddress = {
   fullName: string;
   street?: string;
@@ -5,11 +7,11 @@ type IAddress = {
   state: string;
   zipCode: string;
   phone: string;
-  isDefaultBilling: boolean;
-  isDefaultShipping: boolean;
+  isDefaultBilling?: boolean;
+  isDefaultShipping?: boolean;
 };
 export interface IProfile {
-  userID: string;
+  userID: mongoose.Schema.Types.ObjectId;
   addresss: IAddress[];
   orders: string[];
   wishlist: string[];

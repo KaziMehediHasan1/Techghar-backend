@@ -2,7 +2,7 @@ import * as zod from "zod";
 
 const addressValidationSchema = zod.object({
   fullName: zod.string().min(1, "Full name is required"),
-  street: zod.string().min(1, "Street address is required"),
+  street: zod.string().optional(),
   city: zod.string().min(1, "City is required"),
   state: zod.string().min(1, "State is required"),
   zipCode: zod.string().min(1, "Zip code is required"),
