@@ -44,9 +44,23 @@ const getAllProfileAddressIntoDB = async () => {
   return result;
 };
 
-const deleteProfileAddressIntoDB = async (payload: string) => {};
+const deleteProfileAddressIntoDB = async (payload: any) => {
+  const userDelete = await userModel.findByIdAndDelete({
+    _id: payload?.userID,
+  });
+  const result = await profileModel.findByIdAndDelete({ _id: payload?.id });
+  if (!result && !userDelete) {
+    throw new AppError(
+      ERROR_MESSAGES.profile.deleteFailed.statusCode,
+      ERROR_MESSAGES.profile.deleteFailed.message
+    );
+  }
+  return result;
+};
 
-const updateProfileAddressIntoDB = async (payload: any) => {};
+const updateProfileAddressIntoDB = async (payload: any) => {
+  
+};
 
 export const profileService = {
   createProfileAddressIntoDB,

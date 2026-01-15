@@ -36,7 +36,20 @@ const getAllProfileAddress = catchAsync(async (_, res) => {
   });
 });
 
-const deleteProfileAddress = catchAsync(async (req, res) => {});
+const deleteProfileAddress = catchAsync(async (req, res) => {
+  const { userID } = req.body;
+  const id = req.params.id as string;
+  const result = await profileService.deleteProfileAddressIntoDB({
+    userID,
+    id,
+  });
+  sendResponse(res, {
+    statusCode: SUCCESS_MESSAGES.profile.deleted.statusCode,
+    message: SUCCESS_MESSAGES.profile.deleted.message,
+    success: true,
+    data: result,
+  });
+});
 
 const updateProfileAddress = catchAsync(async (req, res) => {});
 
