@@ -8,7 +8,7 @@ const registerUser = catchAsync(async (req, res) => {
   const payload = req.body;
   const result = await userService.createUserIntoDB(payload);
   const jwtPayload = {
-    _id: result._id.toString(),
+    id: result._id.toString(),
     uid: result.uid,
     email: result.email,
     role: result.role,
@@ -57,8 +57,8 @@ const deleteMyAccount = catchAsync(async (req, res) => {
 });
 
 const deleteUserByAdmin = catchAsync(async (req, res) => {
-  const id = req.params.id;
-  const result = await userService.deleteUserByAdminFromDB(id as string);
+  const id = req.user?.id as string;
+  const result = await userService.deleteUserByAdminFromDB(id);
   sendResponse(res, {
     statusCode: SUCCESS_MESSAGES.user.adminDeletedUser.statusCode,
     success: true,
@@ -68,7 +68,7 @@ const deleteUserByAdmin = catchAsync(async (req, res) => {
 });
 
 const upadetProfile = catchAsync(async (req, res) => {
-  const id = req.params.id as string;
+  const id = req.user?.id as string;
   const data = req.body;
   const result = await userService.updateProfileFromDB({ id, data });
   sendResponse(res, {
