@@ -2,7 +2,6 @@ import promotionModel from "@/app/modules/promotion/promotion.model.js";
 import AppError from "@/app/utils/appError.js";
 import { ERROR_MESSAGES } from "@/constants/errorMessages.js";
 
-
 const createPromotionIntoDB = async (payload: any) => {
   // Check promotion already have ?
   const result = new promotionModel(payload);

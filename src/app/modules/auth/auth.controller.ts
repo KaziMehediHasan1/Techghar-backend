@@ -7,7 +7,6 @@ import config from "@/config/index.js";
 import { ERROR_MESSAGES } from "@/constants/errorMessages.js";
 import sendResponse from "@/app/utils/sendResponse.js";
 import { SUCCESS_MESSAGES } from "@/constants/successMessages.js";
-import { setRefreshTokenCookie } from "@/helper/setRefreshTokenCookie.js";
 import { authService } from "@/app/modules/auth/auth.service.js";
 
 // LOGIN USER -
@@ -17,7 +16,7 @@ const loginUser = catchAsync(async (req, res) => {
   const result = await authService.loginService({ email, password });
 
   const jwtPayload = {
-    _id: result?._id,
+    id: result?._id.toString(),
     uid: result?.uid,
     email: result?.email,
     role: result?.role,

@@ -1,9 +1,10 @@
-import jwt, { type SignOptions, type JwtPayload } from "jsonwebtoken";
+import jwt, { type SignOptions } from "jsonwebtoken";
 import type { NextFunction, Request, Response } from "express";
 import type { TAuth, TRole } from "@/types/auth.type.js";
 import config from "@/config/index.js";
 import catchAsync from "@/app/utils/catchAsync.js";
 import sendResponse from "@/app/utils/sendResponse.js";
+import type { IJwtUser } from "@/app/modules/user/user.interface.js";
 
 // GENERATE ACCESS TOKEN FOR 15MINS ONLY
 export const generateAccessToken = (payload: TAuth) => {
@@ -26,13 +27,21 @@ export const generateRefreshToken = (payload: TAuth) => {
 export const validateAccessToken = (...requiredRoles: TRole[]) => {
   return catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     const authHeader = req.headers.authorization;
-    const token = authHeader?.split(" ")[1];
 
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+      return sendResponse(res, {
+        statusCode: 401,
+        success: false,
+        message: "Unauthorized access",
+      });
+    }
+
+    const token = authHeader?.split(" ")[1];
     if (!token) {
       return sendResponse(res, {
         statusCode: 401,
         success: false,
-        message: "You are not authorized!",
+        message: "Unauthorized access",
       });
     }
 
@@ -40,27 +49,23 @@ export const validateAccessToken = (...requiredRoles: TRole[]) => {
       const decoded = jwt.verify(
         token,
         config.jwt.secret as string
-      ) as JwtPayload;
-      // console.log(decoded,"check decoded data")
+      ) as IJwtUser;
 
-      const role = decoded.role as TRole;
-      // console.log(role,"checke role, if is actually added in decoded obj")
-
-      if (requiredRoles.length > 0 && !requiredRoles.includes(role)) {
+      if (requiredRoles.length > 0 && !requiredRoles.includes(decoded.role)) {
         return sendResponse(res, {
-          success: false,
           statusCode: 403,
-          message: "You do not have permission to access this route",
+          success: false,
+          message: "Forbidden access",
         });
       }
 
-      req.user = role;
+      req.user = decoded;
       next();
     } catch (err) {
       return sendResponse(res, {
-        success: false,
         statusCode: 401,
-        message: "Unauthorized access (Invalid Token)",
+        success: false,
+        message: "Invalid or expired token",
       });
     }
   });

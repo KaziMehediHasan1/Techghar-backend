@@ -1,3 +1,5 @@
+import type { TRole } from "@/types/auth.type.js";
+
 export interface IUserSchema {
   uid: string;
   name: string;
@@ -6,4 +8,10 @@ export interface IUserSchema {
   photo: string;
   role: "admin" | "user";
   createdAt: Date;
+}
+
+export interface IJwtUser {
+  id: string;
+  role: TRole;
+  email: string;
 }
