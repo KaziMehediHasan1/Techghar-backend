@@ -1,6 +1,15 @@
+import type mongoose from "mongoose";
+
 export interface IReview {
-  uid?: string;
-  reviewer?: string;
-  description: string;
+  userId: mongoose.Schema.Types.ObjectId;
+  productId: mongoose.Schema.Types.ObjectId;
+
+  rating: number; // 1–5 ⭐
+  comment: string;
+
+  isVerifiedPurchase?: boolean;
+  isApproved?: boolean;
+
   createdAt?: Date;
+  updatedAt?: Date;
 }

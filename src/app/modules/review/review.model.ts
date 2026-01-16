@@ -1,18 +1,21 @@
 import type { IReview } from "@/app/modules/review/review.interface.js";
 import mongoose from "mongoose";
-import { v4 as uuidv4 } from "uuid";
 
+const reviewSchema = new mongoose.Schema<IReview>(
+  {
+    userId: { type: String, ref: "user", required: true },
+    productId: { type: String, ref: "product", required: true },
 
-const reviewSchema = new mongoose.Schema<IReview>({
-  uid: {
-    type: String,
-    required: true,
-    unique: true,
-    default: () => "UID-" + uuidv4(),
+    rating: { type: Number, min: 1, max: 5, required: true },
+    comment: { type: String, required: true },
+
+    isVerifiedPurchase: { type: Boolean, default: false },
+    isApproved: { type: Boolean, default: false },
   },
-  reviewer: { type: String},
-  description: { type: String, required: true },
-  createdAt: { type: Date, default: Date.now },
-});
+  { timestamps: true }
+);
+
+// One user → one review per product
+reviewSchema.index({ userId: 1, productId: 1 }, { unique: true });
 
 export default mongoose.model<IReview>("review", reviewSchema);

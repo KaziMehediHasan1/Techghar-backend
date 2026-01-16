@@ -3,7 +3,6 @@ import catchAsync from "@/app/utils/catchAsync.js";
 import sendResponse from "@/app/utils/sendResponse.js";
 import { SUCCESS_MESSAGES } from "@/constants/successMessages.js";
 
-
 const createReview = catchAsync(async (req, res) => {
   const result = await reviewService.createReviewIntoDB(req.body);
   // console.log(result, "check data is come?");
@@ -37,10 +36,9 @@ const getSingleReview = catchAsync(async (req, res) => {
 });
 
 const updateReview = catchAsync(async (req, res) => {
-  const { description } = req.body;
   const id = req.params.id;
-
-  const result = await reviewService.updateReviewInDB({ description, id });
+  const data = req.body;
+  const result = await reviewService.updateReviewInDB({ data, id });
 
   sendResponse(res, {
     statusCode: SUCCESS_MESSAGES.review.updated.statusCode,

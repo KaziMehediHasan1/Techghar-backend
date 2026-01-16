@@ -3,7 +3,6 @@ import AppError from "@/app/utils/appError.js";
 import { ERROR_MESSAGES } from "@/constants/errorMessages.js";
 import { uidGenerator } from "@/helper/uidGenerator.js";
 
-
 const createReviewIntoDB = async (payload: any) => {
   // CHECK ALL REVIEWS DATA IS VALID OR NOT.
   if (!payload) {
@@ -69,7 +68,7 @@ const updateReviewInDB = async (payload: any) => {
 
   const result = await reviewModel.findByIdAndUpdate(
     { _id: payload.id },
-    { description: payload.description },
+    { $set: payload.data },
     { new: true }
   );
 
