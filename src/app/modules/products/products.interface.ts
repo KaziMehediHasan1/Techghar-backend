@@ -1,7 +1,9 @@
 export interface IProduct {
   title: string;
   description: string;
-
+  category: string;
+  colors: string;
+  brand: string;
   price: number;
   discount: number;
   finalPrice?: number;

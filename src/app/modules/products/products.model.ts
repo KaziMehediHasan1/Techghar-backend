@@ -4,6 +4,13 @@ import mongoose from "mongoose";
 const productSchema = new mongoose.Schema<IProduct>(
   {
     title: { type: String, required: true, trim: true },
+    category: {
+      type: String,
+      required: true,
+      // enum: ["Headphone", "PC Componet", "Light", "Monitor","Phone"],
+    },
+    colors: { type: String, required: true, default: "Black" },
+    brand: { type: String, required: true },
     description: { type: String, required: true },
     price: { type: Number, required: true },
     discount: { type: Number, default: 0 },
@@ -18,7 +25,7 @@ const productSchema = new mongoose.Schema<IProduct>(
     totalReviews: { type: Number, default: 0 },
     isActive: { type: Boolean, default: true },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 export default mongoose.model<IProduct>("Product", productSchema);
