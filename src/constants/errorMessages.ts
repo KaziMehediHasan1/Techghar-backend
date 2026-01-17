@@ -71,6 +71,26 @@ export const ERROR_MESSAGES = {
 
   // 2. Products, Categories & Brands
   product: {
+    create: {
+      statusCode: 400,
+      message: "Failed to create product. Please try again.",
+    },
+    delete: {
+      statusCode: 400,
+      message: "Failed to delete product. Please try again.",
+    },
+    update: {
+      statusCode: 400,
+      message: "Failed to update product. Please try again.",
+    },
+    get: {
+      statusCode: 404,
+      message: "Product not found.",
+    },
+    fetchAll: {
+      statusCode: 404,
+      message: "No products found.",
+    },
     notFound: { statusCode: 404, message: "Product no longer available!" },
     outOfStock: {
       statusCode: 400,

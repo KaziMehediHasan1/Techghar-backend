@@ -4,11 +4,11 @@ import { productController } from "@/app/modules/products/products.controller.js
 import { zodProductValidation } from "@/app/modules/products/products.validation.js";
 import express from "express";
 
-const router = express.Router();
+const route = express.Router();
 
-router.post("/",validateRequest(zodProductValidation),productController.createProduct);
-router.get("/",validateAccessToken("admin"),productController.getAllProduct);
+route.post("/", validateRequest(zodProductValidation), productController.createProduct);
+route.get("/", validateAccessToken("admin"), productController.getAllProduct);
 
 
-const productRouter = router;
+const productRouter = route;
 export default productRouter;
