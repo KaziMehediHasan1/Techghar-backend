@@ -1,6 +1,11 @@
 export const ERROR_MESSAGES = {
   // 1. Authentication & Authorization
   auth: {
+    forgetPasswordFailed: {
+      statusCode: 500,
+      message:
+        "Failed to process password reset request. Please try again later.",
+    },
     notFound: { statusCode: 404, message: "User account not found!" },
     registrationFailed: {
       statusCode: 400,

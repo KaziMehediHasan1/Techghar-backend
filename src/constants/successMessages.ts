@@ -1,6 +1,11 @@
 export const SUCCESS_MESSAGES = {
   // 1. Authentication & Authorization
   auth: {
+    forgetPassword: {
+      statusCode: 200,
+      message:
+        "Password reset link sent! Check your email and follow the instructions.",
+    },
     registered: {
       statusCode: 201,
       message: "Account created successfully! Welcome.",

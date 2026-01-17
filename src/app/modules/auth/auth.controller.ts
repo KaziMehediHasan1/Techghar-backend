@@ -9,10 +9,8 @@ import sendResponse from "@/app/utils/sendResponse.js";
 import { SUCCESS_MESSAGES } from "@/constants/successMessages.js";
 import { authService } from "@/app/modules/auth/auth.service.js";
 
-// LOGIN USER -
 const loginUser = catchAsync(async (req, res) => {
   const { email, password } = req.body;
-  // console.log(req.body,"bodyyy")
   const result = await authService.loginService({ email, password });
 
   const jwtPayload = {
@@ -49,10 +47,36 @@ const loginUser = catchAsync(async (req, res) => {
   });
 });
 
+const forgetPassword = catchAsync(async (req, res) => {
+  const { email } = req.body;
+  await authService.forgetPasswordIntoDB(email);
+  sendResponse(res, {
+    statusCode: 200,
+    message:
+      "Password reset link has been sent to your email. Please check your inbox.",
+    success: true,
+  });
+});
+
+const resentPasswordIntoDB = catchAsync(async (req, res) => {
+  const { password } = req.body;
+  const { token } = req.params;
+
+  const result = await authService.resentPasswordIntoDB({ password, token });
+  sendResponse(res, {
+    statusCode: SUCCESS_MESSAGES.auth.forgetPassword.statusCode,
+    message: SUCCESS_MESSAGES.auth.forgetPassword.message,
+    data: result,
+    success: true,
+  });
+});
+
 // REFRESH-TOKEN GENERATOR -
 // const refreshToken = catchAsync(async(req,res)=>{
 //   const result = setRefreshTokenCookie()
 // })
 export const authController = {
   loginUser,
+  forgetPassword,
+  resentPasswordIntoDB,
 };

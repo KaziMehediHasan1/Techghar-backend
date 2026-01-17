@@ -5,6 +5,8 @@ export interface IUserSchema {
   name: string;
   email: string;
   password: string;
+  resetPasswordToken?: string | null;
+  resetPasswordExpire?: Date | null;
   photo: string;
   role: "admin" | "user";
   createdAt: Date;
