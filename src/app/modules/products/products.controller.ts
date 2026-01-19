@@ -34,9 +34,19 @@ const getProduct = catchAsync(async (req, res) => {
   });
 });
 
-const updateProduct = catchAsync(async (req, res) => {});
-
 const deleteProduct = catchAsync(async (req, res) => {});
+
+const updateProduct = catchAsync(async (req, res) => {
+  const id = req.params.id;
+  const data = req.body;
+  const result = await productService.updateProductIntoDB({ id, data });
+  sendResponse(res, {
+    statusCode: SUCCESS_MESSAGES.product.updated.statusCode,
+    message: SUCCESS_MESSAGES.product.updated.message,
+    success: true,
+    data: result,
+  });
+});
 
 export const productController = {
   createProduct,

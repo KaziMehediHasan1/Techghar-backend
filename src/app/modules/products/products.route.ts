@@ -9,6 +9,7 @@ const route = express.Router();
 route.post("/", validateRequest(zodProductValidation), productController.createProduct);
 route.get("/", validateAccessToken("admin"), productController.getAllProduct);
 route.get("/:id", validateAccessToken("user","admin"), productController.getProduct);
+route.patch("/:id",validateAccessToken("user","admin"), productController.updateProduct)
 
 const productRouter = route;
 export default productRouter;

@@ -37,7 +37,24 @@ const getProductIntoDB = async (payload: string) => {
 
 const deleteProductIntoDB = async (payload: string) => {};
 
-const updateProductIntoDB = async (payload: any) => {};
+const updateProductIntoDB = async (payload: any) => {
+  const { id, data } = payload;
+  if (!data) {
+    throw new AppError(400, "Please given your updated data.");
+  }
+  const result = await productsModel.findByIdAndUpdate(
+    { _id: id },
+    { $set: data },
+    { new: true },
+  );
+  if (!result) {
+    throw new AppError(
+      ERROR_MESSAGES.product.update.statusCode,
+      ERROR_MESSAGES.product.update.message,
+    );
+  }
+  return result;
+};
 
 export const productService = {
   createProductIntoDB,
