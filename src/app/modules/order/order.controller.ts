@@ -1,0 +1,49 @@
+import { orderService } from "@/app/modules/order/order.service.js";
+import catchAsync from "@/app/utils/catchAsync.js";
+import sendResponse from "@/app/utils/sendResponse.js";
+import { SUCCESS_MESSAGES } from "@/constants/successMessages.js";
+
+const createOrder = catchAsync(async (req, res) => {
+  const result = await orderService.createOrderIntoDB(req.body);
+  sendResponse(res, {
+    statusCode: SUCCESS_MESSAGES.product.created.statusCode,
+    message: SUCCESS_MESSAGES.product.created.message,
+    success: true,
+    data: result,
+  });
+});
+
+const getOrder = catchAsync(async (req, res) => {
+  const id = req.params.id as string;
+  const result = await orderService.getOrderIntoDB(id);
+  sendResponse(res, {
+    statusCode: 200,
+    message: "Order fetche successfull",
+    success: true,
+    data: result,
+  });
+  return result;
+});
+
+const getAllOrder = catchAsync(async (req, res) => {
+  const result = await orderService.getAllOrderIntoDB();
+  sendResponse(res, {
+    statusCode: 200,
+    message: "Orders fetche successfull",
+    success: true,
+    data: result,
+  });
+  return result;
+});
+
+const updateOrder = catchAsync(async (req, res) => {});
+
+const deleteOrder = catchAsync(async (req, res) => {});
+
+export const orderController = {
+  createOrder,
+  getOrder,
+  getAllOrder,
+  updateOrder,
+  deleteOrder,
+};

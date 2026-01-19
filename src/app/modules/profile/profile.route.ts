@@ -13,5 +13,5 @@ router.delete("/:id", profileController.deleteProfileAddress);
 router.patch("/:id", profileController.updateProfileAddress);
 router.get("/:id", profileController.getProfileAddress);
 
-const profileRouter = router;
-export default profileRouter;
+const profileRoute = router;
+export default profileRoute;

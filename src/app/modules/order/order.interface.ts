@@ -4,4 +4,7 @@ export interface IOrder {
   productID: mongoose.Schema.Types.ObjectId;
   quantity: number;
   colors: string;
+  status: string;
+  cancelledBy: string;
+  cancelledAt: Date;
 }

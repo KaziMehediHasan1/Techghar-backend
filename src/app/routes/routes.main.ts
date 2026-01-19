@@ -1,5 +1,6 @@
-import productRouter from "@/app/modules/products/products.route.js";
-import profileRouter from "@/app/modules/profile/profile.route.js";
+import orderRoute from "@/app/modules/order/order.route.js";
+import productRoute from "@/app/modules/products/products.route.js";
+import profileRoute from "@/app/modules/profile/profile.route.js";
 import promotionRoute from "@/app/modules/promotion/promotion.route.js";
 import reviewRoute from "@/app/modules/review/review.route.js";
 import userRoute from "@/app/modules/user/user.route.js";
@@ -22,11 +23,15 @@ const moduleRouter = [
   },
   {
     path: "/profile",
-    route: profileRouter,
+    route: profileRoute,
   },
   {
     path: "/product",
-    route: productRouter,
+    route: productRoute,
+  },
+  {
+    path: "/order",
+    route: orderRoute,
   },
 ];
 
