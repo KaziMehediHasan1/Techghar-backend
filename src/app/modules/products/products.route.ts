@@ -10,6 +10,6 @@ route.post("/", validateRequest(zodProductValidation), productController.createP
 route.get("/", validateAccessToken("admin"), productController.getAllProduct);
 route.get("/:id", validateAccessToken("user","admin"), productController.getProduct);
 route.patch("/:id",validateAccessToken("user","admin"), productController.updateProduct)
-
+route.delete("/:id",validateAccessToken("user","admin"), productController.deleteProduct)
 const productRouter = route;
 export default productRouter;

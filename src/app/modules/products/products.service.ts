@@ -35,7 +35,16 @@ const getProductIntoDB = async (payload: string) => {
   return result;
 };
 
-const deleteProductIntoDB = async (payload: string) => {};
+const deleteProductIntoDB = async (payload: string) => {
+  const result = await productsModel.findOneAndDelete({ _id: payload });
+  if (!result) {
+    throw new AppError(
+      ERROR_MESSAGES.product.delete.statusCode,
+      ERROR_MESSAGES.product.delete.message,
+    );
+  }
+  return result;
+};
 
 const updateProductIntoDB = async (payload: any) => {
   const { id, data } = payload;

@@ -34,7 +34,15 @@ const getProduct = catchAsync(async (req, res) => {
   });
 });
 
-const deleteProduct = catchAsync(async (req, res) => {});
+const deleteProduct = catchAsync(async (req, res) => {
+  const id = req.params.id as string;
+  const result = await productService.deleteProductIntoDB(id);
+  sendResponse(res, {
+    statusCode: SUCCESS_MESSAGES.product.deleted.statusCode,
+    message: SUCCESS_MESSAGES.product.deleted.message,
+    success: true,
+  });
+});
 
 const updateProduct = catchAsync(async (req, res) => {
   const id = req.params.id;
