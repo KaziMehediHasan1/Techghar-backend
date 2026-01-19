@@ -13,9 +13,27 @@ const createProductIntoDB = async (payload: any) => {
   return result;
 };
 
-const getAllProductsIntoDB = async (payload: any) => {};
+const getAllProductsIntoDB = async () => {
+  const result = await productsModel.find();
+  if (!result) {
+    throw new AppError(
+      ERROR_MESSAGES.product.fetchAll.statusCode,
+      ERROR_MESSAGES.product.fetchAll.message,
+    );
+  }
+  return result;
+};
 
-const getProductIntoDB = async (payload: string) => {};
+const getProductIntoDB = async (payload: string) => {
+  const result = await productsModel.findById(payload);
+  if (!result) {
+    throw new AppError(
+      ERROR_MESSAGES.product.get.statusCode,
+      ERROR_MESSAGES.product.get.message,
+    );
+  }
+  return result;
+};
 
 const deleteProductIntoDB = async (payload: string) => {};
 

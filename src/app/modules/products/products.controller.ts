@@ -13,9 +13,26 @@ const createProduct = catchAsync(async (req, res) => {
   });
 });
 
-const getAllProduct = catchAsync(async (req, res) => {});
+const getAllProduct = catchAsync(async (_, res) => {
+  const result = await productService.getAllProductsIntoDB();
+  sendResponse(res, {
+    statusCode: SUCCESS_MESSAGES.product.fetched.statusCode,
+    message: SUCCESS_MESSAGES.product.fetched.message,
+    success: true,
+    data: result,
+  });
+});
 
-const getProduct = catchAsync(async (req, res) => {});
+const getProduct = catchAsync(async (req, res) => {
+  const id = req.params.id;
+  const result = await productService.getProductIntoDB(id as string);
+  sendResponse(res, {
+    statusCode: SUCCESS_MESSAGES.product.fetched.statusCode,
+    message: SUCCESS_MESSAGES.product.fetched.message,
+    success: true,
+    data: result,
+  });
+});
 
 const updateProduct = catchAsync(async (req, res) => {});
 
