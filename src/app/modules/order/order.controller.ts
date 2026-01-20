@@ -22,7 +22,6 @@ const getOrder = catchAsync(async (req, res) => {
     success: true,
     data: result,
   });
-  return result;
 });
 
 const getAllOrder = catchAsync(async (req, res) => {
@@ -33,10 +32,19 @@ const getAllOrder = catchAsync(async (req, res) => {
     success: true,
     data: result,
   });
-  return result;
 });
 
-const updateOrder = catchAsync(async (req, res) => {});
+const updateOrder = catchAsync(async (req, res) => {
+  const id = req.params.id as string;
+  const data = req.body;
+  const result = await orderService.updateOrderIntoDB({ id, data });
+  sendResponse(res, {
+    statusCode: 200,
+    message: `order updated successfully`,
+    success: true,
+    data: result,
+  });
+});
 
 const deleteOrder = catchAsync(async (req, res) => {});
 

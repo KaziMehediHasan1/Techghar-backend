@@ -29,7 +29,17 @@ const getAllOrderIntoDB = async () => {
   return result;
 };
 
-const updateOrderIntoDB = async (payload: any) => {};
+const updateOrderIntoDB = async (payload: any) => {
+  const result = await orderModel.findOneAndUpdate(
+    { _id: payload.id },
+    { $set: payload.data },
+    { new: true },
+  );
+  if (!result) {
+    throw new AppError(404, "Not updated this order info.");
+  }
+  return result;
+};
 
 const deleteOrderIntoDB = async (payload: any) => {};
 
