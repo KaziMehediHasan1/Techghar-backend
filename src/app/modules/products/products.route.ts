@@ -6,7 +6,7 @@ import express from "express";
 
 const route = express.Router();
 
-route.post("/", validateRequest(zodProductValidation), productController.createProduct);
+route.post("/", validateRequest(zodProductValidation),validateAccessToken("admin"), productController.createProduct);
 route.get("/", validateAccessToken("admin"), productController.getAllProduct);
 route.get("/:id", validateAccessToken("user","admin"), productController.getProduct);
 route.patch("/:id",validateAccessToken("user","admin"), productController.updateProduct)

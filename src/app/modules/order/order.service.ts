@@ -41,8 +41,12 @@ const updateOrderIntoDB = async (payload: any) => {
   return result;
 };
 
-const deleteOrderIntoDB = async (payload: any) => {
-  
+const deleteOrderIntoDB = async (payload: string) => {
+  const result = await orderModel.findOneAndDelete({ _id: payload });
+  if (!result) {
+    throw new AppError(404, "This order not deleted.");
+  }
+  return result;
 };
 
 export const orderService = {

@@ -55,7 +55,6 @@ const deleteReview = catchAsync(async (req, res) => {
     statusCode: SUCCESS_MESSAGES.review.deleted.statusCode,
     success: true,
     message: SUCCESS_MESSAGES.review.deleted.message,
-    data: result,
   });
 });
 
