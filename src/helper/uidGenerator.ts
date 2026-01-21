@@ -1,6 +1,6 @@
 import { v7 as uuidv7 } from "uuid";
 
 export const uidGenerator = () => {
-  const uid = "UID-" + uuidv4();
+  const uid = "UID-" + uuidv7();
   return uid;
 };
