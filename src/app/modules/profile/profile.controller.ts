@@ -16,7 +16,7 @@ const createProfileAddress = catchAsync(async (req, res) => {
 
 const getProfileAddress = catchAsync(async (req, res) => {
   const result = await profileService.getProfileAddressIntoDB(
-    req.params.id as string
+    req.params.id as string,
   );
   sendResponse(res, {
     statusCode: SUCCESS_MESSAGES.profile.fetched.statusCode,
@@ -47,7 +47,6 @@ const deleteProfileAddress = catchAsync(async (req, res) => {
     statusCode: SUCCESS_MESSAGES.profile.deleted.statusCode,
     message: SUCCESS_MESSAGES.profile.deleted.message,
     success: true,
-    data: result,
   });
 });
 

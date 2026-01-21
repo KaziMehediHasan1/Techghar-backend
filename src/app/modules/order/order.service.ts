@@ -41,7 +41,9 @@ const updateOrderIntoDB = async (payload: any) => {
   return result;
 };
 
-const deleteOrderIntoDB = async (payload: any) => {};
+const deleteOrderIntoDB = async (payload: any) => {
+  
+};
 
 export const orderService = {
   createOrderIntoDB,
