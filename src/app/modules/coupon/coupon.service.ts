@@ -28,7 +28,13 @@ const getCouponIntoDB = async (payload: string) => {
 
 const updateCouponIntoDB = async (payload: any) => {};
 
-const deleteCouponIntoDB = async (payload: any) => {};
+const deleteCouponIntoDB = async (payload: string) => {
+  const result = await couponModel.findByIdAndDelete({ _id: payload });
+  if (!result) {
+    throw new AppError(404, "Coupon is not deleted");
+  }
+  return result;
+};
 
 export const couponService = {
   createCouponIntoDB,
