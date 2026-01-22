@@ -22,7 +22,15 @@ const getAllCoupon = catchAsync(async (_, res) => {
   });
 });
 
-const getCoupon = catchAsync(async (req, res) => {});
+const getCoupon = catchAsync(async (req, res) => {
+  const result = await couponService.getCouponIntoDB(req.params.id as string);
+  sendResponse(res, {
+    statusCode: 200,
+    message: "Coupon created successfull",
+    success: true,
+    data: result,
+  });
+});
 
 const updateCoupon = catchAsync(async (req, res) => {});
 

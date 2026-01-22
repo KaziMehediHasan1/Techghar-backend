@@ -18,7 +18,13 @@ const getAllCouponIntoDB = async () => {
   return { result, total };
 };
 
-const getCouponIntoDB = async (payload: any) => {};
+const getCouponIntoDB = async (payload: string) => {
+  const result = await couponModel.findById({ _id: payload });
+  if (!result) {
+    throw new AppError(404, "Coupon not found");
+  }
+  return result;
+};
 
 const updateCouponIntoDB = async (payload: any) => {};
 
