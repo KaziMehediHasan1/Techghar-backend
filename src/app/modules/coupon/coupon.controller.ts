@@ -32,7 +32,18 @@ const getCoupon = catchAsync(async (req, res) => {
   });
 });
 
-const updateCoupon = catchAsync(async (req, res) => {});
+const updateCoupon = catchAsync(async (req, res) => {
+  const result = await couponService.updateCouponIntoDB({
+    id: req.params.id,
+    data: req.body,
+  });
+  sendResponse(res, {
+    statusCode: 200,
+    message: "Coupon updated successfull",
+    success: true,
+    data: result,
+  });
+});
 
 const deleteCoupon = catchAsync(async (req, res) => {
   const result = await couponService.deleteCouponIntoDB(

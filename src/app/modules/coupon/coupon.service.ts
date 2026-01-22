@@ -26,7 +26,17 @@ const getCouponIntoDB = async (payload: string) => {
   return result;
 };
 
-const updateCouponIntoDB = async (payload: any) => {};
+const updateCouponIntoDB = async (payload: any) => {
+  const result = await couponModel.findByIdAndUpdate(
+    { _id: payload.id },
+    { $set: payload.data },
+    { new: true },
+  );
+  if (!result) {
+    throw new AppError(404, "Coupon is not updated");
+  }
+  return result;
+};
 
 const deleteCouponIntoDB = async (payload: string) => {
   const result = await couponModel.findByIdAndDelete({ _id: payload });
