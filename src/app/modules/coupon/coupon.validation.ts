@@ -1,4 +1,3 @@
-import mongoose from "mongoose";
 import * as zod from "zod";
 
 export const zodCouponValidation = zod.object({

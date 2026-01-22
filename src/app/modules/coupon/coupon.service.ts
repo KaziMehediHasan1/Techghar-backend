@@ -9,7 +9,14 @@ const createCouponIntoDB = async (payload: any) => {
   return result;
 };
 
-const getAllCouponIntoDB = async (payload: any) => {};
+const getAllCouponIntoDB = async () => {
+  const result = await couponModel.find();
+  const total = result.length;
+  if (!result && total) {
+    throw new AppError(404, "Coupon getting fail!");
+  }
+  return { result, total };
+};
 
 const getCouponIntoDB = async (payload: any) => {};
 
