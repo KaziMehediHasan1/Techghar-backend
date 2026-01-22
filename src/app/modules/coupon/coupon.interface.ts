@@ -1,3 +1,5 @@
+import type mongoose from "mongoose";
+
 export enum DiscountType {
   PERCENT = "PERCENT",
   FLAT = "FLAT",
@@ -12,4 +14,5 @@ export interface ICoupon {
   maxUsage: number;
   isActive: boolean;
   usedCount: number;
+  allowedUsers: [mongoose.Types.ObjectId];
 }

@@ -41,6 +41,13 @@ const couponSchema = new mongoose.Schema<ICoupon>(
       default: 0,
     },
 
+    allowedUsers: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+      },
+    ],
+
     isActive: {
       type: Boolean,
       default: true,
