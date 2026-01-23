@@ -1,6 +1,6 @@
 import { profileService } from "@/app/modules/profile/profile.service.js";
-import catchAsync from "@/app/utils/catchAsync.js";
-import sendResponse from "@/app/utils/sendResponse.js";
+import catchAsync from "@/utils/catchAsync.js";
+import sendResponse from "@/utils/sendResponse.js";
 import { ERROR_MESSAGES } from "@/constants/errorMessages.js";
 import { SUCCESS_MESSAGES } from "@/constants/successMessages.js";
 

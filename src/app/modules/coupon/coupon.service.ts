@@ -1,5 +1,5 @@
 import couponModel from "@/app/modules/coupon/coupon.model.js";
-import AppError from "@/app/utils/appError.js";
+import AppError from "@/utils/appError.js";
 
 const createCouponIntoDB = async (payload: any) => {
   const result = await couponModel.create(payload);

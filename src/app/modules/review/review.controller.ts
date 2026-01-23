@@ -1,6 +1,6 @@
 import { reviewService } from "@/app/modules/review/review.service.js";
-import catchAsync from "@/app/utils/catchAsync.js";
-import sendResponse from "@/app/utils/sendResponse.js";
+import catchAsync from "@/utils/catchAsync.js";
+import sendResponse from "@/utils/sendResponse.js";
 import { SUCCESS_MESSAGES } from "@/constants/successMessages.js";
 
 const createReview = catchAsync(async (req, res) => {

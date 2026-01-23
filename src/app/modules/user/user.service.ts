@@ -1,5 +1,5 @@
 import userModel from "@/app/modules/user/user.model.js";
-import AppError from "@/app/utils/appError.js";
+import AppError from "@/utils/appError.js";
 import config from "@/config/index.js";
 import { ERROR_MESSAGES } from "@/constants/errorMessages.js";
 import { uidGenerator } from "@/helper/uidGenerator.js";

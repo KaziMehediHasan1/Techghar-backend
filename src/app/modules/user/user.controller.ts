@@ -1,7 +1,7 @@
 import { generateAccessToken } from "@/app/middlewares/auth.js";
 import { userService } from "./user.service.js";
-import sendResponse from "@/app/utils/sendResponse.js";
-import catchAsync from "@/app/utils/catchAsync.js";
+import sendResponse from "@/utils/sendResponse.js";
+import catchAsync from "@/utils/catchAsync.js";
 import { SUCCESS_MESSAGES } from "@/constants/successMessages.js";
 
 const registerUser = catchAsync(async (req, res) => {

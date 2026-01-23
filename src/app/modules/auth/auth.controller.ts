@@ -1,11 +1,11 @@
-import catchAsync from "@/app/utils/catchAsync.js";
+import catchAsync from "@/utils/catchAsync.js";
 import {
   generateAccessToken,
   generateRefreshToken,
 } from "@/app/middlewares/auth.js";
 import config from "@/config/index.js";
 import { ERROR_MESSAGES } from "@/constants/errorMessages.js";
-import sendResponse from "@/app/utils/sendResponse.js";
+import sendResponse from "@/utils/sendResponse.js";
 import { SUCCESS_MESSAGES } from "@/constants/successMessages.js";
 import { authService } from "@/app/modules/auth/auth.service.js";
 

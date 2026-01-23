@@ -2,8 +2,8 @@ import jwt, { type SignOptions } from "jsonwebtoken";
 import type { NextFunction, Request, Response } from "express";
 import type { TAuth, TRole } from "@/types/auth.type.js";
 import config from "@/config/index.js";
-import catchAsync from "@/app/utils/catchAsync.js";
-import sendResponse from "@/app/utils/sendResponse.js";
+import catchAsync from "@/utils/catchAsync.js";
+import sendResponse from "@/utils/sendResponse.js";
 import type { IJwtUser } from "@/app/modules/user/user.interface.js";
 
 // GENERATE ACCESS TOKEN FOR 15MINS ONLY

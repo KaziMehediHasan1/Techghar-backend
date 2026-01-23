@@ -1,6 +1,6 @@
 import { orderService } from "@/app/modules/order/order.service.js";
-import catchAsync from "@/app/utils/catchAsync.js";
-import sendResponse from "@/app/utils/sendResponse.js";
+import catchAsync from "@/utils/catchAsync.js";
+import sendResponse from "@/utils/sendResponse.js";
 import { SUCCESS_MESSAGES } from "@/constants/successMessages.js";
 
 const createOrder = catchAsync(async (req, res) => {

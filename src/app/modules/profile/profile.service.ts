@@ -1,6 +1,6 @@
 import profileModel from "@/app/modules/profile/profile.model.js";
 import userModel from "@/app/modules/user/user.model.js";
-import AppError from "@/app/utils/appError.js";
+import AppError from "@/utils/appError.js";
 import { ERROR_MESSAGES } from "@/constants/errorMessages.js";
 
 const createProfileAddressIntoDB = async (payload: any) => {

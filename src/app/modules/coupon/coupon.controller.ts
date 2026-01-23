@@ -1,6 +1,6 @@
 import { couponService } from "@/app/modules/coupon/coupon.service.js";
-import catchAsync from "@/app/utils/catchAsync.js";
-import sendResponse from "@/app/utils/sendResponse.js";
+import catchAsync from "@/utils/catchAsync.js";
+import sendResponse from "@/utils/sendResponse.js";
 
 const createCoupon = catchAsync(async (req, res) => {
   const result = await couponService.createCouponIntoDB(req.body);
