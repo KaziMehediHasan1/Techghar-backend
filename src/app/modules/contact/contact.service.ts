@@ -26,9 +26,21 @@ const getContactsDataIntoDB = async () => {
   return result;
 };
 
-const getContactDataIntoDB = async (payload: any) => {};
+const getContactDataIntoDB = async (payload: string) => {
+  const result = await contactModel.findById({ _id: payload });
+  if (!result) {
+    throw new AppError(404, "not found, try 10sec later");
+  }
+  return result;
+};
 
-const deleteContactIntoDB = async (payload: any) => {};
+const deleteContactIntoDB = async (payload: string) => {
+  const result = await contactModel.findByIdAndDelete(payload);
+  if (!result) {
+    throw new AppError(404, "not deleted, try 10sec later");
+  }
+  return result;
+};
 
 export const contactService = {
   createContactDataIntoDB,
