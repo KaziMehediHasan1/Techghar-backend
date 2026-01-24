@@ -1,3 +1,4 @@
+import contactRoute from "@/app/modules/contact/contact.route.js";
 import couponRoute from "@/app/modules/coupon/coupon.route.js";
 import orderRoute from "@/app/modules/order/order.route.js";
 import productRoute from "@/app/modules/products/products.route.js";
@@ -37,6 +38,10 @@ const moduleRouter = [
   {
     path: "/coupon",
     route: couponRoute,
+  },
+  {
+    path: "/contact",
+    route: contactRoute,
   },
 ];
 
