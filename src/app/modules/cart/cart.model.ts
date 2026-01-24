@@ -1,0 +1,12 @@
+import type { ICart } from "@/app/modules/cart/cart.interface.js";
+import mongoose from "mongoose";
+
+const AddToCartSchema = new mongoose.Schema<ICart>({
+  productId: { type: mongoose.Schema.Types.ObjectId },
+  name: { type: String, required: true },
+  price: { type: String, required: true },
+  category: { type: String, required: true },
+  image: { type: String, required: true },
+});
+
+export default mongoose.model<ICart>("Cart", AddToCartSchema);
