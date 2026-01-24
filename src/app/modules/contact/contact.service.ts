@@ -4,7 +4,6 @@ import AppError from "@/utils/appError.js";
 
 const createContactDataIntoDB = async (payload: any) => {
   const { userId, email } = payload;
-  console.log(userId, email, "check user have");
   const checkUserExist = await userModel.findById({
     _id: userId,
     email: email,
@@ -19,7 +18,13 @@ const createContactDataIntoDB = async (payload: any) => {
   return result;
 };
 
-const getContactsDataIntoDB = async (payload: any) => {};
+const getContactsDataIntoDB = async () => {
+  const result = await contactModel.find();
+  if (!result) {
+    throw new AppError(404, "not found, try 10sec later");
+  }
+  return result;
+};
 
 const getContactDataIntoDB = async (payload: any) => {};
 

@@ -12,9 +12,27 @@ const createContactData = catchAsync(async (req, res) => {
   });
 });
 
-const getContactsData = catchAsync(async (req, res) => {});
+const getContactsData = catchAsync(async (_, res) => {
+  const result = await contactService.getContactsDataIntoDB();
+  sendResponse(res, {
+    statusCode: 200,
+    message: "email get successfully",
+    success: true,
+    data: result,
+  });
+});
 
-const getContactData = catchAsync(async (req, res) => {});
+const getContactData = catchAsync(async (req, res) => {
+  const result = await contactService.getContactDataIntoDB(
+    req.params.id as string,
+  );
+  sendResponse(res, {
+    statusCode: 200,
+    message: "email get successfully",
+    success: true,
+    data: result,
+  });
+});
 
 const deleteContactData = catchAsync(async (req, res) => {});
 

@@ -7,9 +7,9 @@ import express from "express";
 const route = express.Router();
 
 route.post("/", validateAccessToken("admin"),validateRequest(zodContactValidation),contactController.createContactData);
-route.get("/:id", validateAccessToken("user", "admin"));
-route.get("/", validateAccessToken("admin"));
-route.delete("/:id", validateAccessToken("admin"));
+route.get("/:id", validateAccessToken("user", "admin"),contactController.getContactData);
+route.get("/", validateAccessToken("admin"), contactController.getContactsData);
+route.delete("/:id", validateAccessToken("admin"), contactController.deleteContactData);
 
 const contactRoute = route;
 export default contactRoute;
