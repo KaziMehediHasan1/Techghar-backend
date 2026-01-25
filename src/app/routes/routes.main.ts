@@ -1,3 +1,4 @@
+import addToCartRoute from "@/app/modules/cart/cart.route.js";
 import contactRoute from "@/app/modules/contact/contact.route.js";
 import couponRoute from "@/app/modules/coupon/coupon.route.js";
 import orderRoute from "@/app/modules/order/order.route.js";
@@ -42,6 +43,10 @@ const moduleRouter = [
   {
     path: "/contact",
     route: contactRoute,
+  },
+  {
+    path: "/addToCart",
+    route: addToCartRoute,
   },
 ];
 
