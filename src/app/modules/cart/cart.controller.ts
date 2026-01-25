@@ -12,15 +12,40 @@ const createCartData = catchAsync(async (req, res) => {
   });
 });
 
-const getCartData = catchAsync(async (req, res) => {});
+const getCartData = catchAsync(async (req, res) => {
+  const result = await cartService.getCartDataIntoDB(req.params.id as string);
+  sendResponse(res, {
+    statusCode: 200,
+    message: "cart items find succussfully",
+    success: true,
+    data: result,
+  });
+});
 
-const getCartsData = catchAsync(async (req, res) => {});
+const getCartDatas = catchAsync(async (req, res) => {
+  const result = await cartService.getCartDatasIntoDB();
+  sendResponse(res, {
+    statusCode: 200,
+    message: "cart item find succussfully",
+    success: true,
+    data: result,
+  });
+});
 
-const deleteCartData = catchAsync(async (req, res) => {});
+const deleteCartData = catchAsync(async (req, res) => {
+  const result = await cartService.deleteCartDataIntoDB(
+    req.params.id as string,
+  );
+  sendResponse(res, {
+    statusCode: 200,
+    message: "cart item find succussfully",
+    success: true
+  });
+});
 
 export const cartController = {
   createCartData,
   getCartData,
-  getCartsData,
+  getCartDatas,
   deleteCartData,
 };

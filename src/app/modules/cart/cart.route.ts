@@ -8,8 +8,8 @@ const route = express.Router();
 
 route.post("/", validateAccessToken("user","admin"), validateRequest(zodAddToCardDataValidation), cartController.createCartData)
 route.get("/:id", validateAccessToken("user","admin"), cartController.getCartData)
-route.get("/", validateAccessToken("admin"), cartController.getCartsData)
-route.delete("/:id", validateAccessToken("user"), cartController.deleteCartData)
+route.get("/", validateAccessToken("admin"), cartController.getCartDatas)
+route.delete("/:id", validateAccessToken("user","admin"), cartController.deleteCartData)
 
 const addToCartRoute = route;
 export default addToCartRoute;
