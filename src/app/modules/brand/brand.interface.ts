@@ -1,6 +1,5 @@
 export interface IBrand {
-    name:string;
-    category:string;
-    image:string;
-    
+  name: string;
+  category: string;
+  logo: string[];
 }
