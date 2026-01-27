@@ -1,3 +1,4 @@
+import blogRoute from "@/app/modules/blog/blog.route.js";
 import brandRoute from "@/app/modules/brand/brand.route.js";
 import addToCartRoute from "@/app/modules/cart/cart.route.js";
 import contactRoute from "@/app/modules/contact/contact.route.js";
@@ -52,6 +53,10 @@ const moduleRouter = [
   {
     path: "/brand",
     route: brandRoute,
+  },
+  {
+    path: "/blog",
+    route: blogRoute,
   },
 ];
 
