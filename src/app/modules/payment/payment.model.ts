@@ -8,7 +8,7 @@ const paymentSchema = new Schema<IPayment>(
 
     paymentMethod: {
       type: String,
-      enum: ["stripe", "sslcommerz", "paypal", "cash_on_delivery"],
+      enum: ["stripe", "sslcommerz", "cash_on_delivery"],
       required: true,
     },
 

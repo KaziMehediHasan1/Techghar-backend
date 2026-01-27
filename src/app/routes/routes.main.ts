@@ -4,6 +4,7 @@ import addToCartRoute from "@/app/modules/cart/cart.route.js";
 import contactRoute from "@/app/modules/contact/contact.route.js";
 import couponRoute from "@/app/modules/coupon/coupon.route.js";
 import orderRoute from "@/app/modules/order/order.route.js";
+import paymentRoute from "@/app/modules/payment/payment.route.js";
 import productRoute from "@/app/modules/products/products.route.js";
 import profileRoute from "@/app/modules/profile/profile.route.js";
 import promotionRoute from "@/app/modules/promotion/promotion.route.js";
@@ -33,6 +34,10 @@ const moduleRouter = [
   {
     path: "/product",
     route: productRoute,
+  },
+  {
+    path: "/payment",
+    route: paymentRoute,
   },
   {
     path: "/order",
