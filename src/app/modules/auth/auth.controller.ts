@@ -58,11 +58,11 @@ const forgetPassword = catchAsync(async (req, res) => {
   });
 });
 
-const resentPasswordIntoDB = catchAsync(async (req, res) => {
+const resetPasswordIntoDB = catchAsync(async (req, res) => {
   const { password } = req.body;
   const { token } = req.params;
 
-  const result = await authService.resentPasswordIntoDB({ password, token });
+  const result = await authService.resetPasswordIntoDB({ password, token });
   sendResponse(res, {
     statusCode: SUCCESS_MESSAGES.auth.forgetPassword.statusCode,
     message: SUCCESS_MESSAGES.auth.forgetPassword.message,
@@ -75,8 +75,9 @@ const resentPasswordIntoDB = catchAsync(async (req, res) => {
 // const refreshToken = catchAsync(async(req,res)=>{
 //   const result = setRefreshTokenCookie()
 // })
+
 export const authController = {
   loginUser,
   forgetPassword,
-  resentPasswordIntoDB,
+  resetPasswordIntoDB,
 };

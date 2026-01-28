@@ -58,7 +58,7 @@ const forgetPasswordIntoDB = async (payload: any) => {
   // send Email
 };
 
-const resentPasswordIntoDB = async (payload: any) => {
+const resetPasswordIntoDB = async (payload: any) => {
   const hashedToken = crypto
     .createHash("sha256")
     .update(payload.token)
@@ -87,5 +87,5 @@ const resentPasswordIntoDB = async (payload: any) => {
 export const authService = {
   loginService,
   forgetPasswordIntoDB,
-  resentPasswordIntoDB,
+  resetPasswordIntoDB,
 };

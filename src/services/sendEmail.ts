@@ -1,9 +1,11 @@
 import config from "@/config/index.js";
 import AppError from "@/utils/appError.js";
 import * as nodemailer from "nodemailer";
+import { string } from "zod";
 
 const transporter = nodemailer.createTransport({
-  service: "email",
+  host: process.env.SMTP_HOST,
+  port: 587,
   auth: {
     user: config.email.user,
     pass: config.email.pass,
@@ -18,8 +20,19 @@ const mailOptions = {
   html: `<p>Hello Dear tester..</p>`,
 };
 
-transporter.sendMail(mailOptions, async (error, info) => {
-  if (error) {
-    throw new AppError(404, error.message);
-  }
-});
+export const sendEmail = async ({
+  to,
+  subject,
+  html,
+}: {
+  to: string;
+  subject: string;
+  html: string;
+}) => {
+  await transporter.sendMail({
+    from: "TechGhar@gmail.com",
+    to,
+    subject,
+    html,
+  });
+};
