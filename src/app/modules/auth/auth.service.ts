@@ -5,6 +5,7 @@ import { ERROR_MESSAGES } from "@/constants/errorMessages.js";
 import bcrypt from "bcrypt";
 import crypto from "crypto";
 import type { HydratedDocument } from "mongoose";
+import { sendEmail } from "@/services/sendEmail.js";
 
 const loginService = async (payload: any) => {
   const user = await userModel
@@ -36,7 +37,7 @@ const loginService = async (payload: any) => {
 };
 
 const forgetPasswordIntoDB = async (payload: any) => {
-  const user = await userModel.findOne({ payload });
+  const user = await userModel.findOne({ email: payload });
   if (!user) {
     throw new AppError(
       ERROR_MESSAGES.auth.notFound.statusCode,
@@ -50,12 +51,22 @@ const forgetPasswordIntoDB = async (payload: any) => {
     .digest("hex");
 
   user.resetPasswordToken = hashedToken;
-  user.resetPasswordExpire = new Date(Date.now() + 5 * 60 * 1000);
+  user.resetPasswordExpire = new Date(Date.now() + 50 * 60 * 1000);
   await user.save();
 
-  // const resetURL = `${}`
+  const resetUrl = `http://localhost:5000/reset-password?token=${resetToken}`;
 
   // send Email
+  await sendEmail({
+    to: user.email,
+    subject: "Reset your password",
+    html: `
+    <p>You requested a password reset.</p>
+    <p>Click below to reset your password:</p>
+    <a href="${resetUrl}">Reset Password</a>
+    <p>This link expires in 10 minutes.</p>
+  `,
+  });
 };
 
 const resetPasswordIntoDB = async (payload: any) => {
@@ -69,6 +80,7 @@ const resetPasswordIntoDB = async (payload: any) => {
     resetPasswordExpire: { $gt: Date.now() },
   })) as HydratedDocument<Partial<IUserSchema>>;
 
+  console.log(user,"check user ace kina")
   if (!user) {
     throw new AppError(
       ERROR_MESSAGES.auth.unauthorized.statusCode,

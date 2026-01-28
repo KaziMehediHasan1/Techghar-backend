@@ -4,21 +4,14 @@ import * as nodemailer from "nodemailer";
 import { string } from "zod";
 
 const transporter = nodemailer.createTransport({
-  host: process.env.SMTP_HOST,
+  host: "smtp.gmail.com",
   port: 587,
+  secure: false,
   auth: {
     user: config.email.user,
     pass: config.email.pass,
   },
 });
-
-const mailOptions = {
-  from: "yourmail@gmail.com",
-  to: "receiver@gmail.com",
-  subject: "Test Email",
-  text: "Hello from Node.js 🚀",
-  html: `<p>Hello Dear tester..</p>`,
-};
 
 export const sendEmail = async ({
   to,

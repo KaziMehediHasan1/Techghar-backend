@@ -11,6 +11,7 @@ const route = express.Router();
 route.post("/auth/register",validateRequest(createUserZodSchema),userController.registerUser);
 route.post("/auth/login", authController.loginUser);
 route.post("/auth/forgot-password", authController.forgetPassword)
+route.post("/auth/reset-password", authController.resetPasswordIntoDB)
 
 // --- Admin Only ---
 route.get("/users", validateAccessToken("admin"), userController.getAllUsers);

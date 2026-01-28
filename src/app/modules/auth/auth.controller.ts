@@ -59,13 +59,12 @@ const forgetPassword = catchAsync(async (req, res) => {
 });
 
 const resetPasswordIntoDB = catchAsync(async (req, res) => {
-  const { password } = req.body;
-  const { token } = req.params;
-
+  const { password, token } = req.body;
+  console.log(password, token, "check");
   const result = await authService.resetPasswordIntoDB({ password, token });
   sendResponse(res, {
-    statusCode: SUCCESS_MESSAGES.auth.forgetPassword.statusCode,
-    message: SUCCESS_MESSAGES.auth.forgetPassword.message,
+    statusCode: 201,
+    message: "Reset successfull",
     data: result,
     success: true,
   });
