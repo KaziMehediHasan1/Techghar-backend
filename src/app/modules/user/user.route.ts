@@ -12,6 +12,7 @@ route.post("/auth/register",validateRequest(createUserZodSchema),userController.
 route.post("/auth/login", authController.loginUser);
 route.post("/auth/forgot-password", authController.forgetPassword)
 route.post("/auth/reset-password", authController.resetPasswordIntoDB)
+route.post("/auth/refresh-token", authController.refreshAccessToken)
 
 // --- Admin Only ---
 route.get("/users", validateAccessToken("admin"), userController.getAllUsers);

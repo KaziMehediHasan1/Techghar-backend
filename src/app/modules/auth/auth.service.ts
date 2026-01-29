@@ -8,10 +8,11 @@ import type { HydratedDocument } from "mongoose";
 import { sendEmail } from "@/services/sendEmail.js";
 
 const loginService = async (payload: any) => {
+  // console.log(payload, "login service");
   const user = await userModel
     .findOne({ email: payload?.email })
     .select("+password");
-
+  // console.log(user, "check userrrrrrr");
   // CHECKING FOR USER HAS AVALAVLE IN DB -
   if (!user) {
     throw new AppError(
@@ -80,7 +81,7 @@ const resetPasswordIntoDB = async (payload: any) => {
     resetPasswordExpire: { $gt: Date.now() },
   })) as HydratedDocument<Partial<IUserSchema>>;
 
-  console.log(user,"check user ace kina")
+  console.log(user, "check user ace kina");
   if (!user) {
     throw new AppError(
       ERROR_MESSAGES.auth.unauthorized.statusCode,
@@ -96,8 +97,11 @@ const resetPasswordIntoDB = async (payload: any) => {
   return result;
 };
 
+const refreshTokenIntoDB = async (payload: any) => {};
+
 export const authService = {
   loginService,
   forgetPasswordIntoDB,
   resetPasswordIntoDB,
+  refreshTokenIntoDB,
 };

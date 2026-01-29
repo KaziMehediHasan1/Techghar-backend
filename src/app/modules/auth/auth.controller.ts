@@ -3,11 +3,14 @@ import {
   generateAccessToken,
   generateRefreshToken,
 } from "@/app/middlewares/auth.js";
+import jwt, { type SignOptions } from "jsonwebtoken";
 import config from "@/config/index.js";
 import { ERROR_MESSAGES } from "@/constants/errorMessages.js";
 import sendResponse from "@/utils/sendResponse.js";
 import { SUCCESS_MESSAGES } from "@/constants/successMessages.js";
 import { authService } from "@/app/modules/auth/auth.service.js";
+import { setRefreshTokenCookie } from "@/helper/setRefreshTokenCookie.js";
+import AppError from "@/utils/appError.js";
 
 const loginUser = catchAsync(async (req, res) => {
   const { email, password } = req.body;
@@ -25,12 +28,7 @@ const loginUser = catchAsync(async (req, res) => {
   const refreshToken = generateRefreshToken(jwtPayload);
 
   // SET REFRESH-TOKEN IN COOKIES
-  res.cookie("refreshToken", refreshToken, {
-    secure: config.env === "production",
-    httpOnly: true,
-    sameSite: "none",
-    maxAge: 30 * 24 * 60 * 60 * 1000,
-  });
+  setRefreshTokenCookie(res, refreshToken);
 
   const userData = result?.toObject() as any;
   delete userData.password;
@@ -60,7 +58,7 @@ const forgetPassword = catchAsync(async (req, res) => {
 
 const resetPasswordIntoDB = catchAsync(async (req, res) => {
   const { password, token } = req.body;
-  console.log(password, token, "check");
+  // console.log(password, token, "check");
   const result = await authService.resetPasswordIntoDB({ password, token });
   sendResponse(res, {
     statusCode: 201,
@@ -71,12 +69,45 @@ const resetPasswordIntoDB = catchAsync(async (req, res) => {
 });
 
 // REFRESH-TOKEN GENERATOR -
-// const refreshToken = catchAsync(async(req,res)=>{
-//   const result = setRefreshTokenCookie()
-// })
+const refreshAccessToken = catchAsync(async (req, res) => {
+  const refreshTokenFromCookie = req.cookies.refreshToken;
+  console.log(refreshTokenFromCookie, "refreshAccessToken");
+  if (!refreshTokenFromCookie) {
+    throw new AppError(401, "Please login again");
+  }
+
+  let decoded;
+  try {
+    decoded = jwt.verify(
+      refreshTokenFromCookie,
+      config.jwt.refresh_secret as string,
+    ) as any;
+  } catch (err) {
+    throw new AppError(401, "Invalid or expired refresh token");
+  }
+
+  const jwtPayload = {
+    id: decoded.id,
+    uid: decoded.uid,
+    email: decoded.email,
+    role: decoded.role,
+  };
+
+  const newAccessToken = generateAccessToken(jwtPayload);
+
+  sendResponse(res, {
+    statusCode: 200,
+    success: true,
+    message: "Access token refreshed",
+    data: {
+      accessToken: newAccessToken,
+    },
+  });
+});
 
 export const authController = {
   loginUser,
   forgetPassword,
   resetPasswordIntoDB,
+  refreshAccessToken,
 };
