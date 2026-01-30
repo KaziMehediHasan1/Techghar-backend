@@ -24,4 +24,7 @@ export default {
     user: process.env.EMAIL_USER,
     pass: process.env.EMAIL_PASS,
   },
+  ai:{
+    apiKey:process.env.OPENAI_API_KEY
+  }
 };
