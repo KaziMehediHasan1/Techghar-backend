@@ -7,7 +7,7 @@ const productSchema = new mongoose.Schema<IProduct>(
     category: {
       type: String,
       required: true,
-      // enum: ["Headphone", "PC Componet", "Light", "Monitor","Phone"],
+      enum: ["Headphone", "PC Componet", "Light", "Monitor","Phone"],
     },
     colors: { type: String, required: true, default: "Black" },
     brand: { type: String, required: true },
