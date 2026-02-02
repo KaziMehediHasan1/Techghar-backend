@@ -5,7 +5,7 @@ const openai = new OpenAI({
   apiKey: config.ai.apiKey,
 });
 
-export const OpenAIRes = async (message) => {
+export const OpenAIRes = async (message: string) => {
   const response = await openai.chat.completions.create({
     model: "gpt-4o-mini",
     messages: [
@@ -13,5 +13,5 @@ export const OpenAIRes = async (message) => {
       { role: "user", content: message },
     ],
   });
-  return response.choices[0].message;
+  return response?.choices[0]?.message;
 };
