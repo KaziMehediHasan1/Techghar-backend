@@ -8,7 +8,7 @@ import type { IJwtUser } from "@/app/modules/user/user.interface.js";
 
 // GENERATE ACCESS TOKEN FOR 15MINS ONLY
 export const generateAccessToken = (payload: TAuth) => {
-  return jwt.sign(payload, config.jwt.secret as string, {
+  return jwt.sign(payload, config.jwt.secret as any, {
     expiresIn: config.jwt.expires_in as any,
     algorithm: "HS256",
   });
