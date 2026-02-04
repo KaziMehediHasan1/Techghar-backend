@@ -2,7 +2,6 @@ import express from "express";
 import type { Application } from "express";
 import cors from "cors";
 import helmet from "helmet";
-
 import cookieParser from "cookie-parser";
 import router from "@/app/routes/routes.main.js";
 import config from "@/config/index.js";
@@ -13,10 +12,10 @@ const app: Application = express();
 app.use(helmet());
 app.use(
   cors({
-    origin: ["*", "http://localhost:5000"],
+    origin: "http://localhost:5173",
     methods: ["GET", "POST", "PATCH", "PUT", "DELETE"],
     credentials: true,
-  })
+  }),
 );
 app.use(express.json());
 app.use(cookieParser());

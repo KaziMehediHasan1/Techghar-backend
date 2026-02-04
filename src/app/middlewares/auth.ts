@@ -20,7 +20,7 @@ export const generateRefreshToken = (payload: TAuth) => {
     expiresIn: config.jwt.refresh_expires_in as any,
     algorithm: "HS256",
   };
-  return jwt.sign(payload, config.jwt.refresh_secret as string, option);
+  return jwt.sign(payload, config.jwt.refresh_secret as any, option);
 };
 
 // ROLE BASED VALIDATE USER AND GIVE ACTUAL DATA WHAT THEY CAN TRY TO GOT

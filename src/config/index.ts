@@ -11,10 +11,11 @@ export default {
   bcrypt_salt_rounds: process.env.BCRYPT_SALT_ROUNDS,
   jwt: {
     secret: process.env.JWT_ACCESS_SECRET,
-    expires_in: process.env.JWT_ACCESS_EXPIRES_IN,
+    expires_in: (process.env.JWT_ACCESS_EXPIRES_IN || "15m").trim(),
     refresh_secret: process.env.JWT_REFRESH_SECRET,
-    refresh_expires_in: process.env.JWT_REFRESH_EXPIRES_IN,
+    refresh_expires_in: (process.env.JWT_REFRESH_EXPIRES_IN || "30d").trim(),
   },
+
   cloudinary: {
     cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
     api_key: process.env.CLOUDINARY_API_KEY,
@@ -24,7 +25,7 @@ export default {
     user: process.env.EMAIL_USER,
     pass: process.env.EMAIL_PASS,
   },
-  ai:{
-    apiKey:process.env.OPENAI_API_KEY
-  }
+  ai: {
+    apiKey: process.env.OPENAI_API_KEY,
+  },
 };
