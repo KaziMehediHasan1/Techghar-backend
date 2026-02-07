@@ -15,7 +15,7 @@ route.post("/auth/reset-password", authController.resetPasswordIntoDB)
 route.post("/auth/refresh-token", authController.refreshAccessToken)
 
 // --- Admin Only ---
-route.get("/users", validateAccessToken("admin"), userController.getAllUsers);
+route.get("/users", userController.getAllUsers);
 route.delete("/admin/user/:id", validateAccessToken("admin"), userController.deleteUserByAdmin);
 
 // --- Both Access ---
