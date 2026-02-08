@@ -29,7 +29,7 @@ const getAllUsers = catchAsync(async (req, res) => {
   sendResponse(res, {
     statusCode: 200,
     success: true,
-    message: "Users get successfully",
+    message: "Users get successfull",
     data: result,
   });
 });
