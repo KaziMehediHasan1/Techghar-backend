@@ -1,7 +1,5 @@
 import config from "@/config/index.js";
-import AppError from "@/utils/appError.js";
 import * as nodemailer from "nodemailer";
-import { string } from "zod";
 
 const transporter = nodemailer.createTransport({
   host: "smtp.gmail.com",
