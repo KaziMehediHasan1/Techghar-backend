@@ -8,7 +8,7 @@ const createReviewIntoDB = async (payload: any) => {
   if (!payload) {
     throw new AppError(
       ERROR_MESSAGES.review.invalidData.statusCode,
-      ERROR_MESSAGES.review.invalidData.message
+      ERROR_MESSAGES.review.invalidData.message,
     );
   }
 
@@ -20,18 +20,26 @@ const createReviewIntoDB = async (payload: any) => {
   if (!result) {
     throw new AppError(
       ERROR_MESSAGES.review.creationFailed.statusCode,
-      ERROR_MESSAGES.review.creationFailed.message
+      ERROR_MESSAGES.review.creationFailed.message,
     );
   }
   return result;
 };
 
-const getAllReviewsFromDB = async () => {
-  const result = await reviewModel.find();
+const getAllReviewsFromDB = async (payload: any) => {
+  const { rating, approved } = payload;
+  let query: any = {};
+  if (rating) {
+    query.rating = { $gte: rating };
+  }
+  if (approved) {
+    query.isApproved = approved;
+  }
+  const result = await reviewModel.find(query);
   if (!result) {
     throw new AppError(
       ERROR_MESSAGES.review.notFound.statusCode,
-      ERROR_MESSAGES.review.notFound.message
+      ERROR_MESSAGES.review.notFound.message,
     );
   }
   return result;
@@ -42,7 +50,7 @@ const getSingleReviewFromDB = async (payload: any) => {
   if (!payload) {
     throw new AppError(
       ERROR_MESSAGES.review.notFound.statusCode,
-      "Id is not correct, try again.."
+      "Id is not correct, try again..",
     );
   }
 
@@ -51,7 +59,7 @@ const getSingleReviewFromDB = async (payload: any) => {
   if (!result) {
     throw new AppError(
       ERROR_MESSAGES.review.notFound.statusCode,
-      ERROR_MESSAGES.review.notFound.message
+      ERROR_MESSAGES.review.notFound.message,
     );
   }
 
@@ -62,20 +70,20 @@ const updateReviewInDB = async (payload: any) => {
   if (!payload) {
     throw new AppError(
       ERROR_MESSAGES.review.notFound.statusCode,
-      ERROR_MESSAGES.review.notFound.message
+      ERROR_MESSAGES.review.notFound.message,
     );
   }
 
   const result = await reviewModel.findByIdAndUpdate(
     { _id: payload.id },
     { $set: payload.data },
-    { new: true }
+    { new: true },
   );
 
   if (!result) {
     throw new AppError(
       ERROR_MESSAGES.review.updateFailed.statusCode,
-      ERROR_MESSAGES.review.updateFailed.message
+      ERROR_MESSAGES.review.updateFailed.message,
     );
   }
 
@@ -87,7 +95,7 @@ const deleteReviewFromDB = async (payload: any) => {
   if (!result) {
     throw new AppError(
       ERROR_MESSAGES.review.deleteNotFound.statusCode,
-      ERROR_MESSAGES.review.deleteNotFound.message
+      ERROR_MESSAGES.review.deleteNotFound.message,
     );
   }
   return result;

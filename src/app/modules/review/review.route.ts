@@ -12,7 +12,7 @@ route.get("/:id",validateAccessToken("user","admin"), reviewController.getSingle
 route.patch("/:id",validateAccessToken("user","admin"), reviewController.updateReview);
 route.delete("/:id",validateAccessToken("user","admin"), reviewController.deleteReview);
 
-// --- Admin Access ---
-route.get("/", validateAccessToken("admin"), reviewController.getAllReviews);
+// --- Admin Access validateAccessToken("admin")---
+route.get("/",  reviewController.getAllReviews);
 const reviewRoute = route;
 export default reviewRoute;
