@@ -3,6 +3,7 @@ import { userService } from "./user.service.js";
 import sendResponse from "@/utils/sendResponse.js";
 import catchAsync from "@/utils/catchAsync.js";
 import { SUCCESS_MESSAGES } from "@/constants/successMessages.js";
+import type { IUserFiltering } from "@/app/modules/user/user.interface.js";
 
 const registerUser = catchAsync(async (req, res) => {
   const payload = req.body;
@@ -25,7 +26,9 @@ const registerUser = catchAsync(async (req, res) => {
 });
 
 const getAllUsers = catchAsync(async (req, res) => {
-  const result = await userService.getAllUsersFromDB();
+  // search -->  name, email | filter --> role based(user,admin)
+  const { search, page, limit } = req.query;
+  const result = await userService.getAllUsersFromDB({ search, page, limit });
   sendResponse(res, {
     statusCode: 200,
     success: true,

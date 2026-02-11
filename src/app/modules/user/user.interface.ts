@@ -17,3 +17,13 @@ export interface IJwtUser {
   role: TRole;
   email: string;
 }
+
+// perameter types -
+export interface IUserFiltering {
+  search: string;
+  role?: { user: string; admin: string };
+}
+
+export interface SearchQuery {
+  name?: string | { $regex: string; $options: string };
+}

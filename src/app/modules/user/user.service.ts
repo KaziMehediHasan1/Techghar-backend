@@ -16,7 +16,7 @@ const createUserIntoDB = async (payload: any) => {
     if (user)
       throw new AppError(
         ERROR_MESSAGES.auth.exists.statusCode,
-        ERROR_MESSAGES.auth.exists.message
+        ERROR_MESSAGES.auth.exists.message,
       );
   }
 
@@ -36,15 +36,31 @@ const createUserIntoDB = async (payload: any) => {
   if (!result) {
     throw new AppError(
       ERROR_MESSAGES.auth.registrationFailed.statusCode,
-      ERROR_MESSAGES.auth.registrationFailed.message
+      ERROR_MESSAGES.auth.registrationFailed.message,
     );
   }
 
   return result;
 };
 
-const getAllUsersFromDB = async () => {
-  const result = await userModel.find();
+const getAllUsersFromDB = async (payload: any) => {
+  let query: any = {};
+
+  if (payload.search) {
+    query.$or = [
+      { name: { $regex: payload.search, $options: "i" } },
+      { email: { $regex: payload.search, $options: "i" } },
+    ];
+  }
+
+  // !important - regex operator is slower index searching fast -
+  // couse they skip prev _id and get next. but i just use regex for my portfolio perpuse.
+  const limit = 10;
+  const skipPage = (Number(payload.page) - 1) * Number(limit);
+  const result = await userModel
+    .find(query)
+    .skip(skipPage)
+    .limit(payload.limit ? payload.limit : limit);
   return result;
 };
 
@@ -53,7 +69,7 @@ const getUserProfileFromDB = async (payload: string) => {
   if (!result) {
     throw new AppError(
       ERROR_MESSAGES.auth.notFound.statusCode,
-      ERROR_MESSAGES.auth.notFound.message
+      ERROR_MESSAGES.auth.notFound.message,
     );
   }
   return result;
@@ -64,7 +80,7 @@ const deleteUserFromDB = async (payload: string) => {
   if (!result) {
     throw new AppError(
       ERROR_MESSAGES.auth.deleteNotFound.statusCode,
-      ERROR_MESSAGES.auth.deleteNotFound.message
+      ERROR_MESSAGES.auth.deleteNotFound.message,
     );
   }
   return result;
@@ -75,7 +91,7 @@ const deleteUserByAdminFromDB = async (payload: string) => {
   if (!result) {
     throw new AppError(
       ERROR_MESSAGES.user.adminDeleteFailed.statusCode,
-      ERROR_MESSAGES.user.adminDeleteFailed.message
+      ERROR_MESSAGES.user.adminDeleteFailed.message,
     );
   }
   return result;
@@ -89,12 +105,12 @@ const updateProfileFromDB = async (payload: any) => {
     {
       new: true,
       runValidators: true,
-    }
+    },
   );
   if (!result) {
     throw new AppError(
       ERROR_MESSAGES.user.updateFailed.statusCode,
-      ERROR_MESSAGES.user.updateFailed.message
+      ERROR_MESSAGES.user.updateFailed.message,
     );
   }
   return result;
