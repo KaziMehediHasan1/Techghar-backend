@@ -13,8 +13,35 @@ const createProductIntoDB = async (payload: any) => {
   return result;
 };
 
-const getAllProductsIntoDB = async () => {
-  const result = await productsModel.find();
+const getAllProductsIntoDB = async (payload: any) => {
+  const { search, price, category, brand, colors, page, limit } = payload;
+  let query: any = {};
+  if (search) {
+    query.$or = [
+      { title: { $regex: search, $options: "i" } },
+      { brand: { $regex: search, $options: "i" } },
+      { category: { $regex: search, $options: "i" } },
+    ];
+  }
+  if (price) {
+    query.price = { $lte: price };
+  }
+  if (category) {
+    query.category = category;
+  }
+  if (brand) {
+    query.brand = brand;
+  }
+  if (colors) {
+    query.colors = colors;
+  }
+  const pageNumber = Number(page) || 1;
+  const limitNumber = Number(limit) || 10;
+  const skipPage = (pageNumber - 1) * limitNumber;
+  const result = await productsModel
+    .find(query)
+    .skip(skipPage)
+    .limit(limit ? limit : 10);
   if (!result) {
     throw new AppError(
       ERROR_MESSAGES.product.fetchAll.statusCode,

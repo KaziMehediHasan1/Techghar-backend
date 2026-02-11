@@ -13,8 +13,17 @@ const createProduct = catchAsync(async (req, res) => {
   });
 });
 
-const getAllProduct = catchAsync(async (_, res) => {
-  const result = await productService.getAllProductsIntoDB();
+const getAllProduct = catchAsync(async (req, res) => {
+  const { search, price, category, brand, colors, page, limit } = req.query;
+  const result = await productService.getAllProductsIntoDB({
+    search,
+    price,
+    category,
+    brand,
+    colors,
+    page,
+    limit,
+  });
   sendResponse(res, {
     statusCode: SUCCESS_MESSAGES.product.fetched.statusCode,
     message: SUCCESS_MESSAGES.product.fetched.message,

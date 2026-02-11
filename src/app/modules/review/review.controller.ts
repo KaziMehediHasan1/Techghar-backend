@@ -14,7 +14,8 @@ const createReview = catchAsync(async (req, res) => {
   });
 });
 
-const getAllReviews = catchAsync(async (_, res) => {
+const getAllReviews = catchAsync(async (req, res) => {
+  const {} = req.query
   const result = await reviewService.getAllReviewsFromDB();
   sendResponse(res, {
     statusCode: SUCCESS_MESSAGES.review.fetched.statusCode,
