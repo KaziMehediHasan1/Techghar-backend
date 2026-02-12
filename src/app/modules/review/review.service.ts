@@ -4,6 +4,9 @@ import { ERROR_MESSAGES } from "@/constants/errorMessages.js";
 import { uidGenerator } from "@/helper/uidGenerator.js";
 
 const createReviewIntoDB = async (payload: any) => {
+  if (!payload?.productId) {
+    throw new AppError(404, "Product is not has database!");
+  }
   // CHECK ALL REVIEWS DATA IS VALID OR NOT.
   if (!payload) {
     throw new AppError(
