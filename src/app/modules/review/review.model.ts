@@ -10,14 +10,9 @@ const reviewSchema = new mongoose.Schema<IReview>(
     comment: { type: String, required: true },
 
     isVerifiedPurchase: { type: Boolean, default: false },
-    isApproved: { type: Boolean, default: false },
+    isApproved: { type: Boolean, default: false, index: true },
   },
   { timestamps: true },
 );
-
-// One user → one review per product
-reviewSchema.index({ userId: 1, productId: 1 }, { unique: true });
-// filtering -
-reviewSchema.index({ rating: 1 });
 
 export default mongoose.model<IReview>("review", reviewSchema);
