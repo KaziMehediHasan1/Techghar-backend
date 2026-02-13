@@ -30,15 +30,20 @@ const createReviewIntoDB = async (payload: any) => {
 };
 
 const getAllReviewsFromDB = async (payload: any) => {
-  const { rating, isApproved } = payload;
+  const { rating, isApproved, page, limit } = payload;
   let query: any = {};
+
   if (rating) {
     query.rating = { $gte: rating };
   }
   if (isApproved) {
     query.isApproved = isApproved;
   }
-  const result = await reviewModel.find(query);
+  const pageNumber = Number(page) || 1;
+  const limitNumber = Number(limit) || 10;
+  const skipPage = (pageNumber - 1) * limitNumber;
+
+  const result = await reviewModel.find(query).skip(skipPage).limit(limitNumber);
   if (!result) {
     throw new AppError(
       ERROR_MESSAGES.review.notFound.statusCode,
