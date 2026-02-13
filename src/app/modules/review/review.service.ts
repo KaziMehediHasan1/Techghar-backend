@@ -30,13 +30,13 @@ const createReviewIntoDB = async (payload: any) => {
 };
 
 const getAllReviewsFromDB = async (payload: any) => {
-  const { rating, approved } = payload;
+  const { rating, isApproved } = payload;
   let query: any = {};
   if (rating) {
     query.rating = { $gte: rating };
   }
-  if (approved) {
-    query.isApproved = approved;
+  if (isApproved) {
+    query.isApproved = isApproved;
   }
   const result = await reviewModel.find(query);
   if (!result) {
