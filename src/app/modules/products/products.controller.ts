@@ -14,15 +14,14 @@ const createProduct = catchAsync(async (req, res) => {
 });
 
 const getAllProduct = catchAsync(async (req, res) => {
-  const { search, price, category, brand, colors, page, limit } = req.query;
+  const { search, price, category, brand, colors, cursor } = req.query;
   const result = await productService.getAllProductsIntoDB({
     search,
     price,
     category,
     brand,
     colors,
-    page,
-    limit,
+    cursor,
   });
   sendResponse(res, {
     statusCode: SUCCESS_MESSAGES.product.fetched.statusCode,

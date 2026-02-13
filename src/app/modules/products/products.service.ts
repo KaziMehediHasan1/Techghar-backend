@@ -14,7 +14,7 @@ const createProductIntoDB = async (payload: any) => {
 };
 
 const getAllProductsIntoDB = async (payload: any) => {
-  const { search, price, category, brand, colors, page, limit } = payload;
+  const { search, price, category, brand, colors, cursor } = payload;
   let query: any = {};
   if (search) {
     query.$or = [
@@ -35,13 +35,12 @@ const getAllProductsIntoDB = async (payload: any) => {
   if (colors) {
     query.colors = colors;
   }
-  const pageNumber = Number(page) || 1;
-  const limitNumber = Number(limit) || 10;
-  const skipPage = (pageNumber - 1) * limitNumber;
-  const result = await productsModel
-    .find(query)
-    .skip(skipPage)
-    .limit(limit ? limit : 10);
+
+  // cursor / infinity based pagination -
+  if (cursor) {
+    query._id = { $lt: cursor };
+  }
+  const result = await productsModel.find(query).sort({ _id: -1 }).limit(4);
   if (!result) {
     throw new AppError(
       ERROR_MESSAGES.product.fetchAll.statusCode,
