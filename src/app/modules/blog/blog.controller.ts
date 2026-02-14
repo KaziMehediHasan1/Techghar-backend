@@ -13,7 +13,8 @@ const createBlog = catchAsync(async (req, res) => {
 });
 
 const getAllBlog = catchAsync(async (req, res) => {
-  const result = await blogService.getAllBlogIntoDB();
+  const { search, cursor } = req.query;
+  const result = await blogService.getAllBlogIntoDB({ search, cursor });
   sendResponse(res, {
     statusCode: 200,
     message: "blog get successfully",

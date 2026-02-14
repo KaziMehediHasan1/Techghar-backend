@@ -9,7 +9,9 @@ const createBlogIntoDB = async (payload: any) => {
   return result;
 };
 
-const getAllBlogIntoDB = async () => {
+const getAllBlogIntoDB = async (payload: any) => {
+  const { search, cursor } = payload;
+  
   const result = await blogModel.find();
   const total = result.length;
   if (!result) {
