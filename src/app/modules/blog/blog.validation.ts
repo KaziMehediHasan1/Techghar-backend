@@ -7,5 +7,6 @@ export const zodBlogValidation = zod.object({
     description: zod.string(),
     alt: zod.string(),
     category: zod.string(),
+    embedding: zod.array(zod.string()),
   }),
 });
