@@ -1,5 +1,6 @@
 import blogModel from "@/app/modules/blog/blog.model.js";
 import AppError from "@/utils/appError.js";
+import mongoose from "mongoose";
 
 const createBlogIntoDB = async (payload: any) => {
   const result = await blogModel.create(payload);
@@ -11,13 +12,42 @@ const createBlogIntoDB = async (payload: any) => {
 
 const getAllBlogIntoDB = async (payload: any) => {
   const { search, cursor } = payload;
-  
-  const result = await blogModel.find();
-  const total = result.length;
-  if (!result) {
-    throw new AppError(404, "not get blogs");
+  let query: any[] = [];
+
+  if (search) {
+    query.push({
+      $search: {
+        index: "default",
+        text: {
+          query: search,
+          path: ["title", "description", "category"],
+          fuzzy: { maxEdits: 1 },
+        },
+      },
+    });
+  } else {
+    query.push({
+      $sort: { createAt: -1 },
+    });
   }
-  return { result, total };
+
+  if (cursor) {
+    query.push({
+      $match: { _id: { $lt: new mongoose.Types.ObjectId(cursor) } },
+    });
+  }
+
+  query.push({ $limit: 10 });
+
+  const result = await blogModel.aggregate(query);
+  if (!result || result.length === 0) {
+    throw new AppError(404, "No blogs found");
+  }
+  return {
+    result,
+    total: result.length,
+    nextCursor: result.length === 10 ? result[result.length - 1]._id : null,
+  };
 };
 
 const getBlogIntoDB = async (payload: any) => {
