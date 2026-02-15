@@ -38,8 +38,12 @@ const paymentSchema = new Schema<IPayment>(
 
     isPaid: { type: Boolean, default: false },
     paidAt: { type: Date },
+    embedding: {
+      type: [Number],
+      default: [],
+    },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 export const Payment = model<IPayment>("Payment", paymentSchema);

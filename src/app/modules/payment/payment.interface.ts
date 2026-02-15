@@ -26,6 +26,7 @@ export interface IPayment {
 
   isPaid: boolean;
   paidAt?: Date;
+  embedding: { type: number[] };
 
   createdAt?: Date;
   updatedAt?: Date;

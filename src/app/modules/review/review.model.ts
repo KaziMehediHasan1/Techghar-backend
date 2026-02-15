@@ -11,6 +11,10 @@ const reviewSchema = new mongoose.Schema<IReview>(
 
     isVerifiedPurchase: { type: Boolean, default: false },
     isApproved: { type: Boolean, default: false, index: true },
+    embedding: {
+      type: [Number],
+      default: [],
+    },
   },
   { timestamps: true },
 );

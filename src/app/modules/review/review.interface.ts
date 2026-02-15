@@ -9,6 +9,7 @@ export interface IReview {
 
   isVerifiedPurchase?: boolean;
   isApproved?: boolean;
+  embedding: { type: number[] };
 
   createdAt?: Date;
   updatedAt?: Date;

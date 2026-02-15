@@ -7,7 +7,7 @@ export interface IProduct {
   price: number;
   discount: number;
   finalPrice?: number;
-
+  embedding: { type: number[] };
   stock: boolean;
   quantity: number;
 

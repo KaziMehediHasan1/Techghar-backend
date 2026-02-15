@@ -17,6 +17,10 @@ const userSchema = new mongoose.Schema<IUserSchema>(
     resetPasswordExpire: { type: Date, default: null },
     photo: { type: String, default: "https://ibb.co.com/KjDjpmp8" },
     role: { type: String, enum: ["admin", "user"], default: "user" },
+    embedding: {
+      type: [Number],
+      default: [],
+    },
   },
   { timestamps: true },
 );

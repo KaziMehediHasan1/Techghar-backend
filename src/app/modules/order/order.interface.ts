@@ -7,4 +7,7 @@ export interface IOrder {
   status: string;
   cancelledBy: string;
   cancelledAt: Date;
+  embedding: {
+    type: number[];
+  };
 }
