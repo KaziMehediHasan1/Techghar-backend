@@ -1,4 +1,4 @@
-import type { IContact } from "@/app/modules/category/category.interface.js";
+import type { IContact } from "@/app/modules/contact/comtact.interface.js";
 import mongoose from "mongoose";
 
 const contactSchema = new mongoose.Schema<IContact>(
@@ -8,6 +8,10 @@ const contactSchema = new mongoose.Schema<IContact>(
     phone: { type: String, required: true },
     userId: { type: mongoose.Schema.Types.ObjectId, required: true },
     description: { type: String, required: true },
+    embedding: {
+      type: [Number],
+      default: [],
+    },
   },
   { timestamps: true },
 );
