@@ -1,3 +1,4 @@
+import analyticsRoute from "@/app/modules/analytics/analytics.route.js";
 import blogRoute from "@/app/modules/blog/blog.route.js";
 import brandRoute from "@/app/modules/brand/brand.route.js";
 import addToCartRoute from "@/app/modules/cart/cart.route.js";
@@ -62,6 +63,10 @@ const moduleRouter = [
   {
     path: "/blog",
     route: blogRoute,
+  },
+  {
+    path: "/analytics",
+    route: analyticsRoute,
   },
 ];
 
