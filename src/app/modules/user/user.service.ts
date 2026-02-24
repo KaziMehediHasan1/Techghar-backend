@@ -53,9 +53,13 @@ const getAllUsersFromDB = async (payload: any) => {
     ];
   }
 
+  if (payload.role) {
+    query.role = payload.role;
+  }
+
   // !important - regex operator is slower index searching fast -
   // couse they skip prev _id and get next. but i just use regex for my portfolio perpuse.
-  const limit = 10;
+  const limit = payload.limit | 10;
   const skipPage = (Number(payload.page) - 1) * Number(limit);
   const result = await userModel
     .find(query)
