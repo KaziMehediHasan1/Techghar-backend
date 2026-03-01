@@ -5,6 +5,7 @@ import helmet from "helmet";
 import cookieParser from "cookie-parser";
 import router from "@/app/routes/routes.main.js";
 import config from "@/config/index.js";
+import { setupCronJobs } from "@/utils/cron.js";
 
 const app: Application = express();
 
@@ -20,7 +21,7 @@ app.use(
 app.use(express.json());
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
-
+setupCronJobs();
 // Application routes
 app.get("/", (req, res) => {
   res.send("Home Page show now ccccc");
