@@ -40,7 +40,13 @@ export const productLookupTool = tool(
   {
     name: "item_lookup",
     description:
-      "Searches inventory for products using vector and text search.",
-    schema: z.object({ query: z.string() }),
+      "Search for tech products like monitors, laptops, and other electronics in TechGhar's inventory. Use this whenever the user asks for product recommendations, prices, or availability.",
+    schema: z.object({
+      query: z
+        .string()
+        .describe(
+          "The specific product or category to search for (e.g., 'gaming monitor' or 'laptop under 50k')",
+        ),
+    }),
   },
 );

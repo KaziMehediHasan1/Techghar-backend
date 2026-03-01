@@ -2,6 +2,7 @@ import analyticsRoute from "@/app/modules/analytics/analytics.route.js";
 import blogRoute from "@/app/modules/blog/blog.route.js";
 import brandRoute from "@/app/modules/brand/brand.route.js";
 import addToCartRoute from "@/app/modules/cart/cart.route.js";
+import botRoute from "@/app/modules/chatbot/bot.route.js";
 import contactRoute from "@/app/modules/contact/contact.route.js";
 import couponRoute from "@/app/modules/coupon/coupon.route.js";
 import orderRoute from "@/app/modules/order/order.route.js";
@@ -16,6 +17,10 @@ import expresss from "express";
 const router = expresss.Router();
 
 const moduleRouter = [
+  {
+    path: "/chatbot",
+    route: botRoute,
+  },
   {
     path: "/user",
     route: userRoute,

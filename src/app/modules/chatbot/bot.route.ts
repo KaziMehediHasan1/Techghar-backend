@@ -1,22 +1,8 @@
-import { botServices } from "@/app/modules/aibot/bot.service.js";
-import catchAsync from "@/utils/catchAsync.js";
-import sendResponse from "@/utils/sendResponse.js";
+import { botController } from "@/app/modules/chatbot/bot.controller.js";
+import express from "express";
 
-const createBotConversation = catchAsync(async (req, res) => {
-  const initialMessage = req.body.message;
-  //   Generate unique thread id using current time
-  const threadId = Date.now().toString();
-  console.log(initialMessage, "check initialMessage");
+const route = express.Router();
+route.post("/chat/:threadId", botController.handleBotChat);
 
-  const result = await botServices.createBotConversation(req.body);
-  sendResponse(res, {
-    statusCode: 201,
-    message: "blog created successfully",
-    success: true,
-    data: result,
-  });
-});
-
-export const botController = {
-  createBotConversation,
-};
+const botRoute = route;
+export default botRoute;
