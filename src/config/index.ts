@@ -26,6 +26,6 @@ export default {
     pass: process.env.EMAIL_PASS,
   },
   ai: {
-    apiKey: process.env.OPENAI_API_KEY,
+    apiKey: process.env.GEMINI_API_KEY,
   },
 };
