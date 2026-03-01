@@ -8,8 +8,11 @@ import config from "@/config/index.js";
 import { setupCronJobs } from "@/utils/cron.js";
 
 const app: Application = express();
-
-// Middlewares
+// import { GoogleGenerativeAI } from "@google/generative-ai";
+// const genAI = new GoogleGenerativeAI(config.ai.apiKey as string);
+// const models = await genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+// console.log(models,"modell check up");
+// // Middlewares
 app.use(helmet());
 app.use(
   cors({

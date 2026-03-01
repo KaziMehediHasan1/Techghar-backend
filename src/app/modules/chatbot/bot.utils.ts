@@ -3,7 +3,7 @@ import { GoogleGenerativeAIEmbeddings } from "@langchain/google-genai";
 import { Model, Document } from "mongoose";
 
 export const embeddings = new GoogleGenerativeAIEmbeddings({
-  model: "text-embedding-004",
+  model: "gemini-embedding-001",
   apiKey: config.ai.apiKey as string,
 });
 
@@ -15,10 +15,9 @@ interface IBaseEmbeddable {
 
 export async function genericSyncEmbeddings<T>(
   model: Model<any>,
-  generateText: (doc: T) => string | Promise<string>, 
+  generateText: (doc: T) => string | Promise<string>,
   populatePath?: string,
 ) {
-  
   let query = model.find({
     $or: [{ embedding: { $exists: false } }, { embedding: { $size: 0 } }],
   });
@@ -27,14 +26,14 @@ export async function genericSyncEmbeddings<T>(
     query = query.populate(populatePath);
   }
 
-  const docs = await query.limit(20);
+  const docs = await query.limit(20).exec();
 
   for (const doc of docs) {
     try {
       const combinedText = await generateText(doc as any);
       (doc as any).embedding_text = combinedText;
       (doc as any).embedding = await embeddings.embedQuery(combinedText);
-      await doc.save();
+      await doc.save({ validateBeforeSave: false });
     } catch (error) {
       console.error(`Error syncing ${model.modelName}:`, error);
     }

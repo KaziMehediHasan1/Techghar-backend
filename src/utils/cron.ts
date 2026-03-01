@@ -10,7 +10,7 @@ import type { ICoupon } from "@/app/modules/coupon/coupon.interface.js";
 import couponModel from "@/app/modules/coupon/coupon.model.js";
 
 export const setupCronJobs = () => {
-  cron.schedule("0 3 * * *", async () => {
+  cron.schedule("0 */5 * * *", async () => {
     // 1. Sync Products
     await genericSyncEmbeddings<IProduct>(
       productsModel,

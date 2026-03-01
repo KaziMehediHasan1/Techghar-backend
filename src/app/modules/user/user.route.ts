@@ -1,9 +1,9 @@
 import express from "express";
 import { createUserZodSchema } from "./user.validation.js";
 import { userController } from "./user.controller.js";
-import { authController } from "../aibot/bot.controller.js";
 import { validateAccessToken } from "@/app/middlewares/auth.js";
 import { validateRequest } from "@/app/middlewares/validateRequest.js";
+import { authController } from "@/app/modules/auth/auth.controller.js";
 
 const route = express.Router();
 
