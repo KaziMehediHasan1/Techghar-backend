@@ -8,10 +8,8 @@ const BlogSchema = new mongoose.Schema<IBlog>(
     description: { type: String, required: true },
     alt: { type: String, required: true },
     category: { type: String, required: true },
-    embedding: {
-      type: [Number],
-      default: [],
-    },
+    embedding: { type: [Number], default: [] },
+    embedding_text: { type: String },
   },
   { timestamps: true },
 );

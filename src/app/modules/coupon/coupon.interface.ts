@@ -14,5 +14,7 @@ export interface ICoupon {
   maxUsage: number;
   isActive: boolean;
   usedCount: number;
+  embedding: number[];
+  embedding_text: string;
   allowedUsers: [mongoose.Types.ObjectId];
 }

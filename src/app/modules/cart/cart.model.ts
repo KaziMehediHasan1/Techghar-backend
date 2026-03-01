@@ -8,10 +8,8 @@ const AddToCartSchema = new mongoose.Schema<ICart>({
   price: { type: String, required: true },
   category: { type: String, required: true },
   image: { type: String, required: true },
-  embedding: {
-    type: [Number],
-    default: [],
-  },
+  embedding: { type: [Number], default: [] },
+  embedding_text: { type: String },
 });
 
 export default mongoose.model<ICart>("Cart", AddToCartSchema);

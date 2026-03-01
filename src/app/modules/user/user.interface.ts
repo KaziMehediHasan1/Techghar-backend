@@ -10,7 +10,8 @@ export interface IUserSchema {
   photo: string;
   role: "admin" | "user";
   createdAt: Date;
-  embedding: { type: number[] };
+  embedding: number[];
+  embedding_text: string;
 }
 
 export interface IJwtUser {

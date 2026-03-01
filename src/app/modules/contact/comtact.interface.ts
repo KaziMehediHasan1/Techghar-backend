@@ -6,5 +6,6 @@ export interface IContact {
   phone: string;
   userId: ObjectId;
   description: string;
-  embedding: { type: number[] };
+  embedding: number[];
+  embedding_text: string;
 }

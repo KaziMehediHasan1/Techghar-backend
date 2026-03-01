@@ -52,6 +52,8 @@ const couponSchema = new mongoose.Schema<ICoupon>(
       type: Boolean,
       default: true,
     },
+    embedding: { type: [Number], default: [] },
+    embedding_text: { type: String },
   },
   { timestamps: true },
 );

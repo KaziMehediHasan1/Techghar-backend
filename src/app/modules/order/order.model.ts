@@ -32,10 +32,8 @@ const orderSchema = new mongoose.Schema<IOrder>(
       type: Date,
       default: null,
     },
-    embedding: {
-      type: [Number],
-      default: [],
-    },
+     embedding: { type: [Number], default: [] }, 
+    embedding_text: { type: String },
   },
   {
     timestamps: true,

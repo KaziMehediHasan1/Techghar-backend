@@ -4,5 +4,6 @@ export interface IBlog {
   description: string;
   alt: string;
   category: string;
-  embedding: string[];
+  embedding: number[];
+  embedding_text: string;
 }

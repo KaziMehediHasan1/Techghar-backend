@@ -25,10 +25,8 @@ const productSchema = new mongoose.Schema<IProduct>(
     averageRating: { type: Number, default: 0 },
     totalReviews: { type: Number, default: 0 },
     isActive: { type: Boolean, default: true },
-    embedding: {
-      type: [Number],
-      default: [],
-    },
+    embedding: { type: [Number], default: [] }, 
+    embedding_text: { type: String },
   },
   { timestamps: true },
 );

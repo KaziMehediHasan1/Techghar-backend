@@ -7,7 +7,6 @@ export interface ICart {
   name: string;
   price: string;
   category: string;
-  embedding: {
-    type: number[];
-  };
+  embedding: number[];
+  embedding_text: string;
 }
