@@ -28,4 +28,7 @@ export default {
   ai: {
     apiKey: process.env.GEMINI_API_KEY,
   },
+  payment: {
+    stripe_secret: process.env.STRIPE_PAYMENT_SECRET_KEY,
+  },
 };
