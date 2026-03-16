@@ -27,6 +27,7 @@ const updatePaymentData = catchAsync(async (req, res) => {});
 const deletePaymentData = catchAsync(async (req, res) => {});
 
 export const paymentController = {
+  createPaymentIntent,
   createPayment,
   getAllPaymentsData,
   getPaymentData,

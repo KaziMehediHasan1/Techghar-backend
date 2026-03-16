@@ -1,15 +1,13 @@
 import config from "@/config/index.js";
 import Stripe from "stripe";
 
-// API Key এনভায়রনমেন্ট ভেরিয়েবল থেকে নেওয়া ভালো
+// API Key -
 const stripe = new Stripe(config.payment.stripe_secret as string);
-
-export default stripe;
 
 const createPaymentIntentIntoStripe = async (payload: any) => {
   const paymentIntent = await stripe.paymentIntents.create({
-    amount: payload.amount,
-    currency: payload.currency,
+    amount: payload.amount * 100,
+    currency: payload.currency || "usd",
     automatic_payment_methods: { enabled: true },
   });
   // if (!paymentIntent) {
@@ -18,8 +16,9 @@ const createPaymentIntentIntoStripe = async (payload: any) => {
   //     ERROR_MESSAGES.auth.registrationFailed.message,
   //   );
   // }
+  const clientSecret = paymentIntent.client_secret;
 
-  return paymentIntent;
+  return clientSecret;
 };
 
 const createPaymentIntoDB = async (payload: any) => {};

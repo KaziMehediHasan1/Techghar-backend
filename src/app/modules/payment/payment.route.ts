@@ -8,7 +8,7 @@ const route = express.Router();
 
 route.post("/",validateAccessToken("user"),validateRequest(zododPaymentValidation),paymentController.createPayment),
 route.get("/",validateAccessToken("admin"), paymentController.getAllPaymentsData),
-route.get("/:id",validateAccessToken("admin"),paymentController.getPaymentData),
+route.get("/:id",validateAccessToken("admin","user"),paymentController.getPaymentData),
 route.patch("/:id",validateAccessToken("admin"),paymentController.updatePaymentData)
 route.delete("/:id",validateAccessToken("admin"), paymentController.deletePaymentData)
 
