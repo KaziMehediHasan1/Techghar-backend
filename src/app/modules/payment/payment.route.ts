@@ -6,6 +6,7 @@ import express from "express";
 
 const route = express.Router();
 
+route.post("/intent",validateAccessToken("user"),paymentController.createPayment),
 route.post("/",validateAccessToken("user"),validateRequest(zododPaymentValidation),paymentController.createPayment),
 route.get("/",validateAccessToken("admin"), paymentController.getAllPaymentsData),
 route.get("/:id",validateAccessToken("admin","user"),paymentController.getPaymentData),
