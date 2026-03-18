@@ -18,7 +18,7 @@ const createPaymentIntentIntoStripe = async (payload: any) => {
   // }
   const clientSecret = paymentIntent.client_secret;
 
-  return clientSecret;
+  return {clientSecret: clientSecret};
 };
 
 const createPaymentIntoDB = async (payload: any) => {};
