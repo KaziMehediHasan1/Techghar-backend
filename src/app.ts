@@ -27,9 +27,9 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
 setupCronJobs();
-// Application routes
+
 app.get("/", (req, res) => {
-  res.send("Home Page show now ccccc");
+  res.send("Home Page showing");
 });
 app.use("/api/v1", router);
 
