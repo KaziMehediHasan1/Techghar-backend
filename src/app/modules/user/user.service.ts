@@ -50,6 +50,7 @@ const getAllUsersFromDB = async (payload: any) => {
     query.$or = [
       { name: { $regex: payload.search, $options: "i" } },
       { email: { $regex: payload.search, $options: "i" } },
+      { role: { $regex: payload.search, $options: "i" } },
     ];
   }
 

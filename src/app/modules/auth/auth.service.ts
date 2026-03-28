@@ -40,7 +40,6 @@ const loginService = async (payload: any) => {
 };
 
 const logOutService = async (res: Response): Promise<null> => {
-  // এখানে res গ্রহণ করুন
   clearRefreshTokenCookie(res);
   return null;
 };
