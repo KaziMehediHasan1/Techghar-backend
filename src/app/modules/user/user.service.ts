@@ -144,7 +144,8 @@ const getAllUsersFromDB = async (payload: any) => {
     { $limit: limit },
   ]);
 
-  return result;
+  console.log(result, "check result...");
+  return { result, total: result.length };
 };
 
 const getUserProfileFromDB = async (payload: string) => {
