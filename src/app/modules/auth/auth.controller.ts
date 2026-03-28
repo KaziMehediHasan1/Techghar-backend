@@ -46,16 +46,13 @@ const loginUser = catchAsync(async (req, res) => {
 });
 
 const logOut = catchAsync(async (req, res) => {
-  // Clear the refresh token cookie
-  res.clearCookie("refreshToken", {
-    httpOnly: true,
-    secure: config.env === "production", // it will change when uses production
-    sameSite: "none",
-  });
+  const result = await authService.logOutService(res);
+
   sendResponse(res, {
     statusCode: 200,
     success: true,
     message: "Logged out successfully",
+    data: result,
   });
 });
 

@@ -5,7 +5,9 @@ import { ERROR_MESSAGES } from "@/constants/errorMessages.js";
 import bcrypt from "bcrypt";
 import crypto from "crypto";
 import type { HydratedDocument } from "mongoose";
+import type { Response } from "express";
 import { sendEmail } from "@/services/sendEmail.js";
+import { clearRefreshTokenCookie } from "@/helper/setRefreshTokenCookie.js";
 
 const loginService = async (payload: any) => {
   // console.log(payload, "login service");
@@ -37,7 +39,11 @@ const loginService = async (payload: any) => {
   return user;
 };
 
-const logOutService = async (payload: any) => {};
+const logOutService = async (res: Response): Promise<null> => {
+  // এখানে res গ্রহণ করুন
+  clearRefreshTokenCookie(res);
+  return null;
+};
 
 const forgetPasswordIntoDB = async (payload: any) => {
   const user = await userModel.findOne({ email: payload });
