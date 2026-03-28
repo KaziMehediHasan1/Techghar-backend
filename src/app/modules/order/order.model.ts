@@ -8,6 +8,11 @@ const orderSchema = new mongoose.Schema<IOrder>(
       ref: "Product",
       required: true,
     },
+    userId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
     colors: {
       type: String,
       required: true,
@@ -32,7 +37,7 @@ const orderSchema = new mongoose.Schema<IOrder>(
       type: Date,
       default: null,
     },
-     embedding: { type: [Number], default: [] }, 
+    embedding: { type: [Number], default: [] },
     embedding_text: { type: String },
   },
   {

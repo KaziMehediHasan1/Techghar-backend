@@ -57,14 +57,92 @@ const getAllUsersFromDB = async (payload: any) => {
     query.role = payload.role;
   }
 
-  // !important - regex operator is slower index searching fast -
-  // couse they skip prev _id and get next. but i just use regex for my portfolio perpuse.
-  const limit = payload.limit | 10;
-  const skipPage = (Number(payload.page) - 1) * Number(limit);
-  const result = await userModel
-    .find(query)
-    .skip(skipPage)
-    .limit(payload.limit ? payload.limit : limit);
+  const limit = Number(payload.limit) || 10;
+  const page = Number(payload.page) || 1;
+  const skipPage = (page - 1) * limit;
+
+  const result = await userModel.aggregate([
+    { $match: query },
+
+    // Cart Lookup
+    {
+      $lookup: {
+        from: "carts",
+        localField: "_id",
+        foreignField: "userId",
+        as: "cartData", // matching with size field
+      },
+    },
+
+    //  Payment Lookup
+    {
+      $lookup: {
+        from: "payments",
+        localField: "_id",
+        foreignField: "userId",
+        as: "paymentData",
+      },
+    },
+
+    // Order Lookup (Pending status only)
+    {
+      $lookup: {
+        from: "orders",
+        let: { userId: "$_id" },
+        pipeline: [
+          {
+            $match: {
+              $expr: {
+                $and: [
+                  { $eq: ["$status", "pending"] },
+                  { $eq: ["$userId", "$$userId"] },
+                ],
+              },
+            },
+          },
+        ],
+        as: "pendingOrders",
+      },
+    },
+
+    // ৪. Data Formatting
+    {
+      $addFields: {
+        id: "$_id",
+        cartItemCount: { $size: "$cartData" },
+        totalPurchaseCount: { $size: "$paymentData" },
+
+        lastPurchasedItem: {
+          $let: {
+            vars: {
+              lastPay: { $arrayElemAt: ["$paymentData", -1] },
+            },
+            in: {
+              $ifNull: [
+                { $arrayElemAt: ["$$lastPay.products.name", 0] },
+                "No Purchase Yet",
+              ],
+            },
+          },
+        },
+        isAccountActive: true,
+      },
+    },
+
+    //  Cleanup
+    {
+      $project: {
+        password: 0,
+        paymentData: 0,
+        cartData: 0,
+        pendingOrders: 0,
+      },
+    },
+
+    { $skip: skipPage },
+    { $limit: limit },
+  ]);
+
   return result;
 };
 
