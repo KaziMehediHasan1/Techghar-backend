@@ -37,6 +37,8 @@ const loginService = async (payload: any) => {
   return user;
 };
 
+const logOutService = async (payload: any) => {};
+
 const forgetPasswordIntoDB = async (payload: any) => {
   const user = await userModel.findOne({ email: payload });
   if (!user) {
@@ -100,6 +102,7 @@ const resetPasswordIntoDB = async (payload: any) => {
 const refreshTokenIntoDB = async (payload: any) => {};
 
 export const authService = {
+  logOutService,
   loginService,
   forgetPasswordIntoDB,
   resetPasswordIntoDB,

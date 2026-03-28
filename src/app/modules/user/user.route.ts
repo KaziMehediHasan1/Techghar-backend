@@ -10,6 +10,7 @@ const route = express.Router();
 // --- Auth Related ---
 route.post("/auth/register",validateRequest(createUserZodSchema),userController.registerUser);
 route.post("/auth/login", authController.loginUser);
+route.post("/auth/logout", authController.logOut);
 route.post("/auth/forgot-password", authController.forgetPassword)
 route.post("/auth/reset-password", authController.resetPasswordIntoDB)
 route.post("/auth/refresh-token", authController.refreshAccessToken)

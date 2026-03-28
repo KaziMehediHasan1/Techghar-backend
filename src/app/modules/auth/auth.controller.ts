@@ -45,6 +45,20 @@ const loginUser = catchAsync(async (req, res) => {
   });
 });
 
+const logOut = catchAsync(async (req, res) => {
+  // Clear the refresh token cookie
+  res.clearCookie("refreshToken", {
+    httpOnly: true,
+    secure: config.env === "production", // it will change when uses production
+    sameSite: "none",
+  });
+  sendResponse(res, {
+    statusCode: 200,
+    success: true,
+    message: "Logged out successfully",
+  });
+});
+
 const forgetPassword = catchAsync(async (req, res) => {
   const { email } = req.body;
   await authService.forgetPasswordIntoDB(email);
@@ -106,6 +120,7 @@ const refreshAccessToken = catchAsync(async (req, res) => {
 });
 
 export const authController = {
+  logOut,
   loginUser,
   forgetPassword,
   resetPasswordIntoDB,
