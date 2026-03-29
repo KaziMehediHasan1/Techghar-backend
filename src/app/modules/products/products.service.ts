@@ -17,7 +17,7 @@ const getAllProductsIntoDB = async (payload: any) => {
   const { search, price, category, brand, colors, cursor, page, limit } =
     payload;
   let query: any = {};
-  const Limit = Number(limit) || 10;
+  const Limit = Number(limit);
   const Page = Number(page) || 1;
   const skipPage = (Page - 1) * Limit;
   if (search) {
