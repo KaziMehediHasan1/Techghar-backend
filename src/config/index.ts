@@ -31,4 +31,5 @@ export default {
   payment: {
     stripe_secret: process.env.STRIPE_PAYMENT_SECRET_KEY,
   },
+  uploadthingToken: process.env.UPLOADTHING_TOKEN,
 };
