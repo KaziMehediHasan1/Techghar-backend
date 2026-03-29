@@ -14,8 +14,12 @@ const createProductIntoDB = async (payload: any) => {
 };
 
 const getAllProductsIntoDB = async (payload: any) => {
-  const { search, price, category, brand, colors, cursor } = payload;
+  const { search, price, category, brand, colors, cursor, page, limit } =
+    payload;
   let query: any = {};
+  const Limit = Number(limit) || 10;
+  const Page = Number(page) || 1;
+  const skipPage = (Page - 1) * Limit;
   if (search) {
     query.$or = [
       { title: { $regex: search, $options: "i" } },
@@ -40,7 +44,11 @@ const getAllProductsIntoDB = async (payload: any) => {
   if (cursor) {
     query._id = { $lt: cursor };
   }
-  const result = await productsModel.find(query).sort({ _id: -1 }).limit(4);
+  const result = await productsModel
+    .find(query)
+    .sort({ _id: -1 })
+    .limit(Limit)
+    .skip(skipPage);
   if (!result) {
     throw new AppError(
       ERROR_MESSAGES.product.fetchAll.statusCode,
