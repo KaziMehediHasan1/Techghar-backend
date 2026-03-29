@@ -6,6 +6,8 @@ import cookieParser from "cookie-parser";
 import router from "@/app/routes/routes.main.js";
 import config from "@/config/index.js";
 import { setupCronJobs } from "@/utils/cron.js";
+import { createRouteHandler } from "uploadthing/express";
+import { ourFileRouter } from "@/utils/uploadthing.core.js";
 
 const app: Application = express();
 // import { GoogleGenerativeAI } from "@google/generative-ai";
@@ -14,11 +16,10 @@ const app: Application = express();
 // console.log(models,"modell check up");
 // // Middlewares
 app.use(helmet());
+setupCronJobs();
 app.use(
   cors({
-    origin: [
-      "http://localhost:5173"
-    ],
+    origin: ["http://localhost:5173"],
     methods: ["GET", "POST", "PATCH", "PUT", "DELETE"],
     credentials: true,
   }),
@@ -26,12 +27,11 @@ app.use(
 app.use(express.json());
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
-setupCronJobs();
-
 app.get("/", (req, res) => {
   res.send("Home Page showing");
 });
 app.use("/api/v1", router);
+app.use("/api/uploadthing", createRouteHandler({ router: ourFileRouter }));
 
 // Global Error Handler
 app.use((err: any, req: any, res: any, next: any) => {
