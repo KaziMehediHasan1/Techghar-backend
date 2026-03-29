@@ -104,12 +104,10 @@ const resetPasswordIntoDB = async (payload: any) => {
   return result;
 };
 
-const refreshTokenIntoDB = async (payload: any) => {};
 
 export const authService = {
   logOutService,
   loginService,
   forgetPasswordIntoDB,
   resetPasswordIntoDB,
-  refreshTokenIntoDB,
 };
