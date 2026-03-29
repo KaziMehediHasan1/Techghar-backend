@@ -1,6 +1,7 @@
 import productsModel from "@/app/modules/products/products.model.js";
 import AppError from "@/utils/appError.js";
 import { ERROR_MESSAGES } from "@/constants/errorMessages.js";
+import { meta } from "zod/v4/core";
 
 const createProductIntoDB = async (payload: any) => {
   const result = await productsModel.create(payload);
@@ -44,18 +45,29 @@ const getAllProductsIntoDB = async (payload: any) => {
   if (cursor) {
     query._id = { $lt: cursor };
   }
+
+  const totalDataCount = await productsModel.countDocuments(query);
   const result = await productsModel
     .find(query)
     .sort({ _id: -1 })
     .limit(Limit)
     .skip(skipPage);
+
   if (!result) {
     throw new AppError(
       ERROR_MESSAGES.product.fetchAll.statusCode,
       ERROR_MESSAGES.product.fetchAll.message,
     );
   }
-  return result;
+  return {
+    result,
+    meta: {
+      page: Page,
+      limit: Limit,
+      total: totalDataCount,
+      totalPage: Math.ceil(totalDataCount / Limit),
+    },
+  };
 };
 
 const getProductIntoDB = async (payload: string) => {

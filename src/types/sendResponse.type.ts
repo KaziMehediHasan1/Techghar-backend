@@ -3,4 +3,10 @@ export type TResponse<T> = {
   message?: string;
   success: boolean;
   data?: T;
+  // meta?: {
+  //   page: number;
+  //   limit: number;
+  //   total: number;
+  //   totalPage: number;
+  // };
 };
