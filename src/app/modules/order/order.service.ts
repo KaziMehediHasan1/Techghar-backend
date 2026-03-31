@@ -23,23 +23,91 @@ const getOrderIntoDB = async (payload: string) => {
 
 const getAllOrderIntoDB = async (payload: any) => {
   const { search, page, limit } = payload;
+  const skip = (Number(page) - 1) * Number(limit);
+
   let query = {};
   if (search) {
     query = {
       $or: [
-        { productName: { $regex: search, $options: "i" } },
-        { customerName: { $regex: search, $options: "i" } },
+        { "productData.title": { $regex: search, $options: "i" } },
+        { "customerData.email": { $regex: search, $options: "i" } },
       ],
     };
   }
-  const totalDataCount = await orderModel.countDocuments(query);
-  const result = await orderModel
-    .find(query)
-    .limit(Number(limit))
-    .skip((Number(page) - 1) * Number(limit));
-  if (!result) {
-    throw new AppError(404, "Fetched Fail, Try again 20sec later.");
-  }
+
+  const result = await orderModel.aggregate([
+    // Product Lookup
+    {
+      $lookup: {
+        from: "products",
+        localField: "productID",
+        foreignField: "_id",
+        as: "productData",
+      },
+    },
+    { $unwind: { path: "$productData", preserveNullAndEmptyArrays: true } },
+
+    // User/Customer Lookup
+    {
+      $lookup: {
+        from: "users",
+        let: { orderUserId: "$userId" },
+        pipeline: [
+          {
+            $match: {
+              $expr: {
+                $or: [
+                  { $eq: ["$_id", { $toObjectId: "$$orderUserId" }] },
+                  { $eq: ["$uid", "$$orderUserId"] },
+                ],
+              },
+            },
+          },
+        ],
+        as: "customerData",
+      },
+    },
+    { $unwind: { path: "$customerData", preserveNullAndEmptyArrays: true } },
+
+    // Payment Lookup (
+    {
+      $lookup: {
+        from: "payments",
+        localField: "_id",
+        foreignField: "orderId",
+        as: "paymentData",
+      },
+    },
+    { $unwind: { path: "$paymentData", preserveNullAndEmptyArrays: true } },
+
+    // Search Filter
+    { $match: query },
+
+    // Pagination
+    { $skip: skip },
+    { $limit: Number(limit) },
+
+    // Project
+    {
+      $project: {
+        _id: 1,
+        quantity: 1,
+        status: 1,
+        cancelledAt: 1,
+        productName: "$productData.title",
+        productImages: "$productData.images",
+        productPrice: "$productData.price",
+        customerEmail: "$customerData.email",
+        transactionId: "$paymentData.transactionId",
+        amount: "$paymentData.amount",
+        isPaid: "$paymentData.isPaid",
+        paymentMethod: "$paymentData.paymentMethod",
+      },
+    },
+  ]);
+
+  // Total count
+  const totalDataCount = await orderModel.countDocuments();
 
   return {
     result,
