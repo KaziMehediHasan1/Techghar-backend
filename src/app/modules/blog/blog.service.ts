@@ -37,7 +37,17 @@ const getAllBlogIntoDB = async (payload: any) => {
     });
   }
 
+  query.push({
+    $project: {
+      embedding: 0,
+      embedding_text: 0,
+      __v: 0,
+    },
+  });
+
   query.push({ $limit: 10 });
+
+  const totalData = await blogModel.countDocuments(query);
 
   const result = await blogModel.aggregate(query);
   if (!result || result.length === 0) {
@@ -45,7 +55,7 @@ const getAllBlogIntoDB = async (payload: any) => {
   }
   return {
     result,
-    total: result.length,
+    total: totalData,
     nextCursor: result.length === 10 ? result[result.length - 1]._id : null,
   };
 };
