@@ -7,12 +7,6 @@ const sendResponse = <T>(res: Response, data: TResponse<T>) => {
     statusCode: data.statusCode,
     message: data.message,
     data: data.data,
-    // meta: {
-    //   page: (data.data as any)?.meta?.page || 1,
-    //   limit: (data.data as any)?.meta?.limit || 10,
-    //   total: (data.data as any)?.meta?.total || 0,
-    //   totalPage: (data.data as any)?.meta?.totalPage || 0,
-    // },
   });
 };
 

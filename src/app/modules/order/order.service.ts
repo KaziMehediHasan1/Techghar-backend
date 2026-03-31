@@ -21,12 +21,35 @@ const getOrderIntoDB = async (payload: string) => {
   return result;
 };
 
-const getAllOrderIntoDB = async () => {
-  const result = await orderModel.find();
+const getAllOrderIntoDB = async (payload: any) => {
+  const { search, page, limit } = payload;
+  let query = {};
+  if (search) {
+    query = {
+      $or: [
+        { productName: { $regex: search, $options: "i" } },
+        { customerName: { $regex: search, $options: "i" } },
+      ],
+    };
+  }
+  const totalDataCount = await orderModel.countDocuments(query);
+  const result = await orderModel
+    .find(query)
+    .limit(Number(limit))
+    .skip((Number(page) - 1) * Number(limit));
   if (!result) {
     throw new AppError(404, "Fetched Fail, Try again 20sec later.");
   }
-  return result;
+
+  return {
+    result,
+    meta: {
+      page: Number(page),
+      limit: Number(limit),
+      total: totalDataCount,
+      totalPage: Math.ceil(totalDataCount / Number(limit)),
+    },
+  };
 };
 
 const updateOrderIntoDB = async (payload: any) => {

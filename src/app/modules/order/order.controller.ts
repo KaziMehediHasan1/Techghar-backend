@@ -25,7 +25,8 @@ const getOrder = catchAsync(async (req, res) => {
 });
 
 const getAllOrder = catchAsync(async (req, res) => {
-  const result = await orderService.getAllOrderIntoDB();
+  const { search, page, limit } = req.query;
+  const result = await orderService.getAllOrderIntoDB({ search, page, limit });
   sendResponse(res, {
     statusCode: 200,
     message: "Orders fetche successfull",
