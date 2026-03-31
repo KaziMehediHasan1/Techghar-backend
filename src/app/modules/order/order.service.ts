@@ -31,6 +31,8 @@ const getAllOrderIntoDB = async (payload: any) => {
       $or: [
         { "productData.title": { $regex: search, $options: "i" } },
         { "customerData.email": { $regex: search, $options: "i" } },
+        { status: { $regex: search, $options: "i" } },
+        { status: { $regex: search, $options: "i" } },
       ],
     };
   }
