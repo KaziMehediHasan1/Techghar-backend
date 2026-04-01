@@ -34,6 +34,16 @@ const getAllProduct = catchAsync(async (req, res) => {
   });
 });
 
+const getNewProducts = catchAsync(async (req, res) => {
+  const result = await productService.getNewProductsIntoDB();
+  sendResponse(res, {
+    statusCode: SUCCESS_MESSAGES.product.fetched.statusCode,
+    message: SUCCESS_MESSAGES.product.fetched.message,
+    success: true,
+    data: result,
+  });
+});
+
 const getProduct = catchAsync(async (req, res) => {
   const id = req.params.id;
   const result = await productService.getProductIntoDB(id as string);
@@ -68,6 +78,7 @@ const updateProduct = catchAsync(async (req, res) => {
 });
 
 export const productController = {
+  getNewProducts,
   createProduct,
   getAllProduct,
   getProduct,

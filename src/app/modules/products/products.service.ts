@@ -70,6 +70,17 @@ const getAllProductsIntoDB = async (payload: any) => {
   };
 };
 
+const getNewProductsIntoDB = async () => {
+  const result = await productsModel.find().sort({ createdAt: -1 }).limit(10);
+  if (!result) {
+    throw new AppError(
+      ERROR_MESSAGES.product.fetchAll.statusCode,
+      ERROR_MESSAGES.product.fetchAll.message,
+    );
+  }
+  return result;
+};
+
 const getProductIntoDB = async (payload: string) => {
   const result = await productsModel.findById(payload);
   if (!result) {
@@ -112,6 +123,7 @@ const updateProductIntoDB = async (payload: any) => {
 };
 
 export const productService = {
+  getNewProductsIntoDB,
   createProductIntoDB,
   getAllProductsIntoDB,
   getProductIntoDB,
