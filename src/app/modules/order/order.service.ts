@@ -110,7 +110,6 @@ const getAllOrderIntoDB = async (payload: any) => {
 
   // Total count
   const totalDataCount = await orderModel.countDocuments();
-
   return {
     result,
     meta: {

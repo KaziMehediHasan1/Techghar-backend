@@ -15,7 +15,7 @@ const createProductIntoDB = async (payload: any) => {
 };
 
 const getAllProductsIntoDB = async (payload: any) => {
-  const { search, price, category, brand, colors, cursor, page, limit } =
+  const { search, price, category, brand, colors, cursor, page, limit, sort } =
     payload;
   let query: any = {};
   const Limit = Number(limit);
@@ -28,9 +28,21 @@ const getAllProductsIntoDB = async (payload: any) => {
       { category: { $regex: search, $options: "i" } },
     ];
   }
-  if (price) {
-    query.price = { $lte: price };
+
+  // 2. Advanced Price Range Parser ($2,000.00 - $3,000.00)
+  if (price && typeof price === "string" && price.includes("-")) {
+    const range = price
+      .split("-")
+      .map((p) => Number(p.replace(/[^0-9.]/g, "")));
+
+    if (range.length === 2) {
+      query.price = { $gte: range[0], $lte: range[1] };
+    }
+  } else if (price) {
+    const numericPrice = Number(price.toString().replace(/[^0-9.]/g, ""));
+    query.price = { $lte: numericPrice };
   }
+
   if (category) {
     query.category = category;
   }
@@ -40,16 +52,25 @@ const getAllProductsIntoDB = async (payload: any) => {
   if (colors) {
     query.colors = colors;
   }
+  if (sort) {
+    query.sort = sort;
+  }
 
   // cursor / infinity based pagination -
   if (cursor) {
     query._id = { $lt: cursor };
   }
 
+  let sortOptions: any = { _id: -1 }; // Default: Newest first
+  if (sort) {
+    if (sort === "asc") sortOptions = { price: 1 };
+    if (sort === "desc") sortOptions = { price: -1 };
+  }
+  
   const totalDataCount = await productsModel.countDocuments(query);
   const result = await productsModel
     .find(query)
-    .sort({ _id: -1 })
+    .sort(sortOptions)
     .limit(Limit)
     .skip(skipPage);
 

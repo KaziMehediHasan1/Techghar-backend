@@ -9,9 +9,21 @@ const productSchema = new mongoose.Schema<IProduct>(
       type: String,
       required: true,
       index: true,
-      enum: ["Headphone", "PC Componet", "Light", "Monitor", "Phone", "PC"],
+      enum: [
+        "Laptop",
+        "Desktop",
+        "Light",
+        "Monitor",
+        "Phone",
+        "PC",
+        "Tablet",
+        "Accessory",
+        "Printer",
+        "Scanner",
+        "Networking",
+      ],
     },
-    colors: { type: [String], required: true, default: ["Black"], index: true }, 
+    colors: { type: [String], required: true, default: ["Black"], index: true },
     brand: { type: String, required: true, index: true },
     description: { type: String, required: true },
 
@@ -22,15 +34,15 @@ const productSchema = new mongoose.Schema<IProduct>(
     // Specifications Section (Dynamic Key-Value Pair)
     specs: [
       {
-        label: { type: String }, 
-        value: { type: String }, 
+        label: { type: String },
+        value: { type: String },
       },
     ],
 
     // Warranty & Support
-    warranty: { type: String, default: "No Warranty" }, 
+    warranty: { type: String, default: "No Warranty" },
 
-    // Quick Details/Bullet Points 
+    // Quick Details/Bullet Points
     features: { type: [String], default: [] },
 
     price: { type: Number, required: true, index: true },

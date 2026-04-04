@@ -14,7 +14,7 @@ const createProduct = catchAsync(async (req, res) => {
 });
 
 const getAllProduct = catchAsync(async (req, res) => {
-  const { search, price, category, brand, colors, cursor, page, limit } =
+  const { search, price, category, brand, colors, cursor, page, limit,sort } =
     req.query;
   const result = await productService.getAllProductsIntoDB({
     search,

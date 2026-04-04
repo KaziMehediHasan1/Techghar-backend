@@ -11,7 +11,18 @@ export interface IProduct {
   sku?: string;
 
   description: string;
-  category: "Headphone" | "PC Componet" | "Light" | "Monitor" | "Phone" | "PC";
+  category:
+    | "Laptop"
+    | "Desktop"
+    | "Light"
+    | "Monitor"
+    | "Phone"
+    | "PC"
+    | "Tablet"
+    | "Accessory"
+    | "Printer"
+    | "Scanner"
+    | "Networking";
   brand: string;
 
   colors: string[];
