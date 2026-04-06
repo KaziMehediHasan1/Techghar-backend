@@ -1,7 +1,6 @@
 import productsModel from "@/app/modules/products/products.model.js";
 import AppError from "@/utils/appError.js";
 import { ERROR_MESSAGES } from "@/constants/errorMessages.js";
-import { meta } from "zod/v4/core";
 
 const createProductIntoDB = async (payload: any) => {
   const result = await productsModel.create(payload);
@@ -17,8 +16,22 @@ const createProductIntoDB = async (payload: any) => {
 const getAllProductsIntoDB = async (payload: any) => {
   const { search, price, category, brand, colors, cursor, page, limit, sort } =
     payload;
+
+  console.log(
+    search,
+    price,
+    category,
+    brand,
+    colors,
+    cursor,
+    page,
+    limit,
+    sort,
+    "checkkkkkkkkkk",
+  );
+  
   let query: any = {};
-  const Limit = Number(limit);
+  const Limit = Number(limit) || 10;
   const Page = Number(page) || 1;
   const skipPage = (Page - 1) * Limit;
   if (search) {
@@ -66,7 +79,7 @@ const getAllProductsIntoDB = async (payload: any) => {
     if (sort === "asc") sortOptions = { price: 1 };
     if (sort === "desc") sortOptions = { price: -1 };
   }
-  
+
   const totalDataCount = await productsModel.countDocuments(query);
   const result = await productsModel
     .find(query)

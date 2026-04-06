@@ -8,9 +8,9 @@ import express from "express";
 const route = express.Router();
 
 route.post("/", validateRequest(zodProductValidation),validateAccessToken("admin"), productController.createProduct);
-route.get("/", validateAccessToken("admin","user"), productController.getAllProduct);
-route.get("/new", validateAccessToken("admin","user"), productController.getNewProducts);
-route.get("/:id", validateAccessToken("user","admin"), productController.getProduct);
+route.get("/", productController.getAllProduct);
+route.get("/new", productController.getNewProducts);
+route.get("/:id", productController.getProduct);
 route.patch("/:id",validateAccessToken("user","admin"), productController.updateProduct)
 route.delete("/:id",validateAccessToken("user","admin"), productController.deleteProduct)
 route.post("/ai",generateProductFromImage)
