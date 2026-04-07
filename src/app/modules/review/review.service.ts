@@ -43,7 +43,59 @@ const getAllReviewsFromDB = async (payload: any) => {
   const limitNumber = Number(limit) || 10;
   const skipPage = (pageNumber - 1) * limitNumber;
 
-  const result = await reviewModel.find(query).skip(skipPage).limit(limitNumber);
+  // find(query).skip(skipPage).limit(limitNumber)
+
+  const result = await reviewModel.aggregate([
+    { $match: query },
+    {
+      $addFields: {
+        userIdObj: { $toObjectId: "$userId" },
+        productIdObj: { $toObjectId: "$productId" },
+      },
+    },
+    {
+      $lookup: {
+        from: "users",
+        localField: "userId",
+        foreignField: "userIdObj",
+        as: "userData",
+      },
+    },
+    { $unwind: { path: "$userData", preserveNullAndEmptyArrays: true } },
+
+    {
+      $lookup: {
+        from: "products",
+        localField: "productId",
+        foreignField: "productIdObj",
+        as: "productData",
+      },
+    },
+    { $unwind: { path: "$productData", preserveNullAndEmptyArrays: true } },
+
+    {
+      $project: {
+        _id: 1,
+        productId: 1,
+        comment: 1,
+        shortComment: 1,
+        userId: 1,
+        title: 1,
+        review_text: 1,
+        rating: 1,
+        isApproved: 1,
+        createdAt: 1,
+        updatedAt: 1,
+        product_name: "$productData.title",
+        product_price: "$productData.finalPrice",
+        user_name: "$userData.name",
+      },
+    },
+    { $sort: { createdAt: -1 } },
+    { $skip: skipPage },
+    { $limit: limitNumber },
+  ]);
+
   if (!result) {
     throw new AppError(
       ERROR_MESSAGES.review.notFound.statusCode,

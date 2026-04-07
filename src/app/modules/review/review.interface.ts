@@ -4,8 +4,9 @@ export interface IReview {
   userId: mongoose.Schema.Types.ObjectId;
   productId: mongoose.Schema.Types.ObjectId;
 
-  rating: number; // 1–5 ⭐
+  rating: number; 
   comment: string;
+  shortComment?: string;
 
   isVerifiedPurchase?: boolean;
   isApproved?: boolean;

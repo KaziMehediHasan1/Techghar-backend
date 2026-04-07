@@ -17,19 +17,6 @@ const getAllProductsIntoDB = async (payload: any) => {
   const { search, price, category, brand, colors, cursor, page, limit, sort } =
     payload;
 
-  console.log(
-    search,
-    price,
-    category,
-    brand,
-    colors,
-    cursor,
-    page,
-    limit,
-    sort,
-    "checkkkkkkkkkk",
-  );
-  
   let query: any = {};
   const Limit = Number(limit) || 10;
   const Page = Number(page) || 1;
@@ -65,19 +52,31 @@ const getAllProductsIntoDB = async (payload: any) => {
   if (colors) {
     query.colors = colors;
   }
+  
+  let sortOptions: any = { createdAt: -1 }; 
+
   if (sort) {
-    query.sort = sort;
+    switch (sort) {
+      case "price_asc":
+        sortOptions = { price: 1 };
+        break;
+      case "price_desc":
+        sortOptions = { price: -1 };
+        break;
+      case "date_asc":
+        sortOptions = { createdAt: 1 }; 
+        break;
+      case "date_desc":
+        sortOptions = { createdAt: -1 }; 
+        break;
+      default:
+        sortOptions = { createdAt: -1 };
+    }
   }
 
   // cursor / infinity based pagination -
   if (cursor) {
     query._id = { $lt: cursor };
-  }
-
-  let sortOptions: any = { _id: -1 }; // Default: Newest first
-  if (sort) {
-    if (sort === "asc") sortOptions = { price: 1 };
-    if (sort === "desc") sortOptions = { price: -1 };
   }
 
   const totalDataCount = await productsModel.countDocuments(query);

@@ -7,8 +7,8 @@ import express from "express";
 const route = express.Router();
 
 route.post("/",validateAccessToken("admin"), validateRequest(zodBlogValidation), blogController.createBlog);
-route.get("/", validateAccessToken("admin"), blogController.getAllBlog);
-route.get("/:id",validateAccessToken("admin"), blogController.getBlog);
+route.get("/", blogController.getAllBlog);
+route.get("/:id", blogController.getBlog);
 route.patch("/:id",validateAccessToken("admin"), blogController.updateBlog);
 route.delete("/:id",validateAccessToken("admin"), blogController.deleteBlog)
 

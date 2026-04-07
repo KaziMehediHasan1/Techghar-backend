@@ -9,6 +9,8 @@ const reviewSchema = new mongoose.Schema<IReview>(
     rating: { type: Number, min: 1, max: 5, required: true, index: true },
     comment: { type: String, required: true },
 
+    shortComment: { type: String },
+
     isVerifiedPurchase: { type: Boolean, default: false },
     isApproved: { type: Boolean, default: false, index: true },
   },

@@ -8,11 +8,9 @@ import express from "express";
 const route = express.Router();
 // --- Both Can Access
 route.post("/",validateRequest(reviewZodSchema), validateAccessToken("user","admin"), reviewController.createReview);
+route.get("/",  reviewController.getAllReviews);
 route.get("/:id",validateAccessToken("user","admin"), reviewController.getSingleReview);
 route.patch("/:id",validateAccessToken("user","admin"), reviewController.updateReview);
 route.delete("/:id",validateAccessToken("user","admin"), reviewController.deleteReview);
-
-// --- Admin Access validateAccessToken("admin")---
-route.get("/",  reviewController.getAllReviews);
 const reviewRoute = route;
 export default reviewRoute;
