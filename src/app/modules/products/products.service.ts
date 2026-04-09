@@ -14,7 +14,7 @@ const createProductIntoDB = async (payload: any) => {
 };
 
 const getAllProductsIntoDB = async (payload: any) => {
-  const { search, price, category, brand, colors, cursor, page, limit, sort } =
+  const { search, price, category, brand, colors, cursor, page, limit, sort, series } =
     payload;
 
   let query: any = {};
@@ -27,6 +27,7 @@ const getAllProductsIntoDB = async (payload: any) => {
       { title: { $regex: searchRegex } },
       { brand: { $regex: searchRegex } },
       { category: { $regex: searchRegex } },
+      { series: { $regex: searchRegex } },
     ];
   }
 
@@ -46,6 +47,9 @@ const getAllProductsIntoDB = async (payload: any) => {
 
   if (category) {
     query.category = category;
+  }
+  if (series) {
+    query.series = series;
   }
   if (brand) {
     query.brand = brand;
