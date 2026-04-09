@@ -21,11 +21,12 @@ const getAllProductsIntoDB = async (payload: any) => {
   const Limit = Number(limit) || 10;
   const Page = Number(page) || 1;
   const skipPage = (Page - 1) * Limit;
-  if (search) {
+  if (search && search.trim() !== "") {
+    const searchRegex = new RegExp(search.trim(), "i");
     query.$or = [
-      { title: { $regex: search, $options: "i" } },
-      { brand: { $regex: search, $options: "i" } },
-      { category: { $regex: search, $options: "i" } },
+      { title: { $regex: searchRegex } },
+      { brand: { $regex: searchRegex } },
+      { category: { $regex: searchRegex } },
     ];
   }
 
@@ -52,8 +53,8 @@ const getAllProductsIntoDB = async (payload: any) => {
   if (colors) {
     query.colors = colors;
   }
-  
-  let sortOptions: any = { createdAt: -1 }; 
+
+  let sortOptions: any = { createdAt: -1 };
 
   if (sort) {
     switch (sort) {
@@ -64,10 +65,10 @@ const getAllProductsIntoDB = async (payload: any) => {
         sortOptions = { price: -1 };
         break;
       case "date_asc":
-        sortOptions = { createdAt: 1 }; 
+        sortOptions = { createdAt: 1 };
         break;
       case "date_desc":
-        sortOptions = { createdAt: -1 }; 
+        sortOptions = { createdAt: -1 };
         break;
       default:
         sortOptions = { createdAt: -1 };
