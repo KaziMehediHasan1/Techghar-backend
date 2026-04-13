@@ -3,11 +3,13 @@ import catchAsync from "@/utils/catchAsync.js";
 import sendResponse from "@/utils/sendResponse.js";
 
 const createPaymentIntent = catchAsync(async (req, res) => {
-  const { amount, currency } = req.body;
+  const { amount, currency,productID } = req.body;
   const result = await paymentService.createPaymentIntentIntoStripe({
     amount,
     currency,
+    productID
   });
+  
   sendResponse(res, {
     statusCode: 200,
     success: true,
