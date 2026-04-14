@@ -10,7 +10,7 @@ const createPaymentIntentIntoStripe = async (payload: any) => {
     automatic_payment_methods: { enabled: true },
   });
 
-  const productIds = payload.productID;
+  const productIds = payload;
   console.log(productIds,"chck idd")
 
   // if (!paymentIntent) {

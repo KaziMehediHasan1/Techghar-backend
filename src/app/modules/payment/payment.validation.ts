@@ -20,14 +20,14 @@ export const zododPaymentValidation = zod.object({
       userId: objectId,
       orderId: objectId,
 
-      paymentMethod: zod.enum(["stripe", "sslcommerzod", "cash_on_delivery"]),
+      paymentMethod: zod.enum(["stripe", "sslcommerzod", "cash_on_delivery"]).optional(),
       paymentStatus: zod.enum(["pending", "paid", "failed", "refunded"]),
 
       transactionId: zod.string().min(1),
-      currency: zod.string().length(3),
+      currency: zod.string().length(3).optional(),
       amount: zod.number().positive(),
 
-      products: zod.array(productSchema).min(1),
+      products: zod.array(productSchema).min(1).optional(),
 
       isPaid: zod.boolean(),
       paidAt: zod.coerce.date().optional(),
