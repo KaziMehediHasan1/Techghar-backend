@@ -18,7 +18,16 @@ const createPaymentIntent = catchAsync(async (req, res) => {
   });
 });
 
-const createPayment = catchAsync(async (req, res) => { });
+const createPayment = catchAsync(async (req, res) => {
+  const data = req.body;
+  const result = await paymentService.createPaymentIntoDB(data);
+  sendResponse(res, {
+    statusCode: 201,
+    success: true,
+    message: "Payment Details Save DB",
+    data: result
+  })
+});
 
 const getAllPaymentsData = catchAsync(async (req, res) => { });
 

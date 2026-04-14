@@ -21,6 +21,10 @@ const orderSchema = new mongoose.Schema<IOrder>(
       required: true,
       min: 1,
     },
+    totalPrice: {
+      type: Number,
+      required: true
+    },
     status: {
       type: String,
       enum: ["pending", "confirmed", "cancelled", "shipped", "delivered"],

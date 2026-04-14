@@ -6,6 +6,7 @@ export interface IOrder {
   quantity: number;
   colors: string;
   status: string;
+  totalPrice: number;
   cancelledBy: string;
   cancelledAt: Date;
   embedding: number[];

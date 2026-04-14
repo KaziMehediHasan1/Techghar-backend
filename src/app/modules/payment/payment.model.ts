@@ -1,5 +1,5 @@
 import type { IPayment } from "@/app/modules/payment/payment.interface.js";
-import { Schema, model } from "mongoose";
+import mongoose, { Schema, model } from "mongoose";
 
 const paymentSchema = new Schema<IPayment>(
   {
@@ -46,4 +46,4 @@ const paymentSchema = new Schema<IPayment>(
   { timestamps: true },
 );
 
-export const Payment = model<IPayment>("Payment", paymentSchema);
+export default mongoose.model<IPayment>("Payment", paymentSchema);
