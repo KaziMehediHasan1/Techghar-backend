@@ -21,7 +21,7 @@ const orderSchema = new mongoose.Schema<IOrder>(
       required: true,
       min: 1,
     },
-    totalPrice: {
+    price: {
       type: Number,
       required: true
     },
