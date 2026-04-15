@@ -6,9 +6,9 @@ import express from "express";
 
 const route = express.Router();
 
-route.post("/create-payment-intent",validateAccessToken("user","admin"),paymentController.createPaymentIntent),
+route.post("/create-payment-intent", paymentController.createPaymentIntent),
 route.post("/",validateAccessToken("user","admin"),validateRequest(zododPaymentValidation),paymentController.createPayment),
-route.get("/",validateAccessToken("admin"), paymentController.getAllPaymentsData),
+route.get("/",validateAccessToken("admin","user"), paymentController.getAllPaymentsData),
 route.get("/:id",validateAccessToken("admin","user"),paymentController.getPaymentData),
 route.patch("/:id",validateAccessToken("admin"),paymentController.updatePaymentData)
 route.delete("/:id",validateAccessToken("admin"), paymentController.deletePaymentData)
