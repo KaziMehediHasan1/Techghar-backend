@@ -21,6 +21,14 @@ const getOrderIntoDB = async (payload: string) => {
   return result;
 };
 
+const getUserOrderIntoDB = async (payload: string) => {
+  const result = await orderModel.find({ userId: payload as any });
+  if (!result) {
+    throw new AppError(404, "Fetched Fail, Try again 20sec later.");
+  }
+  return result;
+};
+
 const getAllOrderIntoDB = async (payload: any) => {
   const { search, page, limit } = payload;
   const skip = (Number(page) - 1) * Number(limit);
@@ -147,4 +155,5 @@ export const orderService = {
   getAllOrderIntoDB,
   updateOrderIntoDB,
   deleteOrderIntoDB,
+  getUserOrderIntoDB
 };

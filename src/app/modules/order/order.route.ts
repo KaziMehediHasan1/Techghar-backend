@@ -8,6 +8,7 @@ const route = express.Router();
 
 route.post("/", validateRequest(zodOrderValidation), validateAccessToken("admin", "user"), orderController.createOrder);
 route.get("/:id", validateAccessToken("admin", "user"), orderController.getOrder);
+route.get("/user/:id", validateAccessToken("admin", "user"), orderController.getUserOrder);
 route.get("/", validateAccessToken("admin"), orderController.getAllOrder);
 route.patch("/:id", validateAccessToken("admin", "user"), orderController.updateOrder);
 route.delete("/:id", validateAccessToken("user", "admin"), orderController.deleteOrder);

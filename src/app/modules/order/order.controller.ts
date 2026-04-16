@@ -24,6 +24,17 @@ const getOrder = catchAsync(async (req, res) => {
   });
 });
 
+const getUserOrder = catchAsync(async (req, res) => {
+  const id = req.params.id as string;
+  const result = await orderService.getUserOrderIntoDB(id);
+  sendResponse(res, {
+    statusCode: 200,
+    message: "Your Order Data Fatch Successfully",
+    success: true,
+    data: result,
+  });
+});
+
 const getAllOrder = catchAsync(async (req, res) => {
   const { search, page, limit } = req.query;
   const result = await orderService.getAllOrderIntoDB({ search, page, limit });
@@ -63,4 +74,5 @@ export const orderController = {
   getAllOrder,
   updateOrder,
   deleteOrder,
+  getUserOrder
 };
