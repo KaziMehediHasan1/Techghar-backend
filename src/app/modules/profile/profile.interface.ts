@@ -2,6 +2,7 @@ import type mongoose from "mongoose";
 
 type IAddress = {
   fullName: string;
+  label: string;
   street?: string;
   city: string;
   state: string;
