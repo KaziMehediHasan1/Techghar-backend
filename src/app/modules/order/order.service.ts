@@ -22,7 +22,7 @@ const getOrderIntoDB = async (payload: string) => {
 };
 
 const getUserOrderIntoDB = async (payload: string) => {
-  const result = await orderModel.find({ userId: payload as any });
+  const result = await orderModel.find({ userId: payload as any }).populate("productID");
   if (!result) {
     throw new AppError(404, "Fetched Fail, Try again 20sec later.");
   }
