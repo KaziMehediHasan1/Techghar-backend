@@ -4,6 +4,7 @@ const addressValidationSchema = zod.object({
   fullName: zod.string().min(1, "Full name is required"),
   label: zod.string(),
   street: zod.string().optional(),
+  addressLine: zod.string().optional(),
   city: zod.string().min(1, "City is required"),
   state: zod.string().min(1, "State is required"),
   zipCode: zod.string().min(1, "Zip code is required"),
@@ -13,11 +14,11 @@ const addressValidationSchema = zod.object({
 });
 
 export const zodProfileValidation = zod.object({
-  body: zod.object({
+  body: zod.object({ 
     userID: zod.string({ error: "user id is required" }),
-    addresss: zod.array(addressValidationSchema),
+    address: addressValidationSchema,
     orders: zod.array(zod.string()).default([]),
     wishlist: zod.array(zod.string()).default([]),
     reviews: zod.array(zod.string()).default([]),
-  }),
-});
+  })
+})

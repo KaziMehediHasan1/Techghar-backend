@@ -12,6 +12,7 @@ const createProfileAddressIntoDB = async (payload: any) => {
       ERROR_MESSAGES.profile.notFound.message
     );
   }
+  console.log("result", payload);
   const result = await profileModel.create(payload);
   if (!result) {
     throw new AppError(

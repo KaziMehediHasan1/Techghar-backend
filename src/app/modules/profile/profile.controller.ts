@@ -1,7 +1,6 @@
 import { profileService } from "@/app/modules/profile/profile.service.js";
 import catchAsync from "@/utils/catchAsync.js";
 import sendResponse from "@/utils/sendResponse.js";
-import { ERROR_MESSAGES } from "@/constants/errorMessages.js";
 import { SUCCESS_MESSAGES } from "@/constants/successMessages.js";
 
 const createProfileAddress = catchAsync(async (req, res) => {

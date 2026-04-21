@@ -2,10 +2,10 @@ import type mongoose from "mongoose";
 
 type IAddress = {
   fullName: string;
-  label: string;
   street?: string;
   city: string;
   state: string;
+  addressLine: string;
   zipCode: string;
   phone: string;
   isDefaultBilling?: boolean;
@@ -13,7 +13,7 @@ type IAddress = {
 };
 export interface IProfile {
   userID: mongoose.Schema.Types.ObjectId;
-  addresss: IAddress[];
+  address: IAddress[];
   orders: string[];
   wishlist: string[];
   reviews: string[];
