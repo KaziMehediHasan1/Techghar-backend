@@ -2,7 +2,11 @@ import type { TRole } from "@/types/auth.type.js";
 
 export interface IUserSchema {
   uid: string;
-  name: string;
+  firstName: string;
+  lastName: string;
+  phone: string;
+  dateofbirth: string;
+  gender: string;
   email: string;
   password: string;
   resetPasswordToken?: string | null;
