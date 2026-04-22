@@ -2,6 +2,7 @@ import profileModel from "@/app/modules/profile/profile.model.js";
 import userModel from "@/app/modules/user/user.model.js";
 import AppError from "@/utils/appError.js";
 import { ERROR_MESSAGES } from "@/constants/errorMessages.js";
+import mongoose from "mongoose";
 
 const createProfileAddressIntoDB = async (payload: any) => {
   const { userID } = payload;
@@ -24,7 +25,9 @@ const createProfileAddressIntoDB = async (payload: any) => {
 };
 
 const getProfileAddressIntoDB = async (payload: string) => {
-  const result = await profileModel.findById({ _id: payload });
+  const result = await profileModel.findOne({
+    userID: new mongoose.Types.ObjectId(payload)
+  } as any);
   if (!result) {
     throw new AppError(
       ERROR_MESSAGES.profile.fetchFailed.statusCode,
