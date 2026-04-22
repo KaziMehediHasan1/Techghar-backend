@@ -28,6 +28,7 @@ const getProfileAddressIntoDB = async (payload: string) => {
   const result = await profileModel.findOne({
     userID: new mongoose.Types.ObjectId(payload)
   } as any);
+  if (!result) return null;
   if (!result) {
     throw new AppError(
       ERROR_MESSAGES.profile.fetchFailed.statusCode,
@@ -49,11 +50,8 @@ const getAllProfileAddressIntoDB = async () => {
 };
 
 const deleteProfileAddressIntoDB = async (payload: any) => {
-  const userDelete = await userModel.findByIdAndDelete({
-    _id: payload?.userID,
-  });
-  const result = await profileModel.findByIdAndDelete({ _id: payload?.id });
-  if (!result && !userDelete) {
+  const result = await profileModel.findByIdAndDelete(payload);
+  if (!result) {
     throw new AppError(
       ERROR_MESSAGES.profile.deleteFailed.statusCode,
       ERROR_MESSAGES.profile.deleteFailed.message
