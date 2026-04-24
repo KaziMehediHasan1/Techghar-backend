@@ -21,7 +21,7 @@ route.delete("/admin/user/:id", validateAccessToken("admin"), userController.del
 
 // --- Both Access ---
 route.get("/profile/me", validateAccessToken("user", "admin"), userController.getMyProfile);
-route.delete("/me", validateAccessToken("user", "admin"), userController.deleteMyAccount);
+route.delete("/me/:id", validateAccessToken("user", "admin"), userController.deleteMyAccount);
 route.patch("/update/profile/:id", validateRequest(updateUserZodSchema), validateAccessToken("user", "admin"), userController.upadetProfile);
 route.patch("/update/password/:id", validateRequest(updateUserZodSchema), validateAccessToken("user", "admin"), userController.upadetPassword);
 

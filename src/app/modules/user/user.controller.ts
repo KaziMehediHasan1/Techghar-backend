@@ -54,7 +54,8 @@ const getMyProfile = catchAsync(async (req, res) => {
 });
 
 const deleteMyAccount = catchAsync(async (req, res) => {
-  const id = req.user?.id as string;
+  const id = (req.params._id || req.params.id) as string;
+  console.log(id,"DELET")
   const result = await userService.deleteUserFromDB(id);
   sendResponse(res, {
     statusCode: SUCCESS_MESSAGES.user.profileDeleted.statusCode,
@@ -65,7 +66,7 @@ const deleteMyAccount = catchAsync(async (req, res) => {
 });
 
 const deleteUserByAdmin = catchAsync(async (req, res) => {
-  const id = req.user?.id as string;
+  const id = (req.params._id || req.params.id) as string;
   const result = await userService.deleteUserByAdminFromDB(id);
   sendResponse(res, {
     statusCode: SUCCESS_MESSAGES.user.adminDeletedUser.statusCode,

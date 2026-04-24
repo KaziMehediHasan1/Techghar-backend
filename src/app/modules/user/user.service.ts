@@ -4,6 +4,8 @@ import config from "@/config/index.js";
 import { ERROR_MESSAGES } from "@/constants/errorMessages.js";
 import { uidGenerator } from "@/helper/uidGenerator.js";
 import bcrypt from "bcrypt";
+import mongoose, { Types } from 'mongoose';
+import profileModel from "../profile/profile.model.js";
 
 const createUserIntoDB = async (payload: any) => {
   // CHECK USER IS ALREADY REGISTERD -
@@ -159,15 +161,46 @@ const getUserProfileFromDB = async (payload: string) => {
   return result;
 };
 
+
+
 const deleteUserFromDB = async (payload: string) => {
-  const result = await userModel.findByIdAndDelete({ _id: payload });
-  if (!result) {
-    throw new AppError(
-      ERROR_MESSAGES.auth.deleteNotFound.statusCode,
-      ERROR_MESSAGES.auth.deleteNotFound.message,
-    );
+  const session = await mongoose.startSession();
+
+  try {
+    session.startTransaction();
+
+    // ১. স্ট্রিং পেলোডকে অবজেক্ট আইডিতে কনভার্ট করা (টাইপ সেফটির জন্য)
+    const userId = new Types.ObjectId(payload);
+
+    // ২. ইউজার ডিলিট করা
+    const deletedUser = await userModel
+      .findByIdAndDelete({ _id: userId })
+      .session(session);
+
+    if (!deletedUser) {
+      throw new AppError(
+        ERROR_MESSAGES.auth.deleteNotFound.statusCode,
+        ERROR_MESSAGES.auth.deleteNotFound.message,
+      );
+    }
+
+    // ৩. প্রোফাইল ডিলিট করা
+    // এখানে 'userID' ফিল্ডটি ref হিসেবে থাকায় Types.ObjectId ব্যবহার করা বাধ্যতামূলক
+    await profileModel
+      .findOneAndDelete({ userID: userId as any })
+      .session(session);
+
+    // ৪. সব সফল হলে ট্রানজেকশন সেভ করা
+    await session.commitTransaction();
+    await session.endSession();
+
+    return deletedUser;
+  } catch (error: any) {
+    // এরর হলে আগের অবস্থায় ফিরে যাওয়া (Rollback)
+    await session.abortTransaction();
+    await session.endSession();
+    return error;
   }
-  return result;
 };
 
 const deleteUserByAdminFromDB = async (payload: string) => {
@@ -200,7 +233,6 @@ const updateProfileFromDB = async (payload: any) => {
   }
   return result;
 };
-
 
 const updatePasswordFromDB = async (payload: any) => {
   const { id, data } = payload;
