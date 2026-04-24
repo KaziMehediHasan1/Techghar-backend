@@ -76,7 +76,19 @@ const deleteUserByAdmin = catchAsync(async (req, res) => {
 });
 
 const upadetProfile = catchAsync(async (req, res) => {
-  const id = req.user?.id as string;
+  const id = req.user?.id as string || req.params._id || req.params.id;
+  const data = req.body;
+  const result = await userService.updateProfileFromDB({ id, data });
+  sendResponse(res, {
+    statusCode: SUCCESS_MESSAGES.user.profileUpdated.statusCode,
+    success: true,
+    message: SUCCESS_MESSAGES.user.profileUpdated.message,
+    data: result,
+  });
+});
+
+const upadetPassword = catchAsync(async (req, res) => {
+  const id = req.user?.id as string || req.params._id || req.params.id;
   const data = req.body;
   const result = await userService.updateProfileFromDB({ id, data });
   sendResponse(res, {
@@ -94,4 +106,5 @@ export const userController = {
   deleteMyAccount,
   deleteUserByAdmin,
   upadetProfile,
+  upadetPassword
 };

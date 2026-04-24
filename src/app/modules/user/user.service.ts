@@ -191,6 +191,28 @@ const updateProfileFromDB = async (payload: any) => {
       runValidators: true,
     },
   );
+  console.log(result, "UPDATE");
+  if (!result) {
+    throw new AppError(
+      ERROR_MESSAGES.user.updateFailed.statusCode,
+      ERROR_MESSAGES.user.updateFailed.message,
+    );
+  }
+  return result;
+};
+
+const updatePasswordFromDB = async (payload: any) => {
+  const { id, data } = payload;
+  
+  const result = await userModel.findByIdAndUpdate(
+    { _id: id },
+    { $set: data },
+    {
+      new: true,
+      runValidators: true,
+    },
+  );
+  console.log(result, "UPDATE");
   if (!result) {
     throw new AppError(
       ERROR_MESSAGES.user.updateFailed.statusCode,
@@ -207,4 +229,5 @@ export const userService = {
   deleteUserFromDB,
   deleteUserByAdminFromDB,
   updateProfileFromDB,
+  updatePasswordFromDB
 };

@@ -4,8 +4,8 @@ export interface IUserSchema {
   uid: string;
   firstName: string;
   lastName: string;
+  dob: string | Date;
   phone: string;
-  dateofbirth: string;
   gender: string;
   email: string;
   password: string;
