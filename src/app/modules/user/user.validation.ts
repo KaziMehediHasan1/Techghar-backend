@@ -28,5 +28,6 @@ export const updateUserZodSchema = zod.object({
     dob: zod.string().optional(),
     phone: zod.string().optional(),
     photo: zod.string().url().optional(),
+    password: zod.string().optional()
   }),
 });
