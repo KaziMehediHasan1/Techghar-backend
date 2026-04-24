@@ -90,7 +90,7 @@ const upadetProfile = catchAsync(async (req, res) => {
 const upadetPassword = catchAsync(async (req, res) => {
   const id = req.user?.id as string || req.params._id || req.params.id;
   const data = req.body;
-  const result = await userService.updateProfileFromDB({ id, data });
+  const result = await userService.updatePasswordFromDB({ id, data });
   sendResponse(res, {
     statusCode: SUCCESS_MESSAGES.user.profileUpdated.statusCode,
     success: true,

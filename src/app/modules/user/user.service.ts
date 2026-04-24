@@ -201,25 +201,36 @@ const updateProfileFromDB = async (payload: any) => {
   return result;
 };
 
+
 const updatePasswordFromDB = async (payload: any) => {
   const { id, data } = payload;
-  
-  const result = await userModel.findByIdAndUpdate(
-    { _id: id },
-    { $set: data },
-    {
-      new: true,
-      runValidators: true,
-    },
-  );
-  console.log(result, "UPDATE");
-  if (!result) {
-    throw new AppError(
-      ERROR_MESSAGES.user.updateFailed.statusCode,
-      ERROR_MESSAGES.user.updateFailed.message,
-    );
+  const { current, newPass, confirm } = data;
+
+  if (newPass !== confirm) {
+    throw new Error("Confirm and New Password are not same!");
   }
-  return result;
+
+  const user = await userModel.findById(id).select('+password');
+  if (!user) {
+    throw new Error("User not found!");
+  }
+
+  const isMatch = await bcrypt.compare(current, user.password);
+  if (!isMatch) {
+    throw new Error("Current password is incorrect!");
+  }
+
+  if (current === newPass) {
+    throw new Error("New password cannot be the same as current password!");
+  }
+
+  const salt = Number(config.bcrypt_salt_rounds);
+
+  // HASH PASSWORD -
+  const hashedPass = await bcrypt.hash(newPass, salt || 12);
+  user.password = hashedPass;
+  const res = await user.save();
+  return res;
 };
 
 export const userService = {
