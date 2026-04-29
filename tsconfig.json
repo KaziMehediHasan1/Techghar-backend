@@ -5,7 +5,7 @@
     // "ignoreDeprecations": "6.0",
     "rootDir": "./",
     "outDir": "./dist",
-    "baseUrl": ".",
+    // "baseUrl": ".",
     // "moduleResolution": "bundler",
     // "allowImportingTsExtensions": true,
     "paths": {

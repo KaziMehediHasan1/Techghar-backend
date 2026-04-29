@@ -8,12 +8,8 @@ import config from "@/config/index.js";
 import { setupCronJobs } from "@/utils/cron.js";
 import { createRouteHandler } from "uploadthing/express";
 import { ourFileRouter } from "@/utils/uploadthing.core.js";
-
+import { EventEmitter } from "events";
 const app: Application = express();
-// import { GoogleGenerativeAI } from "@google/generative-ai";
-// const genAI = new GoogleGenerativeAI(config.ai.apiKey as string);
-// const models = await genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
-// console.log(models,"modell check up");
 // // Middlewares
 app.use(helmet());
 setupCronJobs();
@@ -24,6 +20,7 @@ app.use(
     credentials: true,
   }),
 );
+EventEmitter.defaultMaxListeners = 20;
 app.use(express.json());
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));

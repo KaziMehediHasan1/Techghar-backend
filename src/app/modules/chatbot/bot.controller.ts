@@ -1,5 +1,4 @@
 import { botService } from "@/app/modules/chatbot/bot.service.js";
-import config from "@/config/index.js";
 import catchAsync from "@/utils/catchAsync.js";
 
 const handleBotChat = catchAsync(async (req, res) => {
@@ -18,7 +17,6 @@ const handleBotChat = catchAsync(async (req, res) => {
 
 
     for await (const chunk of eventStream) {
-      // LangGraph messages mode এ chunk = [AIMessageChunk, metadata]
       const messageChunk = Array.isArray(chunk) ? chunk[0] : chunk;
 
       // Skip tool call chunks এবং non-AI messages
@@ -34,13 +32,12 @@ const handleBotChat = catchAsync(async (req, res) => {
           .map((c: any) => c.text)
           .join("");
       }
-
-      // Tool call chunks skip করো (content empty থাকে)
+  
       if (text) {
         res.write(text);
       }
     }
-    // res.write(`d:{"finishReason":"stop"}\n`);
+
   } catch (error) {
     console.error("Streaming Error:", error);
     res.write(`${JSON.stringify("দুঃখিত, সার্ভারে সমস্যা হচ্ছে।")}\n`);

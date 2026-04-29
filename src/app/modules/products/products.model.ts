@@ -30,8 +30,6 @@ const productSchema = new mongoose.Schema<IProduct>(
     sku: { type: String, unique: true, sparse: true },
     modelName: { type: String },
     series: { type: String, required: true },
-
-    // Specifications Section (Dynamic Key-Value Pair)
     specs: [
       {
         label: { type: String },

@@ -1,9 +1,9 @@
 import { StateGraph, Annotation, MemorySaver } from "@langchain/langgraph";
-// import { ChatGoogleGenerativeAI } from "@langchain/google-genai";
 import { ChatGroq } from "@langchain/groq";
 import { ToolNode } from "@langchain/langgraph/prebuilt";
 import config from "@/config/index.js";
 import { productLookupTool } from "./tools/productLookupTool.js";
+import { ChatGoogleGenerativeAI } from "@langchain/google-genai";
 
 // 1. Define the State (Memory)
 const GraphState = Annotation.Root({
@@ -16,20 +16,35 @@ const GraphState = Annotation.Root({
 const tools = [productLookupTool];
 const toolNode = new ToolNode(tools);
 
-// 3. Initialize the Model and Bind Tools
-// const model = new ChatGoogleGenerativeAI({
-//   model: "gemini-2.5-flash",
-//   apiKey: config.ai.apiKey as string,
-//   temperature: 0,
-//   maxRetries: 1,
-//   streaming: true,
-// });
-
-const model = new ChatGroq({
+const mainModel = new ChatGroq({
   model: "llama-3.3-70b-versatile",
   apiKey: config.ai.GORQAPIKey as string,
   temperature: 0,
 });
+
+// ২. প্রথম ব্যাকআপ (Google Gemini)
+const fallbackModel1 = new ChatGoogleGenerativeAI({
+  model: "gemini-1.5-flash",
+  apiKey: config.ai.GeminiAPIKey as string,
+  temperature: 0,
+});
+
+// ৩. দ্বিতীয় ব্যাকআপ (Groq - Mixtral)
+const fallbackModel2 = new ChatGroq({
+  model: "llama-3-8b-8192-context-mixtral",
+  apiKey: config.ai.GORQAPIKey as string,
+  temperature: 0,
+});
+
+// ফলব্যাক চেইন তৈরি
+const modelWithFallback = mainModel
+  .bindTools([productLookupTool])
+  .withFallbacks({
+    fallbacks: [
+      fallbackModel1.bindTools([productLookupTool]),
+      fallbackModel2.bindTools([productLookupTool]),
+    ],
+  });
 
 /**
  * Retries a function with exponential backoff on rate limit or server errors.
@@ -58,34 +73,29 @@ export const retryWithBackoff = async <T>(
 
 const callModel = async (state: typeof GraphState.State) => {
   const response = await retryWithBackoff(async () => {
-    return await model
-      .bindTools([productLookupTool])
-      .invoke([
-        [
-          "system",
-          "You are Neo AI, a smart multilingual sales agent for TechGhar electronics shop.\n\n" +
-            "LANGUAGE: Always reply in the same language the user uses (Bengali, Banglish, or English).\n\n" +
-            "TOOL USAGE RULES:\n" +
-            "- ALWAYS call item_lookup tool FIRST for any product-related query. No exceptions.\n" +
-            "- Extract the best search keyword from user's message:\n" +
-            "  · 'MSI laptop dao' → item_lookup('MSI laptop')\n" +
-            "  · 'gaming monitor 144hz' → item_lookup('gaming monitor 144hz')\n" +
-            "  · '20000 taka te phone' → item_lookup('phone')\n" +
-            "  · 'ভালো ল্যাপটপ চাই' → item_lookup('laptop')\n" +
-            "  · 'wireless keyboard' → item_lookup('wireless keyboard')\n" +
-            "- NEVER ask the user for more info before calling the tool. Search first, filter after.\n" +
-            "- For greetings only (hi, hello, kmn acho, sালাম) → NO tool call needed.\n\n" +
-            "AFTER TOOL RETURNS DATA:\n" +
-            "- Show each product clearly with: Name, Brand, Price (finalPrice), Stock status, Rating, Image (images[0]).\n" +
-            "- If user mentioned a budget, filter results by finalPrice.\n" +
-            "- If no products found → say 'এই মুহূর্তে স্টকে নেই, অন্য কিছু খুঁজি?'\n" +
-            "- Always end with a call to action: 'Cart এ add করবো? নাকি আরো details চাও?'\n\n" +
-            "CONVERSATION:\n" +
-            "- Remember previous messages in the conversation.\n" +
-            "- If user follows up ('এটার price কত?', 'আরো দেখাও') → use context from previous messages to search again.",
-        ],
-        ...state.messages,
-      ]);
+    return await modelWithFallback.invoke([
+      [
+        "system",
+        "You are Neo AI, the friendly polyglot sales agent for TechGhar. Expert in all languages (including Banglish).\n\n" +
+          "CORE PROTOCOLS:\n" +
+          "- Match user's language/script perfectly. Adopt cultural politeness.\n" +
+          "- Call `item_lookup` for any product query. Use English for tool keywords, but reply in user's language.\n" +
+          "- Be a warm consultant. End with a discovery question (e.g., 'What is your budget?').\n\n" +
+          "PRODUCT DISPLAY (STRICT MARKDOWN):\n" +
+          "### **Product Name**\n" +
+          "\n![alt]({image_url})\n\n" +
+          "- **Brand:** {brand}\n" +
+          "- **Price:** {finalPrice} BDT\n" +
+          "- **Highlights:** {Translate key features}\n" +
+          "- **Rating:** {averageRating} ⭐\n\n" +
+          "INTERACTIVE ELEMENTS:\n" +
+          "- Always provide 2-3 localized buttons in square brackets: [Add to Cart 🛒] [More Details 🔍].\n" +
+          "- Mirror user's language for button text (e.g., Bengali: [কার্টে যোগ করুন 🛒]).\n\n" +
+          "CONTEXT:\n" +
+          "- Maintain history and adapt if the user switches languages mid-chat.",
+      ],
+      ...state.messages,
+    ]);
   });
 
   return { messages: [response] };
