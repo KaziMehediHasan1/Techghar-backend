@@ -2,18 +2,19 @@
 import { agent } from "@/app/modules/chatbot/bot.agent.js";
 import { HumanMessage } from "@langchain/core/messages";
 
-const handleBotChat = async (message: string, userId: string) => {
-  const config = { configurable: { thread_id: userId } };
+const handleBotChat = async (messages: string, threadId: string) => {
+  const config = { configurable: { thread_id: threadId } };
 
-  const result = await agent.invoke(
+  return agent.stream(
     {
-      messages: [new HumanMessage(message)],
+      messages: [new HumanMessage(messages)],
     },
-    config,
+    {
+      ...config,
+      streamMode: "messages",
+      recursionLimit: 10,
+    },
   );
-
-  const lastMessage = result.messages[result.messages.length - 1];
-  return lastMessage.content;
 };
 
 export const botService = {

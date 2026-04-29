@@ -1,8 +1,9 @@
 import { StateGraph, Annotation, MemorySaver } from "@langchain/langgraph";
-import { ChatGoogleGenerativeAI } from "@langchain/google-genai";
+// import { ChatGoogleGenerativeAI } from "@langchain/google-genai";
+import { ChatGroq } from "@langchain/groq";
 import { ToolNode } from "@langchain/langgraph/prebuilt";
 import config from "@/config/index.js";
-import { productLookupTool } from "@/app/modules/chatbot/tools/productLookupTool.js";
+import { productLookupTool } from "./tools/productLookupTool.js";
 
 // 1. Define the State (Memory)
 const GraphState = Annotation.Root({
@@ -16,11 +17,18 @@ const tools = [productLookupTool];
 const toolNode = new ToolNode(tools);
 
 // 3. Initialize the Model and Bind Tools
-const model = new ChatGoogleGenerativeAI({
-  model: "gemini-2.5-flash",
-  apiKey: config.ai.apiKey as string,
+// const model = new ChatGoogleGenerativeAI({
+//   model: "gemini-2.5-flash",
+//   apiKey: config.ai.apiKey as string,
+//   temperature: 0,
+//   maxRetries: 1,
+//   streaming: true,
+// });
+
+const model = new ChatGroq({
+  model: "llama-3.3-70b-versatile",
+  apiKey: config.ai.GORQAPIKey as string,
   temperature: 0,
-  maxRetries: 1,
 });
 
 /**
@@ -34,49 +42,47 @@ export const retryWithBackoff = async <T>(
     try {
       return await fn();
     } catch (error: any) {
-      // 429: Rate Limit, 503: Service Overloaded
       const isRetryable = error.status === 429 || error.status === 503;
 
       if (isRetryable && attempt < maxRetries) {
-        // Exponential delay: 2s, 4s, 8s... up to 30s
         const delay = Math.min(1000 * Math.pow(2, attempt), 30000);
-
-        console.warn(
-          `⚠️ [Attempt ${attempt}] Rate limit/Overload. Retrying in ${delay / 1000}s...`,
-        );
-
         await new Promise((resolve) => setTimeout(resolve, delay));
         continue;
       }
 
-      // Jodi retry-able na hoy ba retry limit shesh hoye jay
       throw error;
     }
   }
   throw new Error("Max retries exceeded");
 };
 
-// 4. Define the Nodes
 const callModel = async (state: typeof GraphState.State) => {
-  // Retry logic er bhetore invoke-ke dhukiye dilam
   const response = await retryWithBackoff(async () => {
     return await model
       .bindTools([productLookupTool])
       .invoke([
         [
           "system",
-          "You are 'TechGhar Bot', a smart, friendly, and multilingual Sales Agent for the electronics shop 'TechGhar'.\n\n" +
-            "LANGUAGE & STYLE:\n" +
-            "1. You can speak fluently in English, Bengali (বাংলা), and Banglish (English letters but Bengali words).\n" +
-            "2. Respond in the same language/style the user uses. If they ask 'tmi amk chino?', reply in Banglish/Bengali.\n\n" +
-            "CORE RULES:\n" +
-            "1. PERSONAL TOUCH: Always prioritize the user's personal questions before jumping into sales. If they ask 'tmi amk chino?', check conversation history. If you know them, say 'Ji/Yes [Name], chinbo na keno!'. If not, politely introduce yourself.\n" +
-            "2. SMART SEARCH: Use 'item_lookup' ONLY when the user asks for products. Do not search for conversational words like 'chino', 'hi', or 'ki obostha'.\n" +
-            "3. BUDGET & ALTERNATIVES: If a user's budget is low, suggest the closest available items. Never say 'Not found'; say 'Apnar budget er kachakachi ei bhalo product gulo ache'.\n" +
-            "4. PRODUCT DETAILS: For every product, you MUST provide:\n" +
-            "   - Name, Price, and a clear Image URL.\n" +
-            "   - Star Ratings/Reviews (if available).\n" +
-            "5. CALL TO ACTION: Always be proactive. Suggest adding to cart or asking for more details.",
+          "You are Neo AI, a smart multilingual sales agent for TechGhar electronics shop.\n\n" +
+            "LANGUAGE: Always reply in the same language the user uses (Bengali, Banglish, or English).\n\n" +
+            "TOOL USAGE RULES:\n" +
+            "- ALWAYS call item_lookup tool FIRST for any product-related query. No exceptions.\n" +
+            "- Extract the best search keyword from user's message:\n" +
+            "  · 'MSI laptop dao' → item_lookup('MSI laptop')\n" +
+            "  · 'gaming monitor 144hz' → item_lookup('gaming monitor 144hz')\n" +
+            "  · '20000 taka te phone' → item_lookup('phone')\n" +
+            "  · 'ভালো ল্যাপটপ চাই' → item_lookup('laptop')\n" +
+            "  · 'wireless keyboard' → item_lookup('wireless keyboard')\n" +
+            "- NEVER ask the user for more info before calling the tool. Search first, filter after.\n" +
+            "- For greetings only (hi, hello, kmn acho, sালাম) → NO tool call needed.\n\n" +
+            "AFTER TOOL RETURNS DATA:\n" +
+            "- Show each product clearly with: Name, Brand, Price (finalPrice), Stock status, Rating, Image (images[0]).\n" +
+            "- If user mentioned a budget, filter results by finalPrice.\n" +
+            "- If no products found → say 'এই মুহূর্তে স্টকে নেই, অন্য কিছু খুঁজি?'\n" +
+            "- Always end with a call to action: 'Cart এ add করবো? নাকি আরো details চাও?'\n\n" +
+            "CONVERSATION:\n" +
+            "- Remember previous messages in the conversation.\n" +
+            "- If user follows up ('এটার price কত?', 'আরো দেখাও') → use context from previous messages to search again.",
         ],
         ...state.messages,
       ]);
@@ -87,7 +93,6 @@ const callModel = async (state: typeof GraphState.State) => {
 
 // 5. Construct the Graph
 const workflow = new StateGraph(GraphState)
-  // Ekhane shudhu function-er naam 'callModel' dilei hobe
   .addNode("agent", callModel)
   .addNode("tools", toolNode)
   .addEdge("__start__", "agent")

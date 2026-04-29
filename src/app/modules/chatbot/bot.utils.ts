@@ -1,13 +1,11 @@
 import config from "@/config/index.js";
 import { GoogleGenerativeAIEmbeddings } from "@langchain/google-genai";
-import { Model, Document } from "mongoose";
+import { Model } from "mongoose";
 
 export const embeddings = new GoogleGenerativeAIEmbeddings({
   model: "gemini-embedding-001",
-  apiKey: config.ai.apiKey as string,
+  apiKey: config.ai.GeminiAPIKey as string,
 });
-
-// Interface for documents that need embedding
 interface IBaseEmbeddable {
   embedding: number[];
   embedding_text?: string;

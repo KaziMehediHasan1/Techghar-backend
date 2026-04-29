@@ -5,8 +5,8 @@ import productsModel from "@/app/modules/products/products.model.js";
 
 export const productLookupTool = tool(
   async ({ query }) => {
+    console.log("🔍 Tool calling with query:", query);
     try {
-      // 1. Vactore search aggregation  (Mongoose style)
       const vectorResults = await productsModel.aggregate([
         {
           $vectorSearch: {
@@ -14,38 +14,71 @@ export const productLookupTool = tool(
             path: "embedding",
             queryVector: await embeddings.embedQuery(query),
             numCandidates: 100,
-            limit: 3,
+            limit: 5,
           },
         },
+        {
+          $project: {
+            _id: 1,
+            title: 1,
+            brand: 1,
+            category: 1,
+            description: 1,
+            price: 1,
+            finalPrice: 1,
+            discount: 1,
+            stock: 1,
+            quantity: 1,
+            images: 1,
+            averageRating: 1,
+            totalReviews: 1,
+            features: 1,
+            warranty: 1,
+            specs: 1,
+            colors: 1,
+            isActive: 1,
+          },
+        },
+        {
+          $match: { isActive: true },
+        },
       ]);
-
-      // ২. যদি ভেক্টর সার্চে কিছু না পাওয়া যায়, তবে টেক্সট সার্চ (Fallback)
+      console.log("✅ Results found:", vectorResults.length);
       if (vectorResults.length === 0) {
-        const fallbackResults = await productsModel
+        const fallback = await productsModel
           .find({
-            embedding_text: { $regex: query, $options: "i" },
+            isActive: true,
+            $or: [
+              { title: { $regex: query, $options: "i" } },
+              { brand: { $regex: query, $options: "i" } },
+              { category: { $regex: query, $options: "i" } },
+            ],
           })
-          .select("title price description category brand")
-          .limit(3)
+          .select(
+            "title brand category price finalPrice discount stock quantity images averageRating totalReviews features warranty specs colors",
+          )
+          .limit(5)
           .lean();
 
-        return JSON.stringify(fallbackResults);
+        if (fallback.length === 0) return "এই পণ্য এখন স্টকে নেই।";
+        return JSON.stringify(fallback);
       }
 
       return JSON.stringify(vectorResults);
     } catch (error) {
-      return "No products found matching your request.";
+      console.error("❌ Tool error:", error);
+      return "পণ্য খুঁজতে সমস্যা হচ্ছে।";
     }
   },
   {
     name: "item_lookup",
     description:
-      "Search for tech products like monitors, laptops, and other electronics in TechGhar's inventory. Use this whenever the user asks for product recommendations, prices, or availability.",
+      "ALWAYS use this tool when user asks for any electronics product, laptop, phone, monitor, tablet or accessories from TechGhar inventory.",
     schema: z.object({
       query: z
         .string()
         .describe(
-          "The specific product or category to search for (e.g., 'gaming monitor' or 'laptop under 50k')",
+          "Product to search for (e.g., 'gaming laptop', 'Samsung phone')",
         ),
     }),
   },

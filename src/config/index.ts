@@ -26,7 +26,8 @@ export default {
     pass: process.env.EMAIL_PASS,
   },
   ai: {
-    apiKey: process.env.GEMINI_API_KEY,
+    GeminiAPIKey: process.env.GEMINI_API_KEY,
+    GORQAPIKey: process.env.GORQ_API_KEY,
   },
   payment: {
     stripe_secret: process.env.STRIPE_PAYMENT_SECRET_KEY,
