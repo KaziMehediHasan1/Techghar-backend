@@ -3,7 +3,7 @@ console.log("TOKEN CHECK:", process.env.UPLOADTHING_TOKEN);
 console.log("LENGTH:", process.env.UPLOADTHING_TOKEN?.length);
 const f = createUploadthing();
 
-export const ourFileRouter = {
+export const ourFileRouter: any = {
   imageUploader: f({
     image: {
       maxFileSize: "4MB",
@@ -11,7 +11,6 @@ export const ourFileRouter = {
     },
   })
     .middleware(() => {
-      // auth check, if user is not logged in, then throw an error
       return {};
     })
     .onUploadComplete(({ file }) => {
