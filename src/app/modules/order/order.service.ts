@@ -22,7 +22,9 @@ const getOrderIntoDB = async (payload: string) => {
 };
 
 const getUserOrderIntoDB = async (payload: string) => {
-  const result = await orderModel.find({ userId: payload as any }).populate("productID");
+  const result = await orderModel
+    .find({ userId: payload as any })
+    .populate("productID");
   if (!result) {
     throw new AppError(404, "Fetched Fail, Try again 20sec later.");
   }
@@ -30,9 +32,12 @@ const getUserOrderIntoDB = async (payload: string) => {
 };
 
 const getAllOrderIntoDB = async (payload: any) => {
-  const { search, page, limit } = payload;
-  const skip = (Number(page) - 1) * Number(limit);
+  const page = Math.max(1, Number(payload.page) || 1);
+  const limit = Math.max(1, Number(payload.limit) || 10);
 
+  const skip = (page - 1) * limit;
+
+  const { search } = payload;
   let query = {};
   if (search) {
     query = {
@@ -40,62 +45,22 @@ const getAllOrderIntoDB = async (payload: any) => {
         { "productData.title": { $regex: search, $options: "i" } },
         { "customerData.email": { $regex: search, $options: "i" } },
         { status: { $regex: search, $options: "i" } },
-        { status: { $regex: search, $options: "i" } },
       ],
     };
   }
 
   const result = await orderModel.aggregate([
-    // Product Lookup
-    {
-      $lookup: {
-        from: "products",
-        localField: "productID",
-        foreignField: "_id",
-        as: "productData",
-      },
-    },
-    { $unwind: { path: "$productData", preserveNullAndEmptyArrays: true } },
-
-    // User/Customer Lookup
-    {
-      $lookup: {
-        from: "users",
-        let: { orderUserId: "$userId" },
-        pipeline: [
-          {
-            $match: {
-              $expr: {
-                $or: [
-                  { $eq: ["$_id", { $toObjectId: "$$orderUserId" }] },
-                  { $eq: ["$uid", "$$orderUserId"] },
-                ],
-              },
-            },
-          },
-        ],
-        as: "customerData",
-      },
-    },
-    { $unwind: { path: "$customerData", preserveNullAndEmptyArrays: true } },
-
-    // Payment Lookup (
-    {
-      $lookup: {
-        from: "payments",
-        localField: "_id",
-        foreignField: "orderId",
-        as: "paymentData",
-      },
-    },
-    { $unwind: { path: "$paymentData", preserveNullAndEmptyArrays: true } },
+   
 
     // Search Filter
     { $match: query },
 
+  
+    { $sort: { createdAt: -1 } },
+
     // Pagination
     { $skip: skip },
-    { $limit: Number(limit) },
+    { $limit: limit },
 
     // Project
     {
@@ -116,15 +81,15 @@ const getAllOrderIntoDB = async (payload: any) => {
     },
   ]);
 
-  // Total count
-  const totalDataCount = await orderModel.countDocuments();
+  const totalDataCount = await orderModel.countDocuments(query);
+
   return {
     result,
     meta: {
-      page: Number(page),
-      limit: Number(limit),
+      page,
+      limit,
       total: totalDataCount,
-      totalPage: Math.ceil(totalDataCount / Number(limit)),
+      totalPage: Math.ceil(totalDataCount / limit),
     },
   };
 };
@@ -155,5 +120,5 @@ export const orderService = {
   getAllOrderIntoDB,
   updateOrderIntoDB,
   deleteOrderIntoDB,
-  getUserOrderIntoDB
+  getUserOrderIntoDB,
 };
