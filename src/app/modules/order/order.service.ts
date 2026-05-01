@@ -50,12 +50,19 @@ const getAllOrderIntoDB = async (payload: any) => {
   }
 
   const result = await orderModel.aggregate([
-   
+    {
+      $lookup: {
+        from: "users",
+        localField: "userId",
+        foreignField: "_id",
+        as: "customerData",
+      },
+    },
+    { $unwind: { path: "$customerData", preserveNullAndEmptyArrays: true } },
 
     // Search Filter
     { $match: query },
 
-  
     { $sort: { createdAt: -1 } },
 
     // Pagination
@@ -69,10 +76,12 @@ const getAllOrderIntoDB = async (payload: any) => {
         quantity: 1,
         status: 1,
         cancelledAt: 1,
+        createdAt: 1,
         productName: "$productData.title",
         productImages: "$productData.images",
         productPrice: "$productData.price",
         customerEmail: "$customerData.email",
+        customerName: "$customerData.name",
         transactionId: "$paymentData.transactionId",
         amount: "$paymentData.amount",
         isPaid: "$paymentData.isPaid",
