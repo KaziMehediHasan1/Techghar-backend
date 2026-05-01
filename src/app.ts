@@ -17,7 +17,7 @@ app.use(
   cors({
     origin: [
       "http://localhost:5173",
-      "https://techghar-frontend-fuuhyw0do-kazimehedihasan1s-projects.vercel.app",
+      "https://techghar-frontend.vercel.app",
     ],
     methods: ["GET", "POST", "PATCH", "PUT", "DELETE"],
     credentials: true,
