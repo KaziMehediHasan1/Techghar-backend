@@ -28,23 +28,32 @@ const createPaymentIntentIntoStripe = async (payload: any) => {
 
 const createPaymentIntoDB = async (payload: any) => {
   const result = await paymentModel.create(payload);
-  console.log("payload", payload)
+  console.log("payload", payload);
   if (!result) {
     throw new AppError(
       ERROR_MESSAGES.payment.failed.statusCode,
-      ERROR_MESSAGES.payment.failed.message
-    )
+      ERROR_MESSAGES.payment.failed.message,
+    );
   }
-  return result
+  return result;
 };
 
-const getAllPaymentsDataIntoDB = async (payload: any) => { };
+const getAllPaymentsDataIntoDB = async () => {
+  const result = await paymentModel.find();
+  // if (!result) {
+  //   throw new AppError(
+  //     ERROR_MESSAGES.payment.notFound.statusCode,
+  //     ERROR_MESSAGES.payment.notFound.message,
+  //   );
+  // }
+  return result;
+};
 
-const getPaymentDataIntoDB = async (payload: any) => { };
+const getPaymentDataIntoDB = async (payload: any) => {};
 
-const updatePaymentDataIntoDB = async (payload: any) => { };
+const updatePaymentDataIntoDB = async (payload: any) => {};
 
-const deletePaymentDataIntoDB = async (payload: any) => { };
+const deletePaymentDataIntoDB = async (payload: any) => {};
 
 export const paymentService = {
   createPaymentIntentIntoStripe,

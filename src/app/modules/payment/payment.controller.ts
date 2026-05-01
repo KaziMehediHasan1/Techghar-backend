@@ -7,7 +7,7 @@ const createPaymentIntent = catchAsync(async (req, res) => {
   const result = await paymentService.createPaymentIntentIntoStripe({
     amount,
     currency,
-    productID
+    productID,
   });
 
   sendResponse(res, {
@@ -25,17 +25,26 @@ const createPayment = catchAsync(async (req, res) => {
     statusCode: 201,
     success: true,
     message: "Payment Details Save DB",
-    data: result
-  })
+    data: result,
+  });
 });
 
-const getAllPaymentsData = catchAsync(async (req, res) => { });
+const getAllPaymentsData = catchAsync(async (req, res) => {
+  const result = await paymentService.getAllPaymentsDataIntoDB();
 
-const getPaymentData = catchAsync(async (req, res) => { });
+  sendResponse(res, {
+    statusCode: 200,
+    success: true,
+    message: "Payments fetched successfully",
+    data: result,
+  });
+});
 
-const updatePaymentData = catchAsync(async (req, res) => { });
+const getPaymentData = catchAsync(async (req, res) => {});
 
-const deletePaymentData = catchAsync(async (req, res) => { });
+const updatePaymentData = catchAsync(async (req, res) => {});
+
+const deletePaymentData = catchAsync(async (req, res) => {});
 
 export const paymentController = {
   createPaymentIntent,
