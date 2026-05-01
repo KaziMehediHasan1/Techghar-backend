@@ -4,7 +4,7 @@ import config from "@/config/index.js";
 import { ERROR_MESSAGES } from "@/constants/errorMessages.js";
 import { uidGenerator } from "@/helper/uidGenerator.js";
 import bcrypt from "bcrypt";
-import mongoose, { Types } from 'mongoose';
+import mongoose, { Types } from "mongoose";
 import profileModel from "../profile/profile.model.js";
 
 const createUserIntoDB = async (payload: any) => {
@@ -161,7 +161,10 @@ const getUserProfileFromDB = async (payload: string) => {
   return result;
 };
 
-
+const getUserByAdminFromDB = async () => {
+  const result = await userModel.find();
+  return result;
+};
 
 const deleteUserFromDB = async (payload: string) => {
   const session = await mongoose.startSession();
@@ -169,10 +172,8 @@ const deleteUserFromDB = async (payload: string) => {
   try {
     session.startTransaction();
 
-    // ১. স্ট্রিং পেলোডকে অবজেক্ট আইডিতে কনভার্ট করা (টাইপ সেফটির জন্য)
     const userId = new Types.ObjectId(payload);
 
-    // ২. ইউজার ডিলিট করা
     const deletedUser = await userModel
       .findByIdAndDelete({ _id: userId })
       .session(session);
@@ -184,19 +185,15 @@ const deleteUserFromDB = async (payload: string) => {
       );
     }
 
-    // ৩. প্রোফাইল ডিলিট করা
-    // এখানে 'userID' ফিল্ডটি ref হিসেবে থাকায় Types.ObjectId ব্যবহার করা বাধ্যতামূলক
     await profileModel
       .findOneAndDelete({ userID: userId as any })
       .session(session);
 
-    // ৪. সব সফল হলে ট্রানজেকশন সেভ করা
     await session.commitTransaction();
     await session.endSession();
 
     return deletedUser;
   } catch (error: any) {
-    // এরর হলে আগের অবস্থায় ফিরে যাওয়া (Rollback)
     await session.abortTransaction();
     await session.endSession();
     return error;
@@ -242,7 +239,7 @@ const updatePasswordFromDB = async (payload: any) => {
     throw new Error("Confirm and New Password are not same!");
   }
 
-  const user = await userModel.findById(id).select('+password');
+  const user = await userModel.findById(id).select("+password");
   if (!user) {
     throw new Error("User not found!");
   }
@@ -272,5 +269,6 @@ export const userService = {
   deleteUserFromDB,
   deleteUserByAdminFromDB,
   updateProfileFromDB,
-  updatePasswordFromDB
+  updatePasswordFromDB,
+  getUserByAdminFromDB,
 };

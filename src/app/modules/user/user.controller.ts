@@ -42,6 +42,17 @@ const getAllUsers = catchAsync(async (req, res) => {
   });
 });
 
+const getUserByAdmin = catchAsync(async (req, res) => {
+
+  const result = await userService.getUserByAdminFromDB();
+  sendResponse(res, {
+    statusCode: 200,
+    success: true,
+    message: "User get successfully",
+    data: result,
+  });
+});
+
 const getMyProfile = catchAsync(async (req, res) => {
   const userId = req.user?.id as string;
   const result = await userService.getUserProfileFromDB(userId);
@@ -55,7 +66,7 @@ const getMyProfile = catchAsync(async (req, res) => {
 
 const deleteMyAccount = catchAsync(async (req, res) => {
   const id = (req.params._id || req.params.id) as string;
-  console.log(id,"DELET")
+  console.log(id, "DELET");
   const result = await userService.deleteUserFromDB(id);
   sendResponse(res, {
     statusCode: SUCCESS_MESSAGES.user.profileDeleted.statusCode,
@@ -77,7 +88,7 @@ const deleteUserByAdmin = catchAsync(async (req, res) => {
 });
 
 const upadetProfile = catchAsync(async (req, res) => {
-  const id = req.user?.id as string || req.params._id || req.params.id;
+  const id = (req.user?.id as string) || req.params._id || req.params.id;
   const data = req.body;
   const result = await userService.updateProfileFromDB({ id, data });
   sendResponse(res, {
@@ -89,7 +100,7 @@ const upadetProfile = catchAsync(async (req, res) => {
 });
 
 const upadetPassword = catchAsync(async (req, res) => {
-  const id = req.user?.id as string || req.params._id || req.params.id;
+  const id = (req.user?.id as string) || req.params._id || req.params.id;
   const data = req.body;
   const result = await userService.updatePasswordFromDB({ id, data });
   sendResponse(res, {
@@ -107,5 +118,6 @@ export const userController = {
   deleteMyAccount,
   deleteUserByAdmin,
   upadetProfile,
-  upadetPassword
+  upadetPassword,
+  getUserByAdmin,
 };
